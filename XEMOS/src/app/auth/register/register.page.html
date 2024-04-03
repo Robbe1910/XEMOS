@@ -1,0 +1,24 @@
+<ion-content [fullscreen]="true" class="container">
+  <div>
+    <p>Who are you ?</p>
+    <form [formGroup]="registroForm" (ngSubmit)="onSubmit()">
+      <i class="fas fa-user"></i>
+      <input formControlName="fullName" type="text" placeholder="Full Name">
+      <br>
+      <i class="fa-solid fa-envelope"></i>
+      <input formControlName="email" type="email" placeholder="Email">
+      <br>
+      <i class="fas" [ngClass]="{'fa-eye-slash': hidePassword, 'fa-eye': !hidePassword}" (click)="togglePasswordVisibility()"></i>
+      <input formControlName="password" type="{{ hidePassword ? 'password' : 'text' }}" placeholder="Password">
+      <br>
+      <i class="fas" [ngClass]="{'fa-eye-slash': hidePassword, 'fa-eye': !hidePassword}" (click)="togglePasswordVisibility()"></i>
+      <input formControlName="confirmPassword" type="{{ hidePassword ? 'password' : 'text' }}" placeholder="Password">
+      <br>
+      <!-- Muestra el mensaje de error si existe -->
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+      <button type="submit">Register</button>
+    </form>
+  </div>
+</ion-content>

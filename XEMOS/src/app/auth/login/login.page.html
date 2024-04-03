@@ -1,0 +1,17 @@
+<ion-content [fullscreen]="true">
+  <div>
+    <p>Welcome !</p>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <i class="fas fa-user"></i>
+      <input formControlName="email" type="email" placeholder="Email">
+      <br>
+      <i class="fas" [ngClass]="{'fa-eye-slash': hidePassword, 'fa-eye': !hidePassword}" (click)="togglePasswordVisibility()"></i>
+      <input formControlName="password" type="{{ hidePassword ? 'password' : 'text' }}" placeholder="Password">
+      <br>
+      <button type="submit">Login</button>
+    </form>
+    <div>
+      <p>Doesn't have an account yet? <a [routerLink]="['/register']">Register</a></p>
+    </div>
+  </div>
+</ion-content>
