@@ -1,24 +1,36 @@
-<ion-content [fullscreen]="true" class="container">
-  <div>
-    <p>Who are you ?</p>
+<ion-content [fullscreen]="true">
+  <div id="container-register">
+    <p id="title-register">Who are you ?</p>
     <form [formGroup]="registroForm" (ngSubmit)="onSubmit()">
-      <i class="fas fa-user"></i>
-      <input formControlName="fullName" type="text" placeholder="Full Name">
-      <br>
-      <i class="fa-solid fa-envelope"></i>
-      <input formControlName="email" type="email" placeholder="Email">
-      <br>
-      <i class="fas" [ngClass]="{'fa-eye-slash': hidePassword, 'fa-eye': !hidePassword}" (click)="togglePasswordVisibility()"></i>
-      <input formControlName="password" type="{{ hidePassword ? 'password' : 'text' }}" placeholder="Password">
-      <br>
-      <i class="fas" [ngClass]="{'fa-eye-slash': hidePassword, 'fa-eye': !hidePassword}" (click)="togglePasswordVisibility()"></i>
-      <input formControlName="confirmPassword" type="{{ hidePassword ? 'password' : 'text' }}" placeholder="Password">
+      <label for="fullName">Full Name:</label><br>
+      <div class="fields">
+        <i class="fas fa-user" style="color: #424242;"></i>
+        <input formControlName="fullName" type="text" id="fullName">
+      </div>
+      <label for="email">Email:</label><br>
+      <div class="fields">
+        <i class="fa-solid fa-envelope" style="color: #424242;"></i>
+        <input formControlName="email" type="email" id="email">
+      </div>
+      <label for="passwd">Password:</label><br>
+      <div class="fields">
+        <i class="fas" [ngClass]="{'fa-eye-slash': hidePassword, 'fa-eye': !hidePassword}" (click)="togglePasswordVisibility()" style="color: #424242;"></i>
+        <input formControlName="password" type="{{ hidePassword ? 'password' : 'text' }}" id="passwd">
+      </div>
+      <label for="confirmPasswd">Confirm Password:</label><br>
+      <div class="fields">
+        <i class="fas" [ngClass]="{'fa-eye-slash': hidePassword, 'fa-eye': !hidePassword}" (click)="togglePasswordVisibility()" style="color: #424242;"></i>
+        <input formControlName="confirmPassword" type="{{ hidePassword ? 'password' : 'text' }}" id="confirmPasswd">
+      </div>
       <br>
       <!-- Muestra el mensaje de error si existe -->
       <div *ngIf="errorMessage" class="error-message">
         {{ errorMessage }}
       </div>
-      <button type="submit">Register</button>
+      <div id="btn-register"><button type="submit">Register</button></div>
     </form>
+    <div id="login">
+      <p>Already have an account? <a [routerLink]="['/login']">Login</a></p>
+    </div>
   </div>
 </ion-content>
