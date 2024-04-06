@@ -3,6 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { Router } from '@angular/router';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -14,7 +17,7 @@ export class RegisterPage implements OnInit {
   hidePassword: boolean = true;
   errorMessage: string = '';
 
-  constructor(private formBuilder: FormBuilder, private http: HttpClient) {
+  constructor(private formBuilder: FormBuilder, private http: HttpClient, private router: Router) {
     this.registroForm = this.formBuilder.group({
       fullName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -24,6 +27,19 @@ export class RegisterPage implements OnInit {
   }
 
   ngOnInit() {
+    this.registroForm.controls['email'].valueChanges.pipe(
+      debounceTime(500), // Agrega un retraso antes de realizar la solicitud HTTP para evitar solicitudes excesivas
+      distinctUntilChanged(), // Verifica si el valor ha cambiado desde la última vez
+      switchMap(email => this.checkEmailExists(email))
+    ).subscribe(response => {
+      if (response.exists) {
+        this.registroForm.controls['email'].setErrors({ 'alreadyExists': true });
+      }
+    });
+  }
+  
+  checkEmailExists(email: string): Observable<{ exists: boolean }> {
+    return this.http.get<{ exists: boolean }>(`http://localhost:3000/users/checkEmail/${email}`);
   }
 
   onSubmit() {
@@ -47,14 +63,14 @@ export class RegisterPage implements OnInit {
         )
         .subscribe(() => {
           console.log('Usuario registrado correctamente');
-          // Aquí podrías redirigir al usuario a otra página o mostrar un mensaje de éxito
+          this.router.navigateByUrl('/home'); // Redirige a la ruta '/home'
         }, error => {
           console.error('Error al guardar el usuario:', error);
-          // Aquí podrías mostrar un mensaje de error al usuario
+          this.errorMessage = "Error inesperado. Por favor, inténtalo de nuevo más tarde.";
         });
     } else {
       console.error('Formulario inválido');
-      // Aquí podrías mostrar un mensaje de error al usuario
+      this.errorMessage = "El correo o la contraseña no son válidos";
     }
   }
 

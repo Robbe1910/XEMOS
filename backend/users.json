@@ -8,5 +8,15 @@
     "fullName": "gg",
     "email": "Alvaromoron27@gmail.com",
     "password": "gfhfgfghfg"
+  },
+  {
+    "fullName": "prueba",
+    "email": "prueba@prueba.com",
+    "password": "prueba1234"
+  },
+  {
+    "fullName": "Roberto",
+    "email": "robertoberrendo@gmail.com",
+    "password": "12345678"
   }
 ]

@@ -14,6 +14,10 @@
         <input formControlName="password" type="{{ hidePassword ? 'password' : 'text' }}" id="passwd">
       </div>
       <br>
+      <!-- Muestra el mensaje de error si existe -->
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
       <div id="btn-login"><button type="submit">Login</button></div>
     </form>
     <div id="register">

@@ -43,6 +43,20 @@ app.post('/users', (req, res) => {
     }
 });
 
+// Ruta para verificar si un correo electrónico ya está registrado
+router.get('/checkEmail/:email', (req, res) => {
+  const { email } = req.params;
+
+  const users = require('./users.json');
+  const existingUser = users.find(user => user.email === email);
+
+  if (existingUser) {
+    res.json({ exists: true });
+  } else {
+    res.json({ exists: false });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

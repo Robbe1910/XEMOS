@@ -1,4 +1,4 @@
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="container">
   <div id="container-register">
     <p id="title-register">Who are you ?</p>
     <form [formGroup]="registroForm" (ngSubmit)="onSubmit()">
@@ -23,6 +23,21 @@
         <input formControlName="confirmPassword" type="{{ hidePassword ? 'password' : 'text' }}" id="confirmPasswd">
       </div>
       <br>
+      <div *ngIf="registroForm.controls['fullName'].touched && registroForm.controls['fullName'].errors?.['required']" class="error-message">
+        Full Name is required
+      </div>
+      <div *ngIf="registroForm.controls['email'].touched && registroForm.controls['email'].errors?.['required']" class="error-message">
+        Email is required
+      </div>
+      <div *ngIf="registroForm.controls['email'].touched && registroForm.controls['email'].errors?.['email']" class="error-message">
+        Please enter a valid email address
+      </div>
+      <div *ngIf="registroForm.controls['password'].touched && registroForm.controls['password'].errors?.['required']" class="error-message">
+        Password is required
+      </div>
+      <div *ngIf="registroForm.controls['password'].touched && registroForm.controls['password'].errors?.['required']" class="error-message">
+        Password must be at least 8 characters long
+      </div>
       <!-- Muestra el mensaje de error si existe -->
       <div *ngIf="errorMessage" class="error-message">
         {{ errorMessage }}
