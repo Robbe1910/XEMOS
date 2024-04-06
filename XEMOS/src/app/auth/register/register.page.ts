@@ -6,6 +6,7 @@ import { throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import * as bcrypt from 'bcryptjs'; // Importa bcrypt
 
 @Component({
   selector: 'app-register',
@@ -47,7 +48,7 @@ export class RegisterPage implements OnInit {
       const newUser = {
         fullName: this.registroForm.value.fullName,
         email: this.registroForm.value.email,
-        password: this.registroForm.value.password
+        password: bcrypt.hashSync(this.registroForm.value.password, 10) // Cifra la contraseña antes de guardarla
       };
 
       this.http.post<any>('http://localhost:3000/users', newUser)

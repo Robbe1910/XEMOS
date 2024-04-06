@@ -2,21 +2,6 @@
   {
     "fullName": "admin",
     "email": "admin@admin.com",
-    "password": "admin1234"
-  },
-  {
-    "fullName": "gg",
-    "email": "Alvaromoron27@gmail.com",
-    "password": "gfhfgfghfg"
-  },
-  {
-    "fullName": "prueba",
-    "email": "prueba@prueba.com",
-    "password": "prueba1234"
-  },
-  {
-    "fullName": "Roberto",
-    "email": "robertoberrendo@gmail.com",
-    "password": "12345678"
+    "password": "$2a$10$43yNubQtOtdsyoVTHX7C0.DYCUbuNKZJrOpZ3oGc5D0t/6gaGGjsq"
   }
 ]
