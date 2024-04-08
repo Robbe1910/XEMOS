@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import * as bcrypt from 'bcryptjs'; // Importa bcrypt
+import * as bcrypt from 'bcryptjs';
 
 @Component({
   selector: 'app-login',

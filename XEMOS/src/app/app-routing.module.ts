@@ -18,7 +18,15 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./auth/login/login.module').then( m => m.LoginPageModule)
+  },  {
+    path: 'profile',
+    loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
   },
+  {
+    path: 'list-devices',
+    loadChildren: () => import('./list-devices/list-devices.module').then( m => m.ListDevicesPageModule)
+  },
+
 ];
 
 @NgModule({
