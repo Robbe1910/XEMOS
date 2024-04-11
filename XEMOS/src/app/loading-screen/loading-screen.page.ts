@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { LoadingController } from '@ionic/angular';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-loading-screen',
@@ -9,18 +8,11 @@ import { LoadingController } from '@ionic/angular';
 })
 export class LoadingScreenPage {
 
-  constructor(private loadingController: LoadingController) { }
+  constructor(private router: Router,) {}
 
-  async loadData() {
-    const loading = await this.loadingController.create({
-      message: 'Cargando...'
-    });
-    await loading.present();
-
-    // Simular una carga de datos
+  ionViewDidEnter() {
     setTimeout(() => {
-      loading.dismiss();
-      // Aquí se puede agregar la lógica para procesar los datos después de la carga
-    }, 2000);
+      this.router.navigateByUrl('/login');
+    }, 10000);
   }
 }

@@ -7,12 +7,13 @@ import { MainContainerComponent } from './main-container/main-container.componen
 const routes: Routes = [
   {
     path: '', // Path vacío para redirección
-    redirectTo: 'login', // Redirige al path 'login'
+    redirectTo: 'loading', // Redirige al path 'loading'
     pathMatch: 'full' // Asegura que la redirección se aplique solo cuando la URL es exactamente ''
   },
   {
     path: 'app',
     component: MainContainerComponent, // Componente contenedor principal
+    canActivate: [AuthGuard], // Protege todas las rutas bajo el path 'app'
     children: [
       {
         path: 'home',
@@ -31,7 +32,9 @@ const routes: Routes = [
   },
   { path: 'login', loadChildren: () => import('./auth/login/login.module').then(m => m.LoginPageModule) },
   { path: 'register', loadChildren: () => import('./auth/register/register.module').then(m => m.RegisterPageModule) },
+  { path: 'loading', loadChildren: () => import('./loading-screen/loading-screen.module').then(m => m.LoadingScreenPageModule) },
 ];
+
 
 @NgModule({
   imports: [

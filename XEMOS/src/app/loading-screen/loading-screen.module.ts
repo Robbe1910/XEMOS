@@ -6,7 +6,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { LoadingScreenPageRoutingModule } from './loading-screen-routing.module';
 
-import { LoadingScreenPage } from './loading-screen.page';
+
 
 @NgModule({
   imports: [
@@ -15,6 +15,6 @@ import { LoadingScreenPage } from './loading-screen.page';
     IonicModule,
     LoadingScreenPageRoutingModule
   ],
-  declarations: [LoadingScreenPage]
+  declarations: []
 })
 export class LoadingScreenPageModule {}
