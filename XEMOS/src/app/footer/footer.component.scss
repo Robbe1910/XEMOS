@@ -1,3 +1,7 @@
+.fondo {
+  background-color: #d5e2e7;
+}
+
 #footer{
     display: flex;
     align-items: center;
@@ -7,6 +11,7 @@
     background-color: rgb(32, 32, 32);
     border-top-left-radius: 30%;
     border-top-right-radius: 30%;
+    z-index: 1000;
   }
 
   i, span{

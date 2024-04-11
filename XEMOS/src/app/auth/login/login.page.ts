@@ -46,7 +46,7 @@ export class LoginPage implements OnInit {
           success => {
             if (success) {
               console.log('Usuario autenticado correctamente');
-              this.router.navigateByUrl('/home'); // Redirige al usuario a la página de inicio
+              this.router.navigateByUrl('/app'); // Redirige al usuario a la página de inicio
             } else {
               console.error('Error: No se pudo autenticar al usuario');
             }
