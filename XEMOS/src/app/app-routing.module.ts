@@ -1,14 +1,16 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
+    canActivate: [AuthGuard] // Protege la ruta home
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
@@ -18,15 +20,17 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./auth/login/login.module').then( m => m.LoginPageModule)
-  },  {
+  },
+  {
     path: 'profile',
-    loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
+    loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule),
+    canActivate: [AuthGuard] // Protege la ruta profile
   },
   {
     path: 'list-devices',
-    loadChildren: () => import('./list-devices/list-devices.module').then( m => m.ListDevicesPageModule)
+    loadChildren: () => import('./list-devices/list-devices.module').then( m => m.ListDevicesPageModule),
+    canActivate: [AuthGuard] // Protege la ruta list-devices
   },
-
 ];
 
 @NgModule({

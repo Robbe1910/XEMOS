@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const cors = require('cors'); 
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const app = express();
 const router = express.Router();
@@ -55,6 +57,56 @@ router.get('/checkEmail/:email', (req, res) => {
     res.json({ exists: true });
   } else {
     res.json({ exists: false });
+  }
+});
+
+// Método para verificar si un usuario está autenticado
+function isLoggedIn(email, password) {
+  try {
+    // Leer el archivo users.json para obtener la lista de usuarios
+    const users = JSON.parse(fs.readFileSync(usersFilePath));
+
+    // Buscar el usuario con el correo electrónico dado
+    const user = users.find(user => user.email === email);
+
+    // Verificar si se encontró un usuario con ese correo electrónico
+    if (user) {
+      // Comparar la contraseña proporcionada con la contraseña almacenada en el archivo JSON
+      // Para esto, puedes utilizar alguna librería de hashing como bcrypt
+      if (bcrypt.compareSync(password, user.password)) {
+        // Usuario autenticado correctamente
+        return true;
+      }
+    }
+
+    // Si no se encuentra el usuario o la contraseña es incorrecta, devolver falso
+    return false;
+  } catch (err) {
+    console.error('Error al verificar la autenticación del usuario:', err);
+    // En caso de error, también puedes devolver false o lanzar una excepción según tus necesidades
+    return false;
+  }
+}
+
+function getUserByEmail(email) {
+  const users = JSON.parse(fs.readFileSync(usersFilePath));
+  return users.find(user => user.email === email);
+}
+
+app.post('/login', (req, res) => {
+  const { email, password } = req.body;
+
+  const user = getUserByEmail(email); // Obtén el usuario del archivo users.json
+
+  if (isLoggedIn(email, password)) {
+    // Generación de un token JWT con una duración de 1 hora (3600 segundos)
+    const token = jwt.sign({ email, fullName: user.fullName }, 'k=F##7dEKxWN:[1]+_"1L7q(5:o!6[XKdU2S[3gTr-1nu9_"zW', { expiresIn: '1h' });
+
+    // Devuelve el token en un objeto JSON
+    res.status(200).json({ token });
+  } else {
+    // Credenciales inválidas
+    res.status(401).json({ message: 'Credenciales inválidas. Por favor, inténtalo de nuevo.' });
   }
 });
 

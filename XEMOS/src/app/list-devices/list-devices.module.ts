@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { ListDevicesPageRoutingModule } from './list-devices-routing.module';
 
 import { ListDevicesPage } from './list-devices.page';
+import { Network } from '@ionic-native/network/ngx';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { ListDevicesPage } from './list-devices.page';
     IonicModule,
     ListDevicesPageRoutingModule
   ],
-  declarations: [ListDevicesPage]
+  declarations: [ListDevicesPage],
+  providers: [Network]
 })
 export class ListDevicesPageModule {}

@@ -16,13 +16,15 @@
     "@angular/animations": "^17.0.2",
     "@angular/common": "^17.0.2",
     "@angular/compiler": "^17.0.2",
-    "@angular/core": "^17.3.3",
+    "@angular/core": "^17.3.4",
     "@angular/forms": "^17.0.2",
     "@angular/platform-browser": "^17.0.2",
     "@angular/platform-browser-dynamic": "^17.0.2",
     "@angular/router": "^17.0.2",
     "@fortawesome/fontawesome-free": "^6.5.2",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@ionic-native/core": "^5.36.0",
+    "@ionic-native/network": "^5.36.0",
     "@ionic/angular": "^7.0.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
@@ -47,6 +49,7 @@
     "@types/node": "^20.12.5",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
+    "cordova-plugin-network-information": "^3.0.0",
     "eslint": "^8.57.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsdoc": "^48.2.1",
@@ -60,5 +63,10 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "tslib": "^2.6.2",
     "typescript": "^5.4.3"
+  },
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-network-information": {}
+    }
   }
 }
