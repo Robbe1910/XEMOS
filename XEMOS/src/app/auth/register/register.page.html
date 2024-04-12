@@ -12,15 +12,21 @@
       </div>
 
       <label for="email">Email:</label><br>
-      <div class="fields" [ngClass]="{'is-invalid': registroForm.controls['email'].invalid && registroForm.controls['email'].touched, 'is-valid': registroForm.controls['email'].valid && registroForm.controls['email'].touched}">
+      <div class="fields" [ngClass]="{
+        'is-invalid': (registroForm.controls['email'].invalid && registroForm.controls['email'].touched) || emailExists,
+        'is-valid': registroForm.controls['email'].valid && registroForm.controls['email'].touched && !emailExists
+      }">
         <i class="fa-solid fa-envelope" style="color: #424242;"></i>
-        <input formControlName="email" type="email" id="email">
+        <input formControlName="email" type="email" id="email" (input)="checkEmail()">
       </div>
       <div *ngIf="registroForm.controls['email'].touched && registroForm.controls['email'].errors?.['required']" class="error-message">
         Email is required
       </div>
       <div *ngIf="registroForm.controls['email'].touched && registroForm.controls['email'].errors?.['email']" class="error-message">
         Please enter a valid email address
+      </div>
+      <div *ngIf="emailExists" class="error-message">
+        Email already exists
       </div>
 
       <label for="passwd">Password:</label><br>

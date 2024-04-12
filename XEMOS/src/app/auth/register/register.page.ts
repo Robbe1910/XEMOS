@@ -4,6 +4,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import * as bcrypt from 'bcryptjs'; // Importa bcrypt
 
 @Component({
@@ -16,6 +17,7 @@ export class RegisterPage implements OnInit {
   hidePassword: boolean = true;
   hideConfirmPassword: boolean = true;
   errorMessage: string = '';
+  emailExists: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private http: HttpClient, private router: Router) {
   }
@@ -28,14 +30,13 @@ export class RegisterPage implements OnInit {
       confirmPassword: ['', Validators.required]
     }, { validator: this.checkPasswords });
 
-    this.registroForm.controls['email'].valueChanges.pipe(
+     // Escuchar los cambios en el input de email y verificar si el email existe
+     this.registroForm.controls['email'].valueChanges.pipe(
       debounceTime(500),
       distinctUntilChanged(),
       switchMap(email => this.checkEmailExists(email))
     ).subscribe(response => {
-      if (response.exists) {
-        this.registroForm.controls['email'].setErrors({ 'alreadyExists': true });
-      }
+      this.emailExists = response.exists;
     });
   }
   
@@ -66,8 +67,30 @@ export class RegisterPage implements OnInit {
     }
   }
   
+  checkEmail() {
+    const emailControl = this.registroForm.get('email');
+    if (emailControl && emailControl.value) {
+      console.log('Email value:', emailControl.value);
+      this.checkEmailExists(emailControl.value)
+        .pipe(
+          map(response => {
+            console.log('Response from server:', response);
+            return response.exists ? { emailExists: true } : null;
+          })
+        )
+        .subscribe(result => {
+          console.log('Result:', result);
+          if (result) {
+            emailControl.setErrors(result);
+          } else {
+            emailControl.setErrors(null);
+          }
+        });
+    }
+  }
+  
   checkEmailExists(email: string): Observable<{ exists: boolean }> {
-    return this.http.get<{ exists: boolean }>(`http://localhost:3000/users/checkEmail/${email}`);
+    return this.http.get<{ exists: boolean }>(`http://localhost:3000/checkEmail/${email}`);
   }
 
   checkPasswords(formGroup: FormGroup) {

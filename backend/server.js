@@ -6,7 +6,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const app = express();
-const router = express.Router();
 const PORT = 3000;
 
 app.use(bodyParser.json());
@@ -47,16 +46,15 @@ app.post('/users', (req, res) => {
 });
 
 // Ruta para verificar si un correo electrónico ya está registrado
-router.get('/checkEmail/:email', (req, res) => {
+app.get('/checkEmail/:email', (req, res) => {
   const { email } = req.params;
-
-  const users = require('./users.json');
-  const existingUser = users.find(user => user.email === email);
-
-  if (existingUser) {
-    res.json({ exists: true });
-  } else {
-    res.json({ exists: false });
+  try {
+    const users = JSON.parse(fs.readFileSync(usersFilePath));
+    const existingUser = users.find(user => user.email === email);
+    res.json({ exists: !!existingUser });
+  } catch (err) {
+    console.error('Error checking email:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
