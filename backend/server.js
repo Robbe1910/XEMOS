@@ -108,6 +108,45 @@ app.post('/login', (req, res) => {
   }
 });
 
+// Endpoint para actualizar el correo electrónico del usuario
+app.put('/users/email', (req, res) => {
+  const { email, newEmail } = req.body;
+  try {
+    const users = JSON.parse(fs.readFileSync(usersFilePath));
+    const userIndex = users.findIndex(user => user.email === email);
+    if (userIndex !== -1) {
+      users[userIndex].email = newEmail;
+      fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
+      res.status(200).json({ message: 'Email updated successfully' });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (err) {
+    console.error('Error updating email:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Endpoint para actualizar la contraseña del usuario
+app.put('/users/password', (req, res) => {
+  const { email, newPassword } = req.body;
+  try {
+    const users = JSON.parse(fs.readFileSync(usersFilePath));
+    const userIndex = users.findIndex(user => user.email === email);
+    if (userIndex !== -1) {
+      const hashedPassword = bcrypt.hashSync(newPassword, 10);
+      users[userIndex].password = hashedPassword;
+      fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
+      res.status(200).json({ message: 'Password updated successfully' });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (err) {
+    console.error('Error updating password:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
