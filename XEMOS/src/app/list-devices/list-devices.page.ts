@@ -26,7 +26,7 @@ export class ListDevicesPage implements OnInit {
           console.log('WiFi Name:', this.wifiName);
         });
       } else {
-        console.log('No WIFi connection available');
+        console.log('No Wifi connection available');
       }
     });
   }

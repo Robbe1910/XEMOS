@@ -1,0 +1,61 @@
+.loading-overlay {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(213, 226, 231);
+}
+
+.loading{
+  font-family: 'Quicksand-SemiBold';
+}
+
+.cube-container {
+  width: 150px; /* Ancho del contenedor del cubo */
+  height: 150px; /* Alto del contenedor del cubo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cube {
+  width: 100%; /* Cubo ocupa el 100% del contenedor */
+  height: 100%; /* Cubo ocupa el 100% del contenedor */
+}
+
+
+.line-animation {
+  stroke-dasharray: 0;
+  stroke-width: 3;
+}
+
+/* Ajustamos la animación para cada línea */
+.line-animation:nth-child(1) {
+  animation: changeColor 1.5s linear infinite 0s;
+}
+.line-animation:nth-child(2) {
+  animation: changeColor 1.5s linear infinite 0.3s;
+}
+.line-animation:nth-child(3) {
+  animation: changeColor 1.5s linear infinite 0.6s;
+}
+.line-animation:nth-child(4) {
+  animation: changeColor 1.5s linear infinite 0.9s;
+}
+.line-animation:nth-child(5) {
+  animation: changeColor 1.5s linear infinite 1.2s;
+}
+.line-animation:nth-child(6) {
+  animation: changeColor 1.5s linear infinite 1.5s;
+}
+
+@keyframes changeColor {
+  0%, 100% {
+    stroke: #3b3b3b; /* Gris */
+  }
+  50% {
+    stroke: #9c9c9c; /* Gris claro */
+  }
+}

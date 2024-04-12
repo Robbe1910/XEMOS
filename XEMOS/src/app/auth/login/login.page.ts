@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { LoadingController } from '@ionic/angular';
 
 
 @Component({
@@ -17,7 +16,7 @@ export class LoginPage implements OnInit {
   hidePassword: boolean = true;
   errorMessage: string = '';
 
-  constructor(private loadingController: LoadingController, private formBuilder: FormBuilder, private http: HttpClient, private router: Router, private authService: AuthService) {
+  constructor(private formBuilder: FormBuilder, private http: HttpClient, private router: Router, private authService: AuthService) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]]
@@ -33,20 +32,14 @@ export class LoginPage implements OnInit {
       const credentials = {
         email: this.loginForm.value.email,
         password: this.loginForm.value.password
-      };
-      const loading = await this.loadingController.create({
-        message: 'Autenticando...'
-      });
-      await loading.present();
-
-      setTimeout(async () => {
-        await loading.dismiss();
         
+      };
+
         this.authService.login(credentials.email, credentials.password).subscribe(
           success => {
             if (success) {
               console.log('Usuario autenticado correctamente');
-              this.router.navigateByUrl('/app'); // Redirige al usuario a la página de inicio
+              this.router.navigateByUrl('/loading-login'); // Redirige al usuario a la página de inicio
             } else {
               console.error('Error: No se pudo autenticar al usuario');
             }
@@ -56,7 +49,6 @@ export class LoginPage implements OnInit {
             this.errorMessage = 'Error inesperado. Por favor, inténtalo de nuevo más tarde.';
           }
         );
-      }, 2000);
     } else {
       console.error('Formulario inválido');
       this.errorMessage = 'Por favor, completa todos los campos correctamente.';

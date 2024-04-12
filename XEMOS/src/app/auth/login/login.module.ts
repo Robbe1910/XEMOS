@@ -9,7 +9,7 @@ import { LoginPageRoutingModule } from './login-routing.module';
 import { LoginPage } from './login.page';
 
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { LoadingScreenPageLogin } from './../../loading-screen-login/loading-screen.page';
 
 @NgModule({
   imports: [
@@ -19,6 +19,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     LoginPageRoutingModule,
     ReactiveFormsModule
   ],
-  declarations: [LoginPage]
+  declarations: [LoginPage, LoadingScreenPageLogin]
 })
 export class LoginPageModule {}
