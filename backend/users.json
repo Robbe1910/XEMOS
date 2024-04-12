@@ -7,11 +7,11 @@
   {
     "fullName": "Prueba",
     "email": "prueba@prueba.com",
-    "password": "$2a$10$rvwq67c9lpURN6j1C2FT5.91NN54bUgD8n2PGR.uG07NlBqr.u2pC"
+    "password": "$2b$10$DdSzQyOPFtyFRW4uMobO8up/7z0dnBIctJxqKGUzwKbrcI0R0o2Zy"
   },
   {
-    "fullName": "Prueba 1",
+    "fullName": "prueba 1",
     "email": "prueba1@prueba.com",
-    "password": "$2a$10$Eo6v5lFtQasNMAIWpA1Mg.aoQNCJKBwCWZpuZvi5exLdphDpf44Ou"
+    "password": "$2a$10$iBKmyE3j3NAdd93IL0W62OpfYN2kYket7Z0grZCaU3hafu5eQMW0y"
   }
 ]

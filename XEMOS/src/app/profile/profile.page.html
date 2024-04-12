@@ -1,24 +1,52 @@
 <div class="container">
   <main id="main">
     <strong>Profile!</strong>
-    <p>Here you can change user email and user password, if it's posible.<br><br></p>
+    <p>Here you can change user email and user password, if it's possible.<br><br></p>
     <ion-content>
       <ion-list>
         <ion-item>
-          <ion-label>Nombre de usuario:</ion-label>
+          <ion-label>Username:</ion-label>
           <ion-text>{{ user.fullName }}</ion-text>
         </ion-item>
         <ion-item>
-          <ion-label>Correo electrónico:</ion-label>
+          <ion-label>Email:</ion-label>
           <ion-text>{{ user.email }}</ion-text>
         </ion-item>
       </ion-list>
     
+      <!-- Formulario para actualizar el correo electrónico -->
+      <form [formGroup]="emailForm" (ngSubmit)="updateEmail()">
+        <ion-item>
+          <ion-label>New Email</ion-label>
+          <ion-input formControlName="newEmail" type="email" placeholder="New Email"></ion-input>
+        </ion-item>
+        <div *ngIf="emailForm.controls['newEmail'].invalid && emailForm.controls['newEmail'].touched" class="error-message">
+          Please enter a valid email address
+        </div>
+         <!-- Mostrar mensaje de error si el correo electrónico ya existe -->
+        <div *ngIf="emailExists" class="error-message">
+          Email already exists
+        </div>
+        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+        <ion-button expand="block" color="primary" type="submit" [disabled]="emailForm.invalid">Update Email</ion-button>
+      </form>
+
+      <!-- Formulario para actualizar la contraseña -->
+      <form [formGroup]="passwordForm" (ngSubmit)="updatePassword()">
+        <ion-item>
+          <ion-label>New Password</ion-label>
+          <ion-input formControlName="newPassword" type="password" placeholder="New Password"></ion-input>
+        </ion-item>
+        <div *ngIf="passwordForm.controls['newPassword'].invalid && passwordForm.controls['newPassword'].touched" class="error-message">
+          Password must be at least 8 characters long
+        </div>
+        <ion-button expand="block" color="primary" type="submit" [disabled]="passwordForm.invalid">Update Password</ion-button>
+      </form>
+
       <ion-button expand="block" color="danger" (click)="logout()">
         <ion-icon name="log-out-outline"></ion-icon>
-        <ion-label>Desconectar</ion-label>
+        <ion-label>Logout</ion-label>
       </ion-button>
     </ion-content>
-    
   </main>
 </div>
