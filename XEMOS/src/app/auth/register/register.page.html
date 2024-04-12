@@ -1,30 +1,20 @@
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="container">
   <div id="container-register">
     <p id="title-register">Who are you ?</p>
     <form [formGroup]="registroForm" (ngSubmit)="onSubmit()">
       <label for="fullName">Full Name:</label><br>
-      <div class="fields">
+      <div class="fields" [ngClass]="{'is-invalid': registroForm.controls['fullName'].invalid && registroForm.controls['fullName'].touched, 'is-valid': registroForm.controls['fullName'].valid && registroForm.controls['fullName'].touched}">
         <i class="fas fa-user" style="color: #424242;"></i>
         <input formControlName="fullName" type="text" id="fullName">
       </div>
-      <label for="email">Email:</label><br>
-      <div class="fields">
-        <i class="fa-solid fa-envelope" style="color: #424242;"></i>
-        <input formControlName="email" type="email" id="email">
-      </div>
-      <label for="passwd">Password:</label><br>
-      <div class="fields">
-        <i class="fas" [ngClass]="{'fa-eye-slash': hidePassword, 'fa-eye': !hidePassword}" (click)="togglePasswordVisibility()" style="color: #424242;"></i>
-        <input formControlName="password" type="{{ hidePassword ? 'password' : 'text' }}" id="passwd">
-      </div>
-      <label for="confirmPasswd">Confirm Password:</label><br>
-      <div class="fields">
-        <i class="fas" [ngClass]="{'fa-eye-slash': hidePassword, 'fa-eye': !hidePassword}" (click)="togglePasswordVisibility()" style="color: #424242;"></i>
-        <input formControlName="confirmPassword" type="{{ hidePassword ? 'password' : 'text' }}" id="confirmPasswd">
-      </div>
-      <br>
       <div *ngIf="registroForm.controls['fullName'].touched && registroForm.controls['fullName'].errors?.['required']" class="error-message">
         Full Name is required
+      </div>
+
+      <label for="email">Email:</label><br>
+      <div class="fields" [ngClass]="{'is-invalid': registroForm.controls['email'].invalid && registroForm.controls['email'].touched, 'is-valid': registroForm.controls['email'].valid && registroForm.controls['email'].touched}">
+        <i class="fa-solid fa-envelope" style="color: #424242;"></i>
+        <input formControlName="email" type="email" id="email">
       </div>
       <div *ngIf="registroForm.controls['email'].touched && registroForm.controls['email'].errors?.['required']" class="error-message">
         Email is required
@@ -32,12 +22,29 @@
       <div *ngIf="registroForm.controls['email'].touched && registroForm.controls['email'].errors?.['email']" class="error-message">
         Please enter a valid email address
       </div>
+
+      <label for="passwd">Password:</label><br>
+      <div class="fields" [ngClass]="{'is-invalid': registroForm.controls['password'].invalid && registroForm.controls['password'].touched, 'is-valid': registroForm.controls['password'].valid && registroForm.controls['password'].touched}">
+        <i class="fas" [ngClass]="{'fa-eye-slash': hidePassword, 'fa-eye': !hidePassword}" (click)="togglePasswordVisibility()" style="color: #424242;"></i>
+        <input formControlName="password" type="{{ hidePassword ? 'password' : 'text' }}" id="passwd">
+      </div>
       <div *ngIf="registroForm.controls['password'].touched && registroForm.controls['password'].errors?.['required']" class="error-message">
         Password is required
       </div>
-      <div *ngIf="registroForm.controls['password'].touched && registroForm.controls['password'].errors?.['required']" class="error-message">
+      <div *ngIf="registroForm.controls['password'].touched && registroForm.controls['password'].errors?.['minlength']" class="error-message">
         Password must be at least 8 characters long
       </div>
+
+      <label for="confirmPasswd">Confirm Password:</label><br>
+      <div class="fields" [ngClass]="{'is-invalid': registroForm.controls['confirmPassword'].touched && (!registroForm.controls['confirmPassword'].valid || registroForm.hasError('notSame')), 'is-valid': registroForm.controls['confirmPassword'].touched && registroForm.controls['confirmPassword'].valid && !registroForm.hasError('notSame')}">
+        <i class="fas" [ngClass]="{'fa-eye-slash': hideConfirmPassword, 'fa-eye': !hideConfirmPassword}" (click)="toggleConfirmPasswordVisibility()" style="color: #424242;"></i>
+        <input formControlName="confirmPassword" type="{{ hideConfirmPassword ? 'password' : 'text' }}" id="confirmPasswd">
+      </div>
+      <div *ngIf="registroForm.hasError('notSame') && registroForm.controls['confirmPassword'].touched" class="error-message">
+        Passwords do not match
+      </div>
+      <br>
+
       <!-- Muestra el mensaje de error si existe -->
       <div *ngIf="errorMessage" class="error-message">
         {{ errorMessage }}

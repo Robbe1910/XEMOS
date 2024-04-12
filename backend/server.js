@@ -33,7 +33,7 @@ app.post('/users', (req, res) => {
       const existingUser = users.find(user => user.email === newUser.email);
       if (existingUser) {
         // El correo electrónico ya está en uso, enviar una respuesta de error
-        return res.status(400).json({ message: 'El correo electrónico ya está en uso' });
+        return res.status(400).json({ message: 'The email address is already in use' });
       }
   
       // El correo electrónico no está en uso, proceder a agregar el nuevo usuario

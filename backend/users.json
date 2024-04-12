@@ -3,5 +3,15 @@
     "fullName": "admin",
     "email": "admin@admin.com",
     "password": "$2a$10$43yNubQtOtdsyoVTHX7C0.DYCUbuNKZJrOpZ3oGc5D0t/6gaGGjsq"
+  },
+  {
+    "fullName": "Prueba",
+    "email": "prueba@prueba.com",
+    "password": "$2a$10$rvwq67c9lpURN6j1C2FT5.91NN54bUgD8n2PGR.uG07NlBqr.u2pC"
+  },
+  {
+    "fullName": "Prueba 1",
+    "email": "prueba1@prueba.com",
+    "password": "$2a$10$Eo6v5lFtQasNMAIWpA1Mg.aoQNCJKBwCWZpuZvi5exLdphDpf44Ou"
   }
 ]

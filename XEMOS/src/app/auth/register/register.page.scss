@@ -65,3 +65,15 @@ i{
 #login{
     padding-top: 20px;
 }
+
+/* Estilo para input válido */
+.fields.is-valid {
+    border-color: #28a745; /* Color verde */
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+  
+  /* Estilo para input inválido */
+.fields.is-invalid {
+    border-color: #dc3545; /* Color rojo */
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
