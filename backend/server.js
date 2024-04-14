@@ -150,3 +150,24 @@ app.put('/users/password', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+// Agregar una nueva ruta DELETE para eliminar un usuario
+app.delete('/users/:email', (req, res) => {
+  const { email } = req.params; // Obtener el correo electrónico del usuario a eliminar
+  try {
+    // Leer el archivo users.json para obtener la lista de usuarios
+    let users = JSON.parse(fs.readFileSync(usersFilePath));
+
+    // Filtrar los usuarios para excluir al usuario a eliminar
+    users = users.filter(user => user.email !== email);
+
+    // Escribir la lista de usuarios actualizada de vuelta al archivo users.json
+    fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
+
+    // Devolver una respuesta exitosa
+    res.status(200).json({ message: 'User deleted successfully' });
+  } catch (err) {
+    console.error('Error deleting user:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});

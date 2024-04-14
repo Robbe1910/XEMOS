@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-profile',
@@ -20,7 +21,8 @@ export class ProfilePage implements OnInit {
     private authService: AuthService,
     private userService: UserService,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private http: HttpClient
   ) {
     this.emailForm = this.formBuilder.group({
       newEmail: ['', [Validators.required, Validators.email]],
@@ -89,6 +91,21 @@ export class ProfilePage implements OnInit {
       },
       (err: any) => {
         console.error('Error al actualizar la contraseña:', err);
+      }
+    );
+  }
+
+  deleteAccount() {
+    const email = this.user.email;
+    this.userService.deleteUser(email).subscribe(
+      () => {
+        console.log('Account deleted successfully.');
+        this.authService.logout(); // También cerramos sesión si eliminamos la cuenta
+        this.router.navigateByUrl('/login'); // Redirigimos a la página de inicio de sesión
+      },
+      error => {
+        console.error('Error deleting account:', error);
+        this.errorMessage = 'Error deleting account. Please try again later.';
       }
     );
   }
