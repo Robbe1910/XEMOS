@@ -78,6 +78,7 @@ export class ProfilePage implements OnInit {
       }
     );
   }
+  
   updatePassword() {
     const newPassword = this.passwordForm?.get('newPassword')?.value;
     if (!newPassword) return; // Verificar si newPassword es null o undefined

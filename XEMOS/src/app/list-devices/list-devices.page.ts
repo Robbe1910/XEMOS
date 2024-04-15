@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Network } from '@ionic-native/network/ngx';
 import { Platform } from '@ionic/angular';
 
+declare var navigator: any;
+declare var Connection: any;
 declare var WifiWizard2: any;
 
 @Component({
@@ -10,35 +11,53 @@ declare var WifiWizard2: any;
   styleUrls: ['./list-devices.page.scss'],
 })
 export class ListDevicesPage implements OnInit {
+  networkType: string = '';
   wifiName: string = '';
 
-  constructor(private network: Network, private platform: Platform) { }
+  constructor(private platform: Platform) {}
 
   ngOnInit() {
-    this.checkWifiConnection();
-  }
-
-  checkWifiConnection() {
     this.platform.ready().then(() => {
-      if (this.network.type === 'wifi') {
-        this.getWifiSSID().then(ssid => {
-          this.wifiName = ssid;
-          console.log('WiFi Name:', this.wifiName);
-        });
-      } else {
-        console.log('No Wifi connection available');
-      }
+      this.checkConnection();
+      this.getWifiName();
     });
   }
 
-  private getWifiSSID(): Promise<string> {
-    return new Promise((resolve, reject) => {
+  checkConnection() {
+    if (navigator.connection && navigator.connection.type) {
+      switch (navigator.connection.type) {
+        case Connection.WIFI:
+          this.networkType = 'WiFi connection';
+          break;
+        case Connection.ETHERNET:
+          this.networkType = 'Ethernet connection';
+          break;
+        case Connection.CELL_2G:
+        case Connection.CELL_3G:
+        case Connection.CELL_4G:
+          this.networkType = 'Cellular connection';
+          break;
+        case Connection.NONE:
+          this.networkType = 'No network connection';
+          break;
+        default:
+          this.networkType = 'Unknown connection';
+      }
+    } else {
+      this.networkType = 'Network information not available';
+    }
+  }
+
+  getWifiName() {
+    if (typeof WifiWizard2 !== 'undefined') {
       WifiWizard2.getConnectedSSID((ssid: string) => {
-        resolve(ssid);
+        this.wifiName = ssid;
       }, (error: any) => {
         console.error('Error obteniendo el SSID de WiFi:', error);
-        reject('Error obteniendo el SSID de WiFi');
+        this.wifiName = 'Error obteniendo el SSID de WiFi';
       });
-    });
+    } else {
+      console.error('WifiWizard2 no está definido. Asegúrate de haber instalado y configurado correctamente el plugin cordova-plugin-network-information.');
+    }
   }
 }

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-  private baseUrl = 'http://localhost:3000';
+  private baseUrl = 'http://34.175.187.252:3000';
 
   constructor(private http: HttpClient) { }
 
@@ -19,7 +19,7 @@ export class UserService {
   }
 
   checkEmailExists(email: string): Observable<{ exists: boolean }> {
-    return this.http.get<{ exists: boolean }>(`http://localhost:3000/checkEmail/${email}`);
+    return this.http.get<{ exists: boolean }>(`${this.baseUrl}/checkEmail/${email}`);
   }
 
   deleteUser(email: string): Observable<any> {
