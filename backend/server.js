@@ -38,7 +38,9 @@ app.post('/users', (req, res) => {
       // El correo electrónico no está en uso, proceder a agregar el nuevo usuario
       users.push(newUser);
       fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
-      res.status(201).json(newUser); // Devuelve el nuevo usuario como JSON
+      
+      // En caso de éxito en el registro
+      res.status(201).json({ message: 'User registered successfully' });
     } catch (err) {
       console.error('Error writing users file:', err);
       res.status(500).send('Internal Server Error');

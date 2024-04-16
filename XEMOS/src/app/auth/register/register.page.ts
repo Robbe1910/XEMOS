@@ -54,11 +54,12 @@ export class RegisterPage implements OnInit {
           this.router.navigateByUrl('/login');
         }, (error: HttpErrorResponse) => {
           if (error.status === 400) {
-            this.errorMessage = error.error.message || 'Unexpected error. Please try again later.';
+            this.errorMessage = error.error.message || 'Unexpected error 400. Please try again later.';
           } else {
-            this.errorMessage = 'Unexpected error. Please try again later.';
+            this.errorMessage = error.error.message || 'Unexpected error. Please try again later.';
           }
           console.error('Server error:', error);
+          this.errorMessage = error.error.message || 'Server error';
         });
 
     } else {
