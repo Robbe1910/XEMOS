@@ -48,7 +48,7 @@ export class RegisterPage implements OnInit {
         password: bcrypt.hashSync(this.registroForm.value.password, 10)
       };
   
-      this.http.post<any>('http://localhost:3000/users', newUser)
+      this.http.post<any>('http://34.175.187.252:3000/users', newUser)
         .subscribe(() => {
           console.log('User registered successfully');
           this.router.navigateByUrl('/login');
@@ -90,7 +90,7 @@ export class RegisterPage implements OnInit {
   }
   
   checkEmailExists(email: string): Observable<{ exists: boolean }> {
-    return this.http.get<{ exists: boolean }>(`http://localhost:3000/checkEmail/${email}`);
+    return this.http.get<{ exists: boolean }>(`http://34.175.187.252:3000/checkEmail/${email}`);
   }
 
   checkPasswords(formGroup: FormGroup) {
