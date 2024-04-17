@@ -1,7 +1,7 @@
 <ion-content [fullscreen]="true">
   <div id="container-login">
     <p id="title-login">Welcome !</p>
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login_form">
       <label for="email">Email:</label><br>
       <div class="fields">
         <i class="fas fa-user"></i>
@@ -19,7 +19,7 @@
         {{ errorMessage }}
       </div>
       <div id="btn-login"><button type="submit">Login</button></div>
-    </form>
+    </form><br>
     <div id="register">
       <p>Doesn't have an account yet? <a [routerLink]="['/register']">Register</a></p>
     </div>

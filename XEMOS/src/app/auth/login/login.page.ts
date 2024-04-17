@@ -10,7 +10,7 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnInit {
+export class LoginPage{
 
   loginForm: FormGroup;
   hidePassword: boolean = true;
@@ -22,35 +22,29 @@ export class LoginPage implements OnInit {
       password: ['', [Validators.required]]
     });
   }
-  
-  ngOnInit() {
-  }
 
   async onSubmit() {
-    
     if (this.loginForm.valid) {
       const credentials = {
         email: this.loginForm.value.email,
         password: this.loginForm.value.password
-        
       };
 
         this.authService.login(credentials.email, credentials.password).subscribe(
           success => {
-            if (success) {
-              console.log('Usuario autenticado correctamente');
               this.router.navigateByUrl('/loading-login'); // Redirige al usuario a la página de inicio
-            } else {
-              console.error('Error: No se pudo autenticar al usuario');
-            }
           },
           error => {
-            console.error('Error al intentar iniciar sesión:', error);
-            this.errorMessage = 'Error inesperado. Por favor, inténtalo de nuevo más tarde.';
+            if (error.status === 401) {
+              // 401 Unauthorized indica credenciales incorrectas
+              this.errorMessage = 'Incorrect email or password.';
+            } else {
+              // Otros errores, mostrar mensaje genérico
+              this.errorMessage = 'Server error. Please try again later.';
+            }
           }
         );
     } else {
-      console.error('Formulario inválido');
       this.errorMessage = 'Por favor, completa todos los campos correctamente.';
     }
   }
