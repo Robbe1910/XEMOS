@@ -13,51 +13,32 @@ declare var WifiWizard2: any;
 export class ListDevicesPage implements OnInit {
   networkType: string = '';
   wifiName: string = '';
+  isConnected: boolean = false;
 
   constructor(private platform: Platform) {}
 
   ngOnInit() {
     this.platform.ready().then(() => {
-      this.checkConnection();
-      this.getWifiName();
+      this.checkWifiConnection();
     });
   }
 
-  checkConnection() {
-    if (navigator.connection && navigator.connection.type) {
-      switch (navigator.connection.type) {
-        case Connection.WIFI:
-          this.networkType = 'WiFi connection';
-          break;
-        case Connection.ETHERNET:
-          this.networkType = 'Ethernet connection';
-          break;
-        case Connection.CELL_2G:
-        case Connection.CELL_3G:
-        case Connection.CELL_4G:
-          this.networkType = 'Cellular connection';
-          break;
-        case Connection.NONE:
-          this.networkType = 'No network connection';
-          break;
-        default:
-          this.networkType = 'Unknown connection';
-      }
-    } else {
-      this.networkType = 'Network information not available';
-    }
-  }
-
-  getWifiName() {
+  checkWifiConnection() {
     if (typeof WifiWizard2 !== 'undefined') {
-      WifiWizard2.getConnectedSSID((ssid: string) => {
+      WifiWizard2.getConnectedSSID().then((ssid: string) => {
         this.wifiName = ssid;
-      }, (error: any) => {
+        this.networkType = 'WiFi connection';
+        this.isConnected = true;
+      }).catch((error: any) => {
         console.error('Error obteniendo el SSID de WiFi:', error);
         this.wifiName = 'Error obteniendo el SSID de WiFi';
+        this.networkType = 'No WiFi connection';
+        this.isConnected = false;
       });
     } else {
-      console.error('WifiWizard2 no está definido. Asegúrate de haber instalado y configurado correctamente el plugin cordova-plugin-network-information.');
+      console.error('WifiWizard2 no está definido. Asegúrate de haber instalado y configurado correctamente el plugin cordova-plugin-wifiwizard2.');
+      this.networkType = 'Plugin not available';
+      this.isConnected = false;
     }
   }
 }
