@@ -32,14 +32,15 @@
 }
   
 .profile-form input[type="email"],
-.profile-form input[type="password"] {
+.profile-form input[type="password"],
+.profile-form input[type="text"] {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 3px;
   box-sizing: border-box;
-  color: white;
+  color: black;
 }
   
 .profile-form .error-message {
@@ -66,4 +67,14 @@
 
 .buttons-profile{
   margin-top: 20px;
+}
+
+.eye-password {
+  display: flex;
+}
+
+.eye-password i {
+  font-size: 24px;
+  margin-right: 4px;
+  margin-top: 8px;
 }

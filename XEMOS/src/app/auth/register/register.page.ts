@@ -71,16 +71,13 @@ export class RegisterPage implements OnInit {
   checkEmail() {
     const emailControl = this.registroForm.get('email');
     if (emailControl && emailControl.value) {
-      console.log('Email value:', emailControl.value);
       this.checkEmailExists(emailControl.value)
         .pipe(
           map(response => {
-            console.log('Response from server:', response);
             return response.exists ? { emailExists: true } : null;
           })
         )
         .subscribe(result => {
-          console.log('Result:', result);
           if (result) {
             emailControl.setErrors(result);
           } else {

@@ -36,7 +36,10 @@
     <form [formGroup]="passwordForm" class="profile-form" (ngSubmit)="updatePassword()">
       <div class="form-group">
         <label for="newPassword">New Password</label>
-        <input formControlName="newPassword" type="password" id="newPassword" placeholder="New Password">
+        <div class="eye-password">
+          <i class="fas" [ngClass]="{'fa-eye-slash': hidePassword, 'fa-eye': !hidePassword}" (click)="togglePasswordVisibility()"></i>
+          <input formControlName="newPassword" type="{{ hidePassword ? 'password' : 'text' }}" id="newPassword" placeholder="New Password">
+        </div>
         <div *ngIf="passwordForm.controls['newPassword'].invalid && passwordForm.controls['newPassword'].touched" class="error-message">
           Password must be at least 8 characters long
         </div>
@@ -53,6 +56,11 @@
       <button class="btn btn-danger" (click)="deleteAccount()">
         Delete Account
       </button>
+      <div *ngIf="confirmDelete" class="confirmation-message">
+        <p>Are you sure you want to delete your account?</p>
+        <button class="btn btn-danger" (click)="confirmDeleteAccount()">Confirmar</button>
+        <button class="btn btn-secondary" (click)="cancelDelete()">Cancelar</button>
+      </div>
     </div>
   </div>
 </div>

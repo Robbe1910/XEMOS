@@ -16,6 +16,8 @@ export class ProfilePage implements OnInit {
   passwordForm: FormGroup;
   errorMessage: String = '';
   emailExists: boolean = false;
+  confirmDelete: boolean = false;
+  hidePassword: boolean = true;
 
   constructor(
     private authService: AuthService,
@@ -97,6 +99,10 @@ export class ProfilePage implements OnInit {
   }
 
   deleteAccount() {
+    this.confirmDelete = true;
+  }
+
+  confirmDeleteAccount() {
     const email = this.user.email;
     this.userService.deleteUser(email).subscribe(
       () => {
@@ -109,5 +115,13 @@ export class ProfilePage implements OnInit {
         this.errorMessage = 'Error deleting account. Please try again later.';
       }
     );
+  }
+  
+  cancelDelete() {
+    this.confirmDelete = false; // Oculta el mensaje de confirmación
+  }
+
+  togglePasswordVisibility() {
+    this.hidePassword = !this.hidePassword;
   }
 }
