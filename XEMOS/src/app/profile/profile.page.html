@@ -49,17 +49,23 @@
     
 
     <div class="buttons-profile">
-      <button class="btn btn-danger" (click)="logout()">
-        <ion-icon name="log-out-outline"></ion-icon>
-        Logout
-      </button>
-      <button class="btn btn-danger" (click)="deleteAccount()">
-        Delete Account
-      </button>
+      <div>
+        <button class="btn btn-danger" (click)="logout()">
+          <ion-icon name="log-out-outline"></ion-icon>
+          Logout
+        </button>
+      </div>
+      <div class="delete-account">
+        <button class="btn btn-danger" (click)="deleteAccount()">
+          Delete Account
+        </button>
+      </div>
       <div *ngIf="confirmDelete" class="confirmation-message">
         <p>Are you sure you want to delete your account?</p>
-        <button class="btn btn-danger" (click)="confirmDeleteAccount()">Confirmar</button>
-        <button class="btn btn-secondary" (click)="cancelDelete()">Cancelar</button>
+        <div class="confirmation-message-buttons">
+          <button class="btn btn-danger" (click)="confirmDeleteAccount()">Confirmar</button>
+          <button class="btn btn-secondary" (click)="cancelDelete()">Cancelar</button>
+        </div>
       </div>
     </div>
   </div>
