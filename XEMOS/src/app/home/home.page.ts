@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import Chart, { ChartConfiguration } from 'chart.js/auto';
 import { Store } from '@ngrx/store';
-import { loadData } from '../redux/my.actions';
-import { selectData } from '../redux/my.selectors';
+import { BehaviorSubject, interval, Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { DataService } from '../services/data.service';
+
+const currentTime = new Date();
 
 @Component({
   selector: 'app-home',
@@ -19,7 +22,12 @@ export class HomePage implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.initializeHeartRateChart();
+    this.initializeAirQualityChart();
+    this.initializeHumidityTemperatureChart();
+  }
 
+  initializeHeartRateChart() {
     // Crear gráfico BPM
     const labels = [];
     const currentTime = new Date();
@@ -72,7 +80,9 @@ export class HomePage implements OnInit {
         }
       }
     });
+  }
 
+  initializeAirQualityChart() {
     // Crear gráfico calidad del aire
     const DATA_COUNT_AIR_QUALITY = 12; // Cantidad de datos
     const dataAirQuality = {
@@ -128,7 +138,9 @@ export class HomePage implements OnInit {
     };
 
     this.chart = new Chart('air-quality', configAirQuality);
+  }
 
+  initializeHumidityTemperatureChart() {
     // Código para el nuevo gráfico de línea de humedad
     const DATA_COUNT_HUMIDITY = 12;
     const NUMBER_CFG = { count: DATA_COUNT_HUMIDITY, min: 0, max: 100 };
@@ -213,6 +225,7 @@ export class HomePage implements OnInit {
 
     this.chart = new Chart('humidity', configHumidity);
   }
+  
 
   generateLabels(count: number): string[] {
     const labels = [];
