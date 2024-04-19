@@ -52,6 +52,8 @@ Antes de comenzar, es necesario tener instalado Cordova y Android Studio para co
    - Abre Android Studio y ve a "Tools" > "SDK Manager".
    - En la pestaña "SDK Tools", busca e instala las "Android SDK Build-Tools" versión 33.0.2.
    - Asegúrate de que la ruta al directorio que contiene estas herramientas esté incluida en la variable de entorno `PATH`.
+5. **Reiniciar el ordenador**:
+   - Reinicia el ordenador para que se actualicen todas las variables de entorno
 
 ## Comandos de construcción
 
