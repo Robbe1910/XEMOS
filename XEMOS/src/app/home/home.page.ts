@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import Chart, { ChartConfiguration } from 'chart.js/auto';
+import { Store } from '@ngrx/store';
+import { loadData } from '../redux/my.actions';
+import { selectData } from '../redux/my.selectors';
 
 @Component({
   selector: 'app-home',
