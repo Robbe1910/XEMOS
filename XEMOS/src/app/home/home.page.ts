@@ -57,7 +57,13 @@ export class HomePage implements OnInit {
             max: 180,
             title: {
               display: true,
-              text: ''
+              text: 'bpm'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Horas'
             }
           }
         }
@@ -97,6 +103,22 @@ export class HomePage implements OnInit {
             radius: this.adjustRadiusBasedOnData.bind(this), // Ajusta el radio del punto basado en los datos
             pointStyle: this.alternatePointStyles.bind(this), // Alterna los estilos de los puntos
             hoverRadius: 15, // Radio del punto al pasar el mouse
+          }
+        },
+        scales: {
+          y: {
+            min: 0,
+            max: 150,
+            title: {
+              display: true,
+              text: 'µg/m³'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Horas'
+            }
           }
         }
       }
@@ -152,11 +174,23 @@ export class HomePage implements OnInit {
         },
         scales: {
           y: {
+            min: -10,
+            max: 45,
+            title: {
+              display: true,
+              text: '°C'
+            },
             type: 'linear',
             display: true,
             position: 'left',
           },
           y1: {
+            min: 0,
+            max: 100,
+            title: {
+              display: true,
+              text: '%'
+            },
             type: 'linear',
             display: true,
             position: 'right',
@@ -164,6 +198,12 @@ export class HomePage implements OnInit {
               drawOnChartArea: false, // only want the grid lines for one axis to show up
             },
           },
+          x: {
+            title: {
+              display: true,
+              text: 'Horas'
+            }
+          }
         }
       }
     };
@@ -185,7 +225,8 @@ export class HomePage implements OnInit {
   generateData(count: number): number[] {
     const data = [];
     for (let i = 0; i < count; i++) {
-      data.push(Math.floor(Math.random() * 100)); // Genera números aleatorios entre 0 y 100 para la calidad del aire
+      data.push(Math.floor(Math.random() * 60) + 20
+    ); // Genera números aleatorios entre 0 y 100 para la calidad del aire
     }
     return data;
   }
@@ -193,7 +234,8 @@ export class HomePage implements OnInit {
   generateTemperature(count: number): number[] {
     const data = [];
     for (let i = 0; i < count; i++) {
-      data.push(Math.floor(Math.random() * 50)); // Genera números aleatorios entre 0 y 50 para la temperatura
+      data.push(Math.floor(Math.random() * 35) + 5
+    ); // Genera números aleatorios entre 5 y 40 para la temperatura
     }
     return data;
   }
