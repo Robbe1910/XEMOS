@@ -149,10 +149,6 @@ app.put('/users/password', (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
-
 // Agregar una nueva ruta DELETE para eliminar un usuario
 app.delete('/users/:email', (req, res) => {
   const { email } = req.params; // Obtener el correo electrónico del usuario a eliminar
@@ -172,4 +168,18 @@ app.delete('/users/:email', (req, res) => {
     console.error('Error deleting user:', err);
     res.status(500).json({ error: 'Internal Server Error' });
   }
+});
+
+app.post('/sensor-data', (req, res) => {
+  const sensorData = req.body; // Obtener los datos del cuerpo de la solicitud
+  console.log('Datos de los sensores recibidos:', sensorData);
+
+  // Aquí puedes realizar cualquier procesamiento adicional con los datos recibidos
+
+  // Enviar una respuesta al ESP32 para confirmar que los datos se recibieron correctamente
+  res.status(200).json({ message: 'Datos de los sensores recibidos correctamente' });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });

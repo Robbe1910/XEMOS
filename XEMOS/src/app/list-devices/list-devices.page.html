@@ -1,13 +1,16 @@
 <div class="container">
-    <main id="main">
-      <strong>Devices</strong>
-      <p>In this page, you can see the available dispositives.<br><br>
-      For now, show only the wifi name of you phone and an empty list.</p>
-      <div *ngIf="wifiName !== ''">
-        <p>WiFi Name: {{ wifiName }}</p>
-      </div>
-      <div *ngIf="wifiName === ''">
-        <p>No WiFi connection available</p>
-      </div>
-    </main>
+  <main id="main">
+    <strong>Devices</strong>
+    <p>In this page, you can see the available devices.<br><br>
+    For now, show only the WiFi name of your phone and an empty list.</p>
+    <div *ngIf="networkType === 'WiFi connection'">
+      <p>WiFi Name: {{ wifiName }}</p>
+    </div>
+    <div *ngIf="networkType === 'No WiFi connection'">
+      <p>No WiFi connection available</p>
+    </div>
+    <div *ngIf="networkType === 'Plugin not available'">
+      <p>No network connection available</p>
+    </div>
+  </main>
 </div>
