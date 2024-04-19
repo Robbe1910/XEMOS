@@ -13,10 +13,11 @@ export class HomePage implements OnInit {
   bpmGradient: string = ''; // Gradiente de colores de la barra de BPM
   indicatorPosition: string = '0%'; // Posición del indicador de BPM en porcentaje
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit() {
-    
+
+    // Crear gráfico BPM
     const labels = [];
     const currentTime = new Date();
     for (let i = 0; i < 24; i += 2) {
@@ -24,18 +25,18 @@ export class HomePage implements OnInit {
       const hour = pastTime.getHours();
       labels.unshift(hour.toString());
     }
-    
+
     const heartRateData = [];
     for (let i = 0; i < 24 * 6; i++) { // 24 horas * 6 intervalos por hora
-      heartRateData.push(Math.floor(Math.random() * (100 - 60 + 1)) + 60); // Genera un dato aleatorio entre 60 y 100
+      heartRateData.push(Math.floor(Math.random() * (150 - 60 + 1)) + 60); // Genera un dato aleatorio entre 60 y 150
     }
-  
+
     // Obtener el último valor de ritmo cardíaco
     this.heartRate = heartRateData[heartRateData.length - 1];
 
     // Actualizar el gradiente de colores y la posición del indicador de BPM
     this.updateBpmGradient();
-  
+
     // Crear el gráfico de líneas con los datos generados
     this.chart = new Chart('heart-rate', {
       type: 'line',
@@ -63,74 +64,151 @@ export class HomePage implements OnInit {
       }
     });
 
+    // Crear gráfico calidad del aire
+    const DATA_COUNT_AIR_QUALITY = 12; // Cantidad de datos
+    const dataAirQuality = {
+      labels: this.generateLabels(DATA_COUNT_AIR_QUALITY), // Genera etiquetas para los datos
+      datasets: [{
+        data: this.generateData(DATA_COUNT_AIR_QUALITY) // Genera datos aleatorios para la calidad del aire del aire
+      }]
+    };
 
-    const DATA_COUNT = 12; // Cantidad de datos
-const data = {
-  labels: this.generateLabels(DATA_COUNT), // Genera etiquetas para los datos
-  datasets: [{
-    data: this.generateData(DATA_COUNT) // Genera datos aleatorios para la humedad del aire
-  }]
-};
-
-const config: ChartConfiguration<'line'> = {
-  type: 'line', // Tipo de gráfico: línea
-  data: data, // Datos del gráfico
-  options: {
-    plugins: {
-      legend: {
-        display: false // Oculta la leyenda
-      },
-      tooltip: {
-        enabled: true // Activa el tooltip
-      },
-    },
-    elements: {
-      line: {
-        fill: false, // No rellena el área bajo la línea
-        backgroundColor: this.getLineColor.bind(this), // Color de fondo de la línea
-        borderColor: this.getLineColor.bind(this) // Color de borde de la línea
-      },
-      point: {
-        backgroundColor: this.getLineColor.bind(this), // Color de fondo del punto
-        hoverBackgroundColor: this.makeHalfAsOpaque.bind(this), // Color de fondo del punto al pasar el mouse
-        radius: this.adjustRadiusBasedOnData.bind(this), // Ajusta el radio del punto basado en los datos
-        pointStyle: this.alternatePointStyles.bind(this), // Alterna los estilos de los puntos
-        hoverRadius: 15, // Radio del punto al pasar el mouse
+    const configAirQuality: ChartConfiguration<'line'> = {
+      type: 'line', // Tipo de gráfico: línea
+      data: dataAirQuality, // Datos del gráfico
+      options: {
+        plugins: {
+          legend: {
+            display: false // Oculta la leyenda
+          },
+          tooltip: {
+            enabled: true // Activa el tooltip
+          },
+        },
+        elements: {
+          line: {
+            fill: false, // No rellena el área bajo la línea
+            backgroundColor: this.getLineColor.bind(this), // Color de fondo de la línea
+            borderColor: this.getLineColor.bind(this) // Color de borde de la línea
+          },
+          point: {
+            backgroundColor: this.getLineColor.bind(this), // Color de fondo del punto
+            hoverBackgroundColor: this.makeHalfAsOpaque.bind(this), // Color de fondo del punto al pasar el mouse
+            radius: this.adjustRadiusBasedOnData.bind(this), // Ajusta el radio del punto basado en los datos
+            pointStyle: this.alternatePointStyles.bind(this), // Alterna los estilos de los puntos
+            hoverRadius: 15, // Radio del punto al pasar el mouse
+          }
+        }
       }
-    }
-  }
-};
+    };
 
-this.chart = new Chart('air-quality', config);
+    this.chart = new Chart('air-quality', configAirQuality);
+
+    // Código para el nuevo gráfico de línea de humedad
+    const DATA_COUNT_HUMIDITY = 12;
+    const NUMBER_CFG = { count: DATA_COUNT_HUMIDITY, min: 0, max: 100 };
+
+    const labelsHumidity = []; // Genera etiquetas para los datos de humedad
+    for (let i = 0; i < 24; i += 2) {
+      const pastTime = new Date(currentTime.getTime() - (i * 60 * 60 * 1000));
+      const hour = pastTime.getHours();
+      labelsHumidity.unshift(hour.toString());
+    }
+
+    const dataHumidity = {
+      labels: labelsHumidity,
+      datasets: [
+        {
+          label: 'Temperature',
+          data: this.generateTemperature(DATA_COUNT_HUMIDITY),
+          borderColor: 'red',
+          backgroundColor: 'rgba(255, 0, 0, 0.5)',
+          yAxisID: 'y',
+        },
+        {
+          label: 'Humidity',
+          data: this.generateData(DATA_COUNT_HUMIDITY),
+          borderColor: 'blue',
+          backgroundColor: 'rgba(0, 0, 255, 0.5)',
+          yAxisID: 'y1',
+        }
+      ]
+    };
+
+    const configHumidity: ChartConfiguration<'line'> = {
+      type: 'line',
+      data: dataHumidity,
+      options: {
+        responsive: true,
+        interaction: {
+          mode: 'index',
+          intersect: false,
+        },
+        plugins: {
+          title: {
+            display: false,
+            text: 'Humidity & temperature'
+          }
+        },
+        scales: {
+          y: {
+            type: 'linear',
+            display: true,
+            position: 'left',
+          },
+          y1: {
+            type: 'linear',
+            display: true,
+            position: 'right',
+            grid: {
+              drawOnChartArea: false, // only want the grid lines for one axis to show up
+            },
+          },
+        }
+      }
+    };
+
+    this.chart = new Chart('humidity', configHumidity);
   }
 
   generateLabels(count: number): string[] {
     const labels = [];
-    for (let i = 1; i <= count; i++) {
-      labels.push(`Hora ${i}`); // Etiquetas de las horas
+    const currentTime = new Date();
+    for (let i = 0; i < 24; i += 2) {
+      const pastTime = new Date(currentTime.getTime() - (i * 60 * 60 * 1000));
+      const hour = pastTime.getHours();
+      labels.unshift(hour.toString());
     }
     return labels;
   }
-  
+
   generateData(count: number): number[] {
     const data = [];
     for (let i = 0; i < count; i++) {
-      data.push(Math.floor(Math.random() * 100)); // Genera números aleatorios entre 0 y 100 para la humedad
+      data.push(Math.floor(Math.random() * 100)); // Genera números aleatorios entre 0 y 100 para la calidad del aire
     }
     return data;
   }
-  
+
+  generateTemperature(count: number): number[] {
+    const data = [];
+    for (let i = 0; i < count; i++) {
+      data.push(Math.floor(Math.random() * 50)); // Genera números aleatorios entre 0 y 50 para la temperatura
+    }
+    return data;
+  }
+
   getLineColor(ctx: any) {
     // Verifica si ctx.parsed está definido y tiene una propiedad 'y'
     if (ctx.parsed && ctx.parsed.y !== undefined) {
-      // Devuelve un color basado en el valor de la humedad
-      const humidity = ctx.parsed.y;
-      if (humidity < 30) {
-        return 'rgba(75, 192, 192, 1)'; // Azul para baja humedad
-      } else if (humidity < 60) {
-        return 'rgba(255, 193, 7, 1)'; // Amarillo para humedad media
+      // Devuelve un color basado en el valor de la calidad del aire
+      const air_quality = ctx.parsed.y;
+      if (air_quality < 30) {
+        return 'rgba(75, 192, 192, 1)'; // Azul para baja calidad del aire
+      } else if (air_quality < 60) {
+        return 'rgba(255, 193, 7, 1)'; // Amarillo para calidad del aire media
       } else {
-        return 'rgba(255, 105, 97, 1)'; // Rojo para alta humedad
+        return 'rgba(255, 105, 97, 1)'; // Rojo para alta calidad del aire
       }
     } else {
       // Manejo del caso en que ctx.parsed o ctx.parsed.y es undefined
@@ -138,26 +216,26 @@ this.chart = new Chart('air-quality', config);
       return 'rgba(169, 169, 169, 1)'; // Gris
     }
   }
-  
-  
+
+
   makeHalfAsOpaque(ctx: any) {
     const color = this.getLineColor(ctx);
     // Hace el color semi-opaco dividiendo su valor alfa por la mitad
     const alpha = color.replace(/[^,]+(?=\))/, '0.5');
     return alpha;
   }
-  
+
   adjustRadiusBasedOnData(ctx: any) {
     // Ajusta el radio del punto basado en los datos
     return 7; // Radio fijo de 7 para todos los puntos
   }
-  
+
   alternatePointStyles(ctx: any) {
     const index = ctx.dataIndex;
     return index % 2 === 0 ? 'circle' : 'rect'; // Alterna los estilos de los puntos
   }
-  
-  
+
+
 
   getBpmColor(heartRate: number): string {
     // Definir los rangos de BPM para cada estado
@@ -167,7 +245,7 @@ this.chart = new Chart('air-quality', config);
     const fatBurningHeartRateRange = { min: 101, max: 120 };
     const aerobicHeartRateRange = { min: 121, max: 150 };
     const highHeartRateRange = { min: 151, max: 200 };
-  
+
     // Determinar en qué rango se encuentra el valor actual de ritmo cardíaco
     if (heartRate >= lowHeartRateRange.min && heartRate <= lowHeartRateRange.max) {
       return '#CBCBCB'; // Color para el estado de bajo ritmo cardíaco
@@ -185,7 +263,7 @@ this.chart = new Chart('air-quality', config);
       return 'purple'; // Color predeterminado para otros estados (por ejemplo, morado)
     }
   }
-  
+
   getHeartRateStatus(heartRate: number): string {
     // Definir los rangos de BPM para cada estado
     const lowHeartRateRange = { min: 0, max: 60 };
@@ -194,7 +272,7 @@ this.chart = new Chart('air-quality', config);
     const fatBurningHeartRateRange = { min: 101, max: 120 };
     const aerobicHeartRateRange = { min: 121, max: 150 };
     const highHeartRateRange = { min: 151, max: 200 };
-  
+
     // Determinar en qué rango se encuentra el valor actual de ritmo cardíaco
     if (heartRate >= lowHeartRateRange.min && heartRate <= lowHeartRateRange.max) {
       return 'Low'; // Estado de bajo ritmo cardíaco
@@ -212,12 +290,12 @@ this.chart = new Chart('air-quality', config);
       return 'Unknown'; // Estado desconocido
     }
   }
-  
+
   updateBpmGradient() {
     // Calcula la posición del indicador de BPM en porcentaje
     const positionPercentage = (this.heartRate - 0) / (200 - 0) * 100;
     this.indicatorPosition = `${positionPercentage}%`;
-  
+
     // Actualiza el gradiente de colores de la barra de BPM
     this.bpmGradient = 'linear-gradient(to right, ' +
       this.getBpmColor(0) + ' 0%, ' +
@@ -228,6 +306,6 @@ this.chart = new Chart('air-quality', config);
       this.getBpmColor(150) + ' 85%, ' +
       this.getBpmColor(200) + ' 100%)';
   }
-  
+
 
 }
