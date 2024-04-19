@@ -20,7 +20,7 @@
         <label for="newEmail">New Email</label>
         <input formControlName="newEmail" type="email" id="newEmail" placeholder="New Email">
         <div *ngIf="emailForm.controls['newEmail'].invalid && emailForm.controls['newEmail'].touched" class="error-message">
-          Please enter a valid email address
+          Please enter a valid email address<br>
         </div>
         <!-- Mostrar mensaje de error si el correo electrónico ya existe -->
         <div *ngIf="emailExists" class="error-message">
@@ -41,7 +41,7 @@
           <input formControlName="newPassword" type="{{ hidePassword ? 'password' : 'text' }}" id="newPassword" placeholder="New Password">
         </div>
         <div *ngIf="passwordForm.controls['newPassword'].invalid && passwordForm.controls['newPassword'].touched" class="error-message">
-          Password must be at least 8 characters long
+          Password must be at least 8 characters long <br>
         </div>
       </div>
       <button type="submit" class="btn btn-primary" [disabled]="passwordForm.invalid">Update Password</button>

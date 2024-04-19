@@ -1,9 +1,10 @@
 .profile-form {
-    margin-top: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 20px;
-    background-color: #f9f9f9;
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  max-width: 280px;
 }
 
 .profile-header{
@@ -41,12 +42,14 @@
   border-radius: 3px;
   box-sizing: border-box;
   color: black;
+  background: white;
 }
   
 .profile-form .error-message {
   color: red;
   font-size: 0.9rem;
   margin-top: 5px;
+  max-width: 200px;
 }
   
 .profile-form button[type="submit"] {
