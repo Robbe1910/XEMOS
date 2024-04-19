@@ -36,22 +36,23 @@ Antes de comenzar, es necesario tener instalado Cordova y Android Studio para co
 
 1. **Configuración del SDK de Android**:
    - Instala Android Studio.
-   - Configura la variable de entorno `ANDROID_HOME` para que apunte al directorio raíz del SDK de Android.
-   - Verifica que la variable `PATH` incluya la ruta al directorio `platform-tools` dentro del SDK de Android.
+   - Configura la variable de entorno `ANDROID_HOME` para que apunte al directorio raíz del SDK de Android.(Normalmente en tu carpeta AppData en tu carpeta de usuaria, es una carpeta oculta, algo así C:\Users\rober\AppData\Local\Android\Sdk)
+   - Verifica que la variable `PATH` incluya la ruta al directorio `platform-tools` dentro del SDK de Android.(C:\Users\rober\AppData\Local\Android\Sdk\platform-tools)
 
 2. **Instalación del JDK 11**:
    - Descarga e instala el JDK 11 desde [el sitio web oficial de Oracle](https://www.oracle.com/java/technologies/javase/jdk11-archive-downloads.html).
-   - Configura la variable de entorno `JAVA_HOME` para que apunte al directorio de instalación del JDK.
+   - Configura la variable de entorno `JAVA_HOME` para que apunte al directorio de instalación del JDK.(C:\Program Files\Java\jdk-11)
 
 3. **Instalación de Gradle**:
    - Descarga Gradle desde [el sitio web oficial](https://gradle.org/releases/?_gl=1*1so3t6a*_ga*MTA5MDEwODQyMS4xNzEzNDg1OTcx*_ga_7W7NC6YNPT*MTcxMzQ4NTk3Mi4xLjEuMTcxMzQ4NTk4NS40Ny4wLjA).
-   - Descomprime el archivo descargado en una ubicación de tu elección y configura la variable de entorno `GRADLE_HOME`.
-   - Agrega la ruta al directorio bin de Gradle a la variable de entorno `PATH`.
+   - Descomprime el archivo descargado en una ubicación de tu elección y configura la variable de entorno `GRADLE_HOME`.(C:\Program Files\gradle-8.7)
+   - Agrega la ruta al directorio bin de Gradle a la variable de entorno `PATH`.(C:\Program Files\gradle-8.7\bin)
 
 4. **Instalación de las herramientas de compilación de Android**:
    - Abre Android Studio y ve a "Tools" > "SDK Manager".
-   - En la pestaña "SDK Tools", busca e instala las "Android SDK Build-Tools" versión 33.0.2.
-   - Asegúrate de que la ruta al directorio que contiene estas herramientas esté incluida en la variable de entorno `PATH`.
+   - En la pestaña "SDK Tools", busca e instala las "Android SDK Build-Tools" versión 33.0.2.(Marca la opción Show package details)
+   - Asegúrate de que la ruta al directorio que contiene estas herramientas esté incluida en la variable de entorno `PATH`.(C:\Program Files\Java\jdk-11\bin)
+
 5. **Reiniciar el ordenador**:
    - Reinicia el ordenador para que se actualicen todas las variables de entorno
 
