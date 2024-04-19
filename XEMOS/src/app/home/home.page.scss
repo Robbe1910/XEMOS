@@ -1,0 +1,41 @@
+.heart-rate {
+    display: flex;
+    align-items: center;
+}
+
+.heart-rate i {
+    margin-right: 4px;
+}
+
+  .bpm-bar {
+    position: relative;
+    width: 100px;
+    height: 10px; /* Altura de la barra */
+    margin-top: 10px;
+    background: #f2f2f2; /* Color de fondo de la barra */
+    border-radius: 10px; /* Borde redondeado */
+  }
+  
+  .bpm-progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background: linear-gradient(to right, green, yellow, orange, red, blue); /* Gradiente de colores */
+    border-radius: 10px; /* Borde redondeado */
+  }
+  
+  .bpm-indicator {
+    position: absolute;
+    width: 10px; /* Diámetro del círculo */
+    height: 10px; /* Diámetro del círculo */
+    background-color: transparent; /* Color de fondo transparente */
+    border: 2px solid white; /* Borde blanco */
+    border-radius: 50%; /* Círculo */
+    z-index: 2; /* Asegura que esté por encima de la barra de progreso */
+  }
+  
+  
+  
+  

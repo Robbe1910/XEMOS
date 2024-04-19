@@ -4,7 +4,16 @@
     <p>This is the dashboard of the actual dispositive selected. <br><br>
     Here you can see the data received by the dispositive and see the parameters and vital constants. <br><br>
     Also, according to the data, you will receive in real time advices to control the environment or user's health</p>
+    <div class="heart-rate">
+      <i class="fas fa-heart" style="color: red;"></i>
+      <span> {{ heartRate }} bpm</span>
+      <div class="bpm-bar">
+        <div class="bpm-progress" [style.background]="bpmGradient"></div>
+        <div class="bpm-indicator" [style.left]="indicatorPosition"></div>
+      </div>
+      <span class="status-text">{{ getHeartRateStatus(heartRate) }}</span>
+    </div>
     <!-- line-chart.component.html -->
-  <canvas id="canvas" width="400" height="400"></canvas>
+    <canvas id="canvas" width="400" height="400"></canvas>
     </main>
 </div>
