@@ -1,19 +1,28 @@
 <div class="container">
   <main id="main">
-    <strong>Hello!</strong>
-    <p>This is the dashboard of the actual dispositive selected. <br><br>
-    Here you can see the data received by the dispositive and see the parameters and vital constants. <br><br>
-    Also, according to the data, you will receive in real time advices to control the environment or user's health</p>
+    <h1>Statistics</h1>
+    <h4>Heart monitor</h4>
     <div class="heart-rate">
-      <i class="fas fa-heart" style="color: red;"></i>
-      <span> {{ heartRate }} bpm</span>
-      <div class="bpm-bar">
-        <div class="bpm-progress" [style.background]="bpmGradient"></div>
-        <div class="bpm-indicator" [style.left]="indicatorPosition"></div>
+      <div class="bpm-rate">
+        <i class="fas fa-heart" style="color: red;"></i>
+        <span> {{ heartRate }} bpm</span>
       </div>
-      <span class="status-text">{{ getHeartRateStatus(heartRate) }}</span>
+      <div class="bpm-bar">
+        <span class="status-text">{{ getHeartRateStatus(heartRate) }}</span>
+        <div class="bpm-barRate">
+          <div class="bpm-progress" [style.background]="bpmGradient"></div>
+          <div class="bpm-indicator" [style.left]="indicatorPosition"></div>
+        </div>
+      </div>
     </div>
     <!-- line-chart.component.html -->
-    <canvas id="canvas" width="400" height="400"></canvas>
+    <canvas id="heart-rate" width="400" height="250"></canvas>
+    <div class="air-quality">
+      <h4>Air quality</h4>
+      <canvas id="air-quality" width="280" height="250"></canvas>
+    </div>
+    <div class="humidity">
+      <canvas id="humidity" width="250" height="250"></canvas>
+    </div>
     </main>
 </div>
