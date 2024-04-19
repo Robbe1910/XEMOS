@@ -8,6 +8,7 @@
   - [Descripción técnica y medios a utilizar](#descripción-técnica-y-medios-a-utilizar)
   - [Guía de instalación](#guía-de-instalación)
   - [Comandos de construcción](#comandos-de-construcción)
+  - [Cambiar icono de la app](#cambiar-icono-de-la-app)
 
 ## Descripción del proyecto y objetivos
 
@@ -32,7 +33,8 @@ En cuanto al software, se utilizará inicialmente Ionic Angular para desarrollar
 
 ## Guía de instalación
 
-Antes de comenzar, es necesario tener instalado Cordova y Android Studio para configurar el SDK. A continuación se detallan los pasos necesarios:
+Antes de comenzar, es necesario tener instalado Cordova (npm install -g @ionic/cli cordova
+) y Android Studio para configurar el SDK. A continuación se detallan los pasos necesarios:
 
 1. **Configuración del SDK de Android**:
    - Instala Android Studio.
@@ -76,3 +78,8 @@ Para construir la aplicación, sigue estos pasos:
     --apks=XEMOS/platforms/android/app/build/outputs/bundle/release/apk/xemos.apks \
     --output-dir=XEMOS/platforms/android/app/build/outputs/bundle/release/apk \
     --device-spec=device-spec.json
+
+## Cambiar icono de la app
+
+1. En la carpeta resources pones el icon.png de 1024x1024
+2. Ejecutas ionic cordova resources --icon para que se actualicen todos los iconos
