@@ -13,6 +13,6 @@ export class LoadingScreenPage {
   ionViewDidEnter() {
     setTimeout(() => {
       this.router.navigateByUrl('/register');
-    }, 200000);
+    }, 6000);
   }
 }

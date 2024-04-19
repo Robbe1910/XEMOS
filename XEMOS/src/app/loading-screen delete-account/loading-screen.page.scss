@@ -12,13 +12,6 @@
   font-family: 'Quicksand-SemiBold';
 }
 
-@keyframes trashAnimation {
-  0% { transform: translateX(100px), translateY(-300px);  }
-  50% { transform: translateX(-50px); }
-  75% { transform: translateY(0);}
-  100% { transform: translateX(-50px); }
-}
-
 .trash-container {
   position: relative;
   width: 100px; /* Ajusta el tamaño según necesites */
@@ -30,7 +23,23 @@
   top: 5px; /* Mitad del contenedor menos la mitad del tamaño del icono */
   left: 100px; /* Mitad del contenedor menos la mitad del tamaño del icono */
   transform: translate(-50%, -50%);
-  animation: trashAnimation 1s ease-in-out 0.5s infinite; /* Repetir indefinidamente */
+  animation: trashAnimation 3s ease-in-out infinite; /* Repetir indefinidamente */
+  color: #888;
 }
+
+@keyframes trashAnimation {
+  0% { 
+    transform: translateX(0) translateY(-8px) rotate(0deg); /* Posición inicial más arriba */
+  }
+  50% { 
+    transform: translateX(-30px) translateY(9px) rotate(-23deg); /* Bajar y rotar */
+  }
+  100% { 
+    transform: translateX(-60px) translateY(25px) rotate(-45deg); /* Volver a la posición inicial con rotación */
+  }
+}
+
+
+
 
 
