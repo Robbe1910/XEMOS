@@ -34,6 +34,8 @@ const routes: Routes = [
   { path: 'register', loadChildren: () => import('./auth/register/register.module').then(m => m.RegisterPageModule) },
   { path: 'loading', loadChildren: () => import('./loading-screen/loading-screen.module').then(m => m.LoadingScreenPageModule) },
   { path: 'loading-login', loadChildren: () => import('./loading-screen-login/loading-screen.module').then(m => m.LoadingScreenPageModule) },
+  { path: 'loading-delete-account', loadChildren: () => import('./loading-screen delete-account/loading-screen.module').then(m => m.LoadingScreenPageModule) },
+  
 ];
 
 

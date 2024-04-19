@@ -59,7 +59,6 @@ export class ProfilePage implements OnInit {
           // Si el correo electrónico no existe, realiza la actualización
           this.userService.updateEmail(email, newEmail).subscribe(
             (res: any) => {
-              console.log('Correo electrónico actualizado exitosamente');
               // Actualizar la información del usuario después de la actualización
               this.user.email = newEmail;
               // Limpiar el formulario
@@ -68,14 +67,12 @@ export class ProfilePage implements OnInit {
               this.emailExists = false;
             },
             (err: any) => {
-              console.error('Error al actualizar el correo electrónico:', err);
               this.errorMessage = "Error updating email"; // Mensaje de error genérico
             }
           );
         }
       },
       (error: any) => {
-        console.error('Error checking email:', error);
         this.errorMessage = "Error checking email"; // Mensaje de error genérico
       }
     );
@@ -88,12 +85,10 @@ export class ProfilePage implements OnInit {
     const password = ''; // Deberías obtener la contraseña actual del usuario
     this.userService.updatePassword(email, password, newPassword).subscribe(
       (res: any) => {
-        console.log('Contraseña actualizada exitosamente');
         // Limpiar el valor del input
         this.passwordForm.reset();
       },
       (err: any) => {
-        console.error('Error al actualizar la contraseña:', err);
       }
     );
   }
@@ -106,12 +101,11 @@ export class ProfilePage implements OnInit {
     const email = this.user.email;
     this.userService.deleteUser(email).subscribe(
       () => {
-        console.log('Account deleted successfully.');
+        
         this.authService.logout(); // También cerramos sesión si eliminamos la cuenta
-        this.router.navigateByUrl('/login'); // Redirigimos a la página de inicio de sesión
+        this.router.navigateByUrl('/loading-delete-account'); // Redirigimos a la página de inicio de sesión
       },
       error => {
-        console.error('Error deleting account:', error);
         this.errorMessage = 'Error deleting account. Please try again later.';
       }
     );

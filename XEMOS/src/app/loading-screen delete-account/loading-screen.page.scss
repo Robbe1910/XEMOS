@@ -1,0 +1,36 @@
+.loading-overlay {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(213, 226, 231);
+}
+
+.loading{
+  font-family: 'Quicksand-SemiBold';
+}
+
+@keyframes trashAnimation {
+  0% { transform: translateX(100px), translateY(-300px);  }
+  50% { transform: translateX(-50px); }
+  75% { transform: translateY(0);}
+  100% { transform: translateX(-50px); }
+}
+
+.trash-container {
+  position: relative;
+  width: 100px; /* Ajusta el tamaño según necesites */
+  height: 100px; /* Ajusta el tamaño según necesites */
+}
+
+.fa-user {
+  position: absolute;
+  top: 5px; /* Mitad del contenedor menos la mitad del tamaño del icono */
+  left: 100px; /* Mitad del contenedor menos la mitad del tamaño del icono */
+  transform: translate(-50%, -50%);
+  animation: trashAnimation 1s ease-in-out 0.5s infinite; /* Repetir indefinidamente */
+}
+
+

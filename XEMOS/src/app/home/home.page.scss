@@ -1,14 +1,18 @@
 .container{
   overflow-y: scroll;
-  padding-top: 380px;
+  padding-top: 40px;
 }
 
-#main h1{
+#main-home{
+  width: 90vw;
+}
+
+#main-home h1{
   margin: 0px;
   font-weight: bold;
 }
 
-#main h4{
+#main-home h4{
   font-size: 18px;
   margin-top: 20px;
 }
@@ -75,6 +79,8 @@
     margin: 0px -30px;
     margin-right: 20px;
   }
+
+  
   
   
   
