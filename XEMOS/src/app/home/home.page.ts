@@ -103,7 +103,7 @@ export class HomePage implements OnInit {
   }
 
   initializeAirQualityChart() {
-    const DATA_COUNT_AIR_QUALITY = 12;
+    const DATA_COUNT_AIR_QUALITY = 24;
     const airQualityData = this.generateAirQualityData();
     const configAirQuality = this.getAirQualityChartConfig(DATA_COUNT_AIR_QUALITY, airQualityData);
 
@@ -111,7 +111,7 @@ export class HomePage implements OnInit {
   }
 
   initializeHumidityTemperatureChart() {
-    const DATA_COUNT_HUMIDITY = 12;
+    const DATA_COUNT_HUMIDITY = 24;
     const labelsHumidity = this.generateLabels(DATA_COUNT_HUMIDITY);
     const humidityTemperatureData = this.generateHumidityTemperatureData();
 
@@ -247,13 +247,32 @@ export class HomePage implements OnInit {
   generateLabels(count: number): string[] {
     const labels = [];
     const currentTime = new Date();
-    for (let i = 0; i < 24; i += 2) {
-      const pastTime = new Date(currentTime.getTime() - (i * 60 * 60 * 1000));
-      const hour = pastTime.getHours();
-      labels.unshift(hour.toString());
+    const currentHour = currentTime.getHours();
+    const currentMinute = currentTime.getMinutes();
+  
+    // Calcular el tiempo de inicio de la última hora
+    const lastHourStart = new Date(currentTime);
+    lastHourStart.setMinutes(currentMinute);
+    lastHourStart.setSeconds(0);
+    lastHourStart.setMilliseconds(0);
+    lastHourStart.setHours(currentHour);
+  
+    // Agregar las etiquetas de los 24 intervalos de un minuto
+    for (let i = 11; i >= 0; i--) {
+      const time = new Date(lastHourStart.getTime() - i * 60 * 1000);
+      const hour = time.getHours();
+      const minute = time.getMinutes();
+      const formattedHour = hour < 10 ? '0' + hour : hour.toString();
+      const formattedMinute = minute < 10 ? '0' + minute : minute.toString();
+      labels.push(`${formattedHour}:${formattedMinute}`);
     }
+  
     return labels;
   }
+  
+
+  
+  
 
   generateTemperature(count: number): number[] {
     const data = [];
@@ -300,8 +319,6 @@ export class HomePage implements OnInit {
         },
         scales: {
           y: {
-            min: 0,
-            max: 200,
             title: {
               display: true,
               text: 'µg/m³'
