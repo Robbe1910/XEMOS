@@ -50,7 +50,6 @@ export class RegisterPage implements OnInit {
   
       this.http.post<any>('http://34.175.187.252:3000/users', newUser)
         .subscribe(() => {
-          console.log('User registered successfully');
           this.router.navigateByUrl('/login');
         }, (error: HttpErrorResponse) => {
           if (error.status === 400) {
@@ -58,12 +57,10 @@ export class RegisterPage implements OnInit {
           } else {
             this.errorMessage = error.error.message || 'Unexpected error. Please try again later.';
           }
-          console.error('Server error:', error);
           this.errorMessage = error.error.message || 'Server error';
         });
 
     } else {
-      console.error('Invalid form');
       this.errorMessage = "Invalid email or password";
     }
   }
