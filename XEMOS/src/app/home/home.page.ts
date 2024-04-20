@@ -223,27 +223,30 @@ export class HomePage implements OnInit {
   updateHeartRateChart(heartRateData: number[]) {
     this.heartRate = heartRateData[heartRateData.length - 1];
     this.updateBpmGradient();
+    this.heartRateChart.data.labels = this.generateLabels(24); // Actualizar las etiquetas
     this.heartRateChart.data.datasets[0].data = heartRateData;
     this.heartRateChart.update();
     this.updateBpmIndicatorPosition(this.heartRate);
   }
-
+  
   updateAirQualityChart(airQualityData: number[]) {
-    this.airQualityChart.data.labels = this.generateLabels(airQualityData.length);
+    const labels = this.generateLabels(airQualityData.length);
+    this.airQualityChart.data.labels = labels; // Actualizar las etiquetas
     this.airQualityChart.data.datasets[0].data = airQualityData;
     this.airQualityChart.update();
   }
-
+  
   updateHumidityTemperatureChart(humidityTemperatureData: any) {
     const temperatureData = humidityTemperatureData.temperature;
     const humidityData = humidityTemperatureData.humidity;
-
+    const labelsHumidity = this.generateLabels(temperatureData.length); // Utilizar la misma longitud que los datos de temperatura
+  
+    this.humidityChart.data.labels = labelsHumidity; // Actualizar las etiquetas
     this.humidityChart.data.datasets[0].data = temperatureData;
     this.humidityChart.data.datasets[1].data = humidityData;
     this.humidityChart.update();
   }
-
-
+  
   generateLabels(count: number): string[] {
     const labels = [];
     const currentTime = new Date();
