@@ -46,11 +46,12 @@
             Password is required
           </div>
           <div *ngIf="registroForm.controls['password'].touched && registroForm.controls['password'].errors?.['minlength']" class="error-message">
-            Password must be at
+            Password must be at least 8 characters long
           </div>
-          <div *ngIf="registroForm.controls['password'].touched && registroForm.controls['password'].errors?.['minlength']" class="error-message">
-            least 8 characters long
+          <div *ngIf="registroForm.get('password')?.hasError('passwordRequirements')" class="error-message">
+            Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.
           </div>
+          
         </div>
         <!-- Confirm Password -->
         <div class="field-container">

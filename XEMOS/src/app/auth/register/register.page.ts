@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
@@ -26,7 +26,7 @@ export class RegisterPage implements OnInit {
     this.registroForm = this.formBuilder.group({
       fullName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
+      password: ['', [Validators.required, Validators.minLength(8), this.passwordValidator()]], // Aplica la función de validación de contraseña
       confirmPassword: ['', Validators.required]
     }, { validator: this.checkPasswords });
 
@@ -38,6 +38,9 @@ export class RegisterPage implements OnInit {
     ).subscribe(response => {
       this.emailExists = response.exists;
     });
+
+
+    
   }
   
   onSubmit() {
@@ -93,6 +96,21 @@ export class RegisterPage implements OnInit {
     const confirmPassword = formGroup.get('confirmPassword')?.value;
     return password === confirmPassword ? null : { notSame: true };
   }
+
+  // Función de validación personalizada para verificar la complejidad de la contraseña
+passwordValidator(): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const value: string = control.value;
+    const hasUppercase = /[A-Z]/.test(value); // Verifica si hay al menos una mayúscula
+    const hasLowercase = /[a-z]/.test(value); // Verifica si hay al menos una minúscula
+    const hasNumber = /\d/.test(value); // Verifica si hay al menos un número
+    const hasSpecial = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(value); // Verifica si hay al menos un símbolo especial
+
+    const valid = hasUppercase && hasLowercase && hasNumber && hasSpecial;
+
+    return valid ? null : { 'passwordRequirements': true };
+  };
+}
 
   togglePasswordVisibility() {
     this.hidePassword = !this.hidePassword;
