@@ -18,38 +18,58 @@ export class HomePage implements OnInit {
   heartRate: number = 0; // Variable para almacenar el último valor de ritmo cardíaco
   bpmGradient: string = ''; // Gradiente de colores de la barra de BPM
   indicatorPosition: string = '0%'; // Posición del indicador de BPM en porcentaje
+  dataSubscription: Subscription;
+  heartRateChart: any;
+  airQualityChart: any;
+  humidityChart: any;
 
-  constructor() { }
+  constructor(private dataService: DataService) {
+    this.dataSubscription = new Subscription();
+  }
 
   ngOnInit() {
     this.initializeHeartRateChart();
     this.initializeAirQualityChart();
     this.initializeHumidityTemperatureChart();
+
+    // // Obtener datos cada 5 segundos
+    // this.dataSubscription = interval(5000).pipe(
+    //   switchMap(() => this.dataService.getData())
+    // ).subscribe((data: any) => {
+    //   this.updateCharts(data);
+    // });
+
+    // Obtener datos aleatorios cada 5 segundos
+    this.dataSubscription = interval(5000).subscribe(() => {
+      const heartRateData = this.generateHeartRateData();
+      const airQualityData = this.generateAirQualityData();
+      const humidityTemperatureData = this.generateHumidityTemperatureData();
+
+      this.updateCharts({
+        heartRateData,
+        airQualityData,
+        humidityTemperatureData
+      });
+    });
+  }
+
+  ngOnDestroy() {
+    // Cancelar la suscripción al salir del componente para evitar pérdida de memoria
+    if (this.dataSubscription) {
+      this.dataSubscription.unsubscribe();
+    }
   }
 
   initializeHeartRateChart() {
-    // Crear gráfico BPM
-    const labels = [];
-    const currentTime = new Date();
-    for (let i = 0; i < 24; i += 2) {
-      const pastTime = new Date(currentTime.getTime() - (i * 60 * 60 * 1000));
-      const hour = pastTime.getHours();
-      labels.unshift(hour.toString());
-    }
+    const labels = this.generateLabels(24);
+    const heartRateData = this.generateHeartRateData();
 
-    const heartRateData = [];
-    for (let i = 0; i < 24 * 6; i++) { // 24 horas * 6 intervalos por hora
-      heartRateData.push(Math.floor(Math.random() * (150 - 60 + 1)) + 60); // Genera un dato aleatorio entre 60 y 150
-    }
-
-    // Obtener el último valor de ritmo cardíaco
     this.heartRate = heartRateData[heartRateData.length - 1];
 
-    // Actualizar el gradiente de colores y la posición del indicador de BPM
     this.updateBpmGradient();
+    this.updateBpmIndicatorPosition(this.heartRate);
 
-    // Crear el gráfico de líneas con los datos generados
-    this.chart = new Chart('heart-rate', {
+    this.heartRateChart = new Chart('heart-rate', {
       type: 'line',
       data: {
         labels: labels,
@@ -77,72 +97,31 @@ export class HomePage implements OnInit {
   }
 
   initializeAirQualityChart() {
-    // Crear gráfico calidad del aire
-    const DATA_COUNT_AIR_QUALITY = 12; // Cantidad de datos
-    const dataAirQuality = {
-      labels: this.generateLabels(DATA_COUNT_AIR_QUALITY), // Genera etiquetas para los datos
-      datasets: [{
-        data: this.generateData(DATA_COUNT_AIR_QUALITY) // Genera datos aleatorios para la calidad del aire del aire
-      }]
-    };
+    const DATA_COUNT_AIR_QUALITY = 12;
+    const airQualityData = this.generateAirQualityData();
+    const configAirQuality = this.getAirQualityChartConfig(DATA_COUNT_AIR_QUALITY, airQualityData);
 
-    const configAirQuality: ChartConfiguration<'line'> = {
-      type: 'line', // Tipo de gráfico: línea
-      data: dataAirQuality, // Datos del gráfico
-      options: {
-        plugins: {
-          legend: {
-            display: false // Oculta la leyenda
-          },
-          tooltip: {
-            enabled: true // Activa el tooltip
-          },
-        },
-        elements: {
-          line: {
-            fill: false, // No rellena el área bajo la línea
-            backgroundColor: this.getLineColor.bind(this), // Color de fondo de la línea
-            borderColor: this.getLineColor.bind(this) // Color de borde de la línea
-          },
-          point: {
-            backgroundColor: this.getLineColor.bind(this), // Color de fondo del punto
-            hoverBackgroundColor: this.makeHalfAsOpaque.bind(this), // Color de fondo del punto al pasar el mouse
-            radius: this.adjustRadiusBasedOnData.bind(this), // Ajusta el radio del punto basado en los datos
-            pointStyle: this.alternatePointStyles.bind(this), // Alterna los estilos de los puntos
-            hoverRadius: 15, // Radio del punto al pasar el mouse
-          }
-        }
-      }
-    };
-
-    this.chart = new Chart('air-quality', configAirQuality);
+    this.airQualityChart = new Chart('air-quality', configAirQuality);
   }
 
   initializeHumidityTemperatureChart() {
-    // Código para el nuevo gráfico de línea de humedad
     const DATA_COUNT_HUMIDITY = 12;
-    const NUMBER_CFG = { count: DATA_COUNT_HUMIDITY, min: 0, max: 100 };
-
-    const labelsHumidity = []; // Genera etiquetas para los datos de humedad
-    for (let i = 0; i < 24; i += 2) {
-      const pastTime = new Date(currentTime.getTime() - (i * 60 * 60 * 1000));
-      const hour = pastTime.getHours();
-      labelsHumidity.unshift(hour.toString());
-    }
+    const labelsHumidity = this.generateLabels(DATA_COUNT_HUMIDITY);
+    const humidityTemperatureData = this.generateHumidityTemperatureData();
 
     const dataHumidity = {
       labels: labelsHumidity,
       datasets: [
         {
           label: 'Temperature',
-          data: this.generateTemperature(DATA_COUNT_HUMIDITY),
+          data: humidityTemperatureData.temperature,
           borderColor: 'red',
           backgroundColor: 'rgba(255, 0, 0, 0.5)',
           yAxisID: 'y',
         },
         {
           label: 'Humidity',
-          data: this.generateData(DATA_COUNT_HUMIDITY),
+          data: humidityTemperatureData.humidity,
           borderColor: 'blue',
           backgroundColor: 'rgba(0, 0, 255, 0.5)',
           yAxisID: 'y1',
@@ -176,16 +155,74 @@ export class HomePage implements OnInit {
             display: true,
             position: 'right',
             grid: {
-              drawOnChartArea: false, // only want the grid lines for one axis to show up
+              drawOnChartArea: false,
             },
           },
         }
       }
     };
 
-    this.chart = new Chart('humidity', configHumidity);
+    this.humidityChart = new Chart('humidity', configHumidity);
   }
-  
+
+  generateHeartRateData(): number[] {
+    const heartRateData = [];
+    for (let i = 0; i < 24 * 6; i++) {
+      heartRateData.push(Math.floor(Math.random() * (150 - 60 + 1)) + 60);
+    }
+    this.heartRate = heartRateData[heartRateData.length - 1];
+    return heartRateData;
+  }
+
+  generateAirQualityData(): number[] {
+    const airQualityData = [];
+    for (let i = 0; i < 12; i++) {
+      airQualityData.push(Math.floor(Math.random() * 100));
+    }
+    return airQualityData;
+  }
+
+  generateHumidityTemperatureData(): any {
+    const humidityTemperatureData: { temperature: number[], humidity: number[] } = {
+      temperature: [],
+      humidity: []
+    };
+    for (let i = 0; i < 12; i++) {
+      humidityTemperatureData.temperature.push(Math.floor(Math.random() * 50));
+      humidityTemperatureData.humidity.push(Math.floor(Math.random() * 100));
+    }
+    return humidityTemperatureData;
+  }
+
+  updateCharts(data: any) {
+    this.updateHeartRateChart(data.heartRateData);
+    this.updateAirQualityChart(data.airQualityData);
+    this.updateHumidityTemperatureChart(data.humidityTemperatureData);
+  }
+
+  updateHeartRateChart(heartRateData: number[]) {
+    this.heartRate = heartRateData[heartRateData.length - 1];
+    this.updateBpmGradient();
+    this.heartRateChart.data.datasets[0].data = heartRateData;
+    this.heartRateChart.update();
+    this.updateBpmIndicatorPosition(this.heartRate);
+  }
+
+  updateAirQualityChart(airQualityData: number[]) {
+    this.airQualityChart.data.labels = this.generateLabels(airQualityData.length);
+    this.airQualityChart.data.datasets[0].data = airQualityData;
+    this.airQualityChart.update();
+  }
+
+  updateHumidityTemperatureChart(humidityTemperatureData: any) {
+    const temperatureData = humidityTemperatureData.temperature;
+    const humidityData = humidityTemperatureData.humidity;
+
+    this.humidityChart.data.datasets[0].data = temperatureData;
+    this.humidityChart.data.datasets[1].data = humidityData;
+    this.humidityChart.update();
+  }
+
 
   generateLabels(count: number): string[] {
     const labels = [];
@@ -198,14 +235,6 @@ export class HomePage implements OnInit {
     return labels;
   }
 
-  generateData(count: number): number[] {
-    const data = [];
-    for (let i = 0; i < count; i++) {
-      data.push(Math.floor(Math.random() * 100)); // Genera números aleatorios entre 0 y 100 para la calidad del aire
-    }
-    return data;
-  }
-
   generateTemperature(count: number): number[] {
     const data = [];
     for (let i = 0; i < count; i++) {
@@ -213,6 +242,46 @@ export class HomePage implements OnInit {
     }
     return data;
   }
+
+  getAirQualityChartConfig(dataCount: number, airQualityData: number[]): ChartConfiguration<'line'> {
+    const labels = this.generateLabels(dataCount);
+    const dataAirQuality = {
+      labels: labels,
+      datasets: [{
+        data: airQualityData
+      }]
+    };
+
+    return {
+      type: 'line',
+      data: dataAirQuality,
+      options: {
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            enabled: true
+          },
+        },
+        elements: {
+          line: {
+            fill: false,
+            backgroundColor: this.getLineColor.bind(this),
+            borderColor: this.getLineColor.bind(this)
+          },
+          point: {
+            backgroundColor: this.getLineColor.bind(this),
+            hoverBackgroundColor: this.makeHalfAsOpaque.bind(this),
+            radius: this.adjustRadiusBasedOnData.bind(this),
+            pointStyle: this.alternatePointStyles.bind(this),
+            hoverRadius: 15,
+          }
+        }
+      }
+    };
+  }
+
 
   getLineColor(ctx: any) {
     // Verifica si ctx.parsed está definido y tiene una propiedad 'y'
@@ -323,5 +392,10 @@ export class HomePage implements OnInit {
       this.getBpmColor(200) + ' 100%)';
   }
 
+  updateBpmIndicatorPosition(heartRate: number) {
+    const positionPercentage = (heartRate - 0) / (200 - 0) * 100;
+    this.indicatorPosition = `${positionPercentage}%`;
+  }
+  
 
 }
