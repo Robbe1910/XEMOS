@@ -88,7 +88,13 @@ export class HomePage implements OnInit {
             max: 180,
             title: {
               display: true,
-              text: ''
+              text: 'bpm'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Horas'
             }
           }
         }
@@ -149,6 +155,10 @@ export class HomePage implements OnInit {
             type: 'linear',
             display: true,
             position: 'left',
+            title: {
+              display: true,
+              text: '°C'
+            }
           },
           y1: {
             type: 'linear',
@@ -157,7 +167,17 @@ export class HomePage implements OnInit {
             grid: {
               drawOnChartArea: false,
             },
+            title: {
+              display: true,
+              text: '%'
+            }
           },
+          x: {
+            title: {
+              display: true,
+              text: 'Horas'
+            }
+          }
         }
       }
     };
@@ -276,6 +296,22 @@ export class HomePage implements OnInit {
             radius: this.adjustRadiusBasedOnData.bind(this),
             pointStyle: this.alternatePointStyles.bind(this),
             hoverRadius: 15,
+          }
+        },
+        scales: {
+          y: {
+            min: 0,
+            max: 200,
+            title: {
+              display: true,
+              text: 'µg/m³'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Horas'
+            }
           }
         }
       }
