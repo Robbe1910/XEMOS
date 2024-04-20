@@ -34,7 +34,7 @@ En cuanto al software, se utilizará inicialmente Ionic Angular para desarrollar
 ## Guía de instalación
 
 Antes de comenzar, es necesario tener instalado Cordova (npm install -g @ionic/cli cordova
-) y Android Studio para configurar el SDK. A continuación se detallan los pasos necesarios:
+) y Android Studio para configurar el SDK. Para configurar las variables de entorno te vas a porpiedas o el icono de Windows click derecho y sistema y configuracion avanzada del sistema. A continuación se detallan los pasos necesarios:
 
 1. **Configuración del SDK de Android**:
    - Instala Android Studio.
