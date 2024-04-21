@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "260301013757",
+    "project_id": "lyrical-caster-420419",
+    "storage_bucket": "lyrical-caster-420419.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:260301013757:android:3e6ca11ab657a1854b7494",
+        "android_client_info": {
+          "package_name": "com.xemos.xemos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrpRjhDDo9DfZkXPf8eqGVtSlmRbFlg5Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
