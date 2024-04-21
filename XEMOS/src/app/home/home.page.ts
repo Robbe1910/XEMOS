@@ -12,7 +12,7 @@ const currentTime = new Date();
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, OnDestroy {
 
   chart: any;
   heartRate: number = 0; // Variable para almacenar el último valor de ritmo cardíaco
@@ -23,7 +23,27 @@ export class HomePage implements OnInit {
   airQualityChart: any;
   humidityChart: any;
 
+  sensorData: any;
+  tyhData: any = {
+    temperature: [],
+    humidity: []
+  };
+  airQualityData: number [] = [];
+  heartRateData: number [] = [];
+  actualDate: any = '';
+
+
   constructor(private dataService: DataService) {
+    for (let i = 0; i < 24; i++) {
+      this.heartRateData.push(0); // You can initialize it with any default value you want
+    }
+
+    this.tyhData.temperature = Array(12).fill(0);
+    this.tyhData.humidity = Array(12).fill(0);
+
+    for (let i = 0; i < 24; i++) {
+      this.airQualityData.push(0); // You can initialize it with any default value you want
+    }
     this.dataSubscription = new Subscription();
   }
 
@@ -32,15 +52,8 @@ export class HomePage implements OnInit {
     this.initializeAirQualityChart();
     this.initializeHumidityTemperatureChart();
 
-    // // Obtener datos cada 5 segundos
-    // this.dataSubscription = interval(5000).pipe(
-    //   switchMap(() => this.dataService.getData())
-    // ).subscribe((data: any) => {
-    //   this.updateCharts(data);
-    // });
-
     // Obtener datos aleatorios cada 5 segundos
-    this.dataSubscription = interval(5000).subscribe(() => {
+    this.dataSubscription = interval(1000).subscribe(() => {
       const heartRateData = this.generateHeartRateData();
       const airQualityData = this.generateAirQualityData();
       const humidityTemperatureData = this.generateHumidityTemperatureData();
@@ -51,6 +64,8 @@ export class HomePage implements OnInit {
         humidityTemperatureData
       });
     });
+
+    this.getSensorData();
   }
 
   ngOnDestroy() {
@@ -60,9 +75,96 @@ export class HomePage implements OnInit {
     }
   }
 
+  getSensorData(){
+    this.dataService.getData().subscribe(
+      (data) => {
+        this.sensorData = data;
+        console.log('New sensor data received:', this.sensorData);
+        this.formatSensorData(this.sensorData);
+      },
+      (error) => {
+        console.error('Error fetching sensor data:', error);
+      }
+    );
+  };
+
+  formatSensorData(data: any){
+    const dataArray = data[0].data.split('//');
+
+    const actualData = {
+      temperatura: parseInt(dataArray[0]),
+      humedad: parseInt(dataArray[1]),
+      airquality: parseInt(dataArray[2]),
+      heart: parseInt(dataArray[3]),
+      date: data[0].date
+    };
+
+    this.setSensorChartData(actualData);
+  };
+
+  setSensorChartData(actualData: any){
+    this.generateHeartRateData(actualData.heart, actualData.date);
+    this.generateAirQualityData(actualData.airquality, actualData.date);
+    this.generateHumidityTemperatureData(actualData.temperatura,actualData.humedad, actualData.date) ;
+  };
+
+  generateHeartRateData(heart?: any, date?: any): any {
+    console.log(date);
+    if(date == this.actualDate){
+      heart = 0;
+    }else{
+      if (heart) {
+        // Shift existing values to the right
+        for (let i = this.heartRateData.length - 1; i >= 0; i--) {
+          if (i === 0) {
+            // Overwrite the first element with the new air quality value
+            this.heartRateData[i] = heart;
+          } else {
+            // Move the value from the previous index to the current index
+            this.heartRateData[i] = this.heartRateData[i - 1];
+          }
+        }
+    
+        // Remove the last item if the array length exceeds the desired number of items
+        if (this.heartRateData.length > 12) {
+          this.heartRateData.pop(); // Remove the last item
+        }
+      }
+    }
+    
+    return this.heartRateData;
+  }
+ 
+   generateAirQualityData(airquality?: any, date?: any): any {
+    if (airquality) {
+    // Shift existing values to the right
+    for (let i = this.airQualityData.length - 1; i >= 0; i--) {
+      if (i === 0) {
+        // Overwrite the first element with the new air quality value
+        this.airQualityData[i] = airquality;
+      } else {
+        // Move the value from the previous index to the current index
+        this.airQualityData[i] = this.airQualityData[i - 1];
+      }
+    }
+
+    // Remove the last item if the array length exceeds the desired number of items
+    if (this.airQualityData.length > 12) {
+      this.airQualityData.pop(); // Remove the last item
+    }
+  }
+
+  return this.airQualityData;
+   }
+ 
+   generateHumidityTemperatureData(temperatura?: any, humedad?: any, date?: any): any {
+    return this.tyhData;
+   }
+
   initializeHeartRateChart() {
     const labels = this.generateLabels(24);
     const heartRateData = this.generateHeartRateData();
+    
 
     this.heartRate = heartRateData[heartRateData.length - 1];
 
@@ -185,34 +287,7 @@ export class HomePage implements OnInit {
     this.humidityChart = new Chart('humidity', configHumidity);
   }
 
-  generateHeartRateData(): number[] {
-    const heartRateData = [];
-    for (let i = 0; i < 24 * 6; i++) {
-      heartRateData.push(Math.floor(Math.random() * (150 - 60 + 1)) + 60);
-    }
-    this.heartRate = heartRateData[heartRateData.length - 1];
-    return heartRateData;
-  }
-
-  generateAirQualityData(): number[] {
-    const airQualityData = [];
-    for (let i = 0; i < 12; i++) {
-      airQualityData.push(Math.floor(Math.random() * 100));
-    }
-    return airQualityData;
-  }
-
-  generateHumidityTemperatureData(): any {
-    const humidityTemperatureData: { temperature: number[], humidity: number[] } = {
-      temperature: [],
-      humidity: []
-    };
-    for (let i = 0; i < 12; i++) {
-      humidityTemperatureData.temperature.push(Math.floor(Math.random() * 50));
-      humidityTemperatureData.humidity.push(Math.floor(Math.random() * 100));
-    }
-    return humidityTemperatureData;
-  }
+  
 
   updateCharts(data: any) {
     this.updateHeartRateChart(data.heartRateData);
@@ -271,18 +346,6 @@ export class HomePage implements OnInit {
     }
   
     return labels;
-  }
-  
-
-  
-  
-
-  generateTemperature(count: number): number[] {
-    const data = [];
-    for (let i = 0; i < count; i++) {
-      data.push(Math.floor(Math.random() * 50)); // Genera números aleatorios entre 0 y 50 para la temperatura
-    }
-    return data;
   }
 
   getAirQualityChartConfig(dataCount: number, airQualityData: number[]): ChartConfiguration<'line'> {
