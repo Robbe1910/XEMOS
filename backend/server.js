@@ -31,7 +31,6 @@ app.get('/users', (req, res) => {
     const users = JSON.parse(fs.readFileSync(usersFilePath));
     res.json(users);
   } catch (err) {
-    console.error('Error reading users file:', err);
     res.status(500).send('Internal Server Error');
   }
 });
@@ -121,6 +120,7 @@ app.get('/confirm/:token', async (req, res) => {
 
     // Leer los usuarios del archivo JSON y asignarlos a la variable users
     const users = JSON.parse(fs.readFileSync(usersFilePath));
+    res.charset = 'utf-8';
 
     // 1. Buscar el usuario en el array de usuarios utilizando el token proporcionado
     const user = users.find(user => user.token === token);
