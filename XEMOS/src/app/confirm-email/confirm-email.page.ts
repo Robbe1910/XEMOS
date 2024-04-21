@@ -12,20 +12,58 @@ export class ConfirmEmailPage implements OnInit {
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
+    // Verificar si el correo electrónico está confirmado al cargar el componente
+    const currentUser = this.authService.getCurrentUser();
+    if (currentUser && currentUser.emailConfirmed) {
+      // Redirigir a confirmation-page si el correo electrónico está confirmado
+      this.router.navigateByUrl('/confirmation-page');
+    }
   }
 
   resendConfirmationEmail(): void {
-    const token = this.authService.getToken();
-    console.log(token)
-    if (token) {
-      this.authService.resendConfirmationEmail(token).subscribe(
-        () => {
+    const currentUser = this.authService.getCurrentUser();
+    if (currentUser && currentUser.loginToken) {
+      const loginToken = currentUser.loginToken;
+      this.authService.resendConfirmationEmail(loginToken).subscribe(
+        (response) => {
           console.log('Confirmation email resent successfully');
+          // Verificar si el correo electrónico ya está confirmado
+          const currentUser = this.authService.getCurrentUser();
+          if (currentUser && currentUser.emailConfirmed) {
+            // Redirigir a confirmation-page si el correo electrónico está confirmado
+            this.router.navigateByUrl('/confirmation-page');
+          }
         },
-        error => {
+        (error) => {
           console.error('Error resending confirmation email:', error);
+          // Redirige a login si hay un error al reenviar el correo de confirmación
+          this.router.navigateByUrl('/login');
         }
       );
     }
   }
+  
+  
+
+  confirmEmail(): void {
+    this.authService.checkEmailConfirmed().subscribe(
+      (response) => {
+        console.log(response)
+        if (response.emailConfirmed) {
+          // Redirigir a confirmation-page si el correo electrónico está confirmado
+          this.router.navigateByUrl('/confirmation-page');
+        } else {
+          // Mostrar un mensaje de error si el correo electrónico no está confirmado
+          console.log('El correo electrónico aún no ha sido confirmado.');
+        }
+      },
+      (error) => {
+        console.error('Error checking email confirmation:', error);
+        // Redirige a login u otra página si hay un error al verificar la confirmación del correo electrónico
+        this.router.navigateByUrl('/login');
+      }
+    );
+  }
+  
+
 }

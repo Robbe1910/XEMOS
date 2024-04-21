@@ -1,5 +1,5 @@
-const express = require('express');
 const bodyParser = require('body-parser');
+express = require('express');
 const fs = require('fs');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
@@ -14,6 +14,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 const usersFilePath = 'users.json';
+const sensorDataFilePath = 'sensor-data.json';
 
 // Configurar nodemailer (reemplaza con tus credenciales SMTP)
 const transporter = nodemailer.createTransport({
@@ -37,12 +38,12 @@ app.get('/users', (req, res) => {
 });
 
 // Función para enviar correo electrónico de confirmación
-function sendConfirmationEmail(email, token) {
+function sendConfirmationEmail(email, loginToken) {
   const mailOptions = {
     from: 'rberrendoe01@informatica.iesvalledeljerteplasencia.es',
     to: email,
     subject: 'Confirm your email address',
-    text: `Click the following link to confirm your email address: http://34.175.187.252:3000/confirm/${token}`
+    text: `Click the following link to confirm your email address: http://34.175.187.252:3000/confirm/${loginToken}`
   };
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
@@ -53,6 +54,7 @@ function sendConfirmationEmail(email, token) {
   });
 }
 
+// Endpoint para registrar un nuevo usuario
 app.post('/users', async (req, res) => {
   try {
     const newUser = req.body;
@@ -60,18 +62,19 @@ app.post('/users', async (req, res) => {
     newUser.token = token;
     newUser.emailConfirmed = false; // Agregar una propiedad para indicar si el correo está confirmado o no
     newUser.createdAt = new Date(); // Agregar una propiedad para la fecha de creación
-    // Define el payload del token con la información que deseas incluir
+    // Define el payload del loginToken con la información que deseas incluir
     const payload = {
       email: newUser.email,
-      fullName: newUser.fullName
+      fullName: newUser.fullName,
+      emailConfirmed: newUser.emailConfirmed // Incluir emailConfirmed en el payload del loginToken
     };
 
-    // Define la clave secreta para firmar el token (debería ser una cadena segura y secreta)
+    // Define la clave secreta para firmar el loginToken (debería ser una cadena segura y secreta)
     const secretKey = 'k=F##7dEKxWN:[1]+_"1L7q(5:o!6[XKdU2S[3gTr-1nu9_"zW';
 
-    // Genera el token JWT con el payload, la clave secreta y opcionalmente un tiempo de expiración
-    const tokenJWT = jwt.sign(payload, secretKey, { expiresIn: '24h' }); 
-    newUser.loginToken = tokenJWT;
+    // Genera el loginToken jwt con el payload, la clave secreta y opcionalmente un tiempo de expiración
+    const loginTokenJWT = jwt.sign(payload, secretKey, { expiresIn: '24h' });
+    newUser.loginToken = loginTokenJWT;
 
     // Leer los usuarios del archivo JSON
     const users = JSON.parse(fs.readFileSync(usersFilePath));
@@ -82,7 +85,7 @@ app.post('/users', async (req, res) => {
     // Escribir la lista de usuarios actualizada en el archivo JSON
     fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
 
-    // Enviar correo electrónico de confirmación con el token
+    // Enviar correo electrónico de confirmación con el loginToken
     sendConfirmationEmail(newUser.email, token);
 
     res.status(201).json({ message: 'User registered successfully. Check your email for confirmation.', loginToken: token });
@@ -93,19 +96,29 @@ app.post('/users', async (req, res) => {
 });
 
 
+
 app.post('/resendConfirmationEmail', async (req, res) => {
-  const { loginToken } = req.body;
-  console.log(loginToken)
+  const { loginToken: token } = req.body; // Renombrar loginToken a token
+  console.log("Received loginToken:", token); // Verificar el token recibido
+
   try {
     const users = JSON.parse(fs.readFileSync(usersFilePath));
-    const existingUser = users.find(user => user.loginToken === loginToken);
+    console.log("Users:", users); // Imprimir el contenido de users para depuración
 
-    const token = existingUser.token;
+    const existingUser = users.find(user => user.loginToken === token); // Utilizar token en lugar de loginToken
 
-    // Envía el correo electrónico de confirmación con el nuevo token
-    sendConfirmationEmail(existingUser.email, token);
+    console.log("Existing user:", existingUser); // Imprimir el usuario encontrado
 
-    res.status(200).json({ message: 'Confirmation email resent successfully' });
+    // Verificar si se encontró un usuario con el token proporcionado
+    if (existingUser) {
+      // Envía el correo electrónico de confirmación con el loginToken almacenado en el usuario
+      sendConfirmationEmail(existingUser.email, existingUser.loginToken);
+
+      res.status(200).json({ message: 'Confirmation email resent successfully' });
+    } else {
+      // Si no se encontró ningún usuario con el token proporcionado, devuelve un error
+      res.status(400).json({ error: 'Invalid loginToken' }); // Corregir el mensaje de error
+    }
   } catch (error) {
     console.error('Error resending confirmation email:', error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -113,32 +126,24 @@ app.post('/resendConfirmationEmail', async (req, res) => {
 });
 
 
-
-app.get('/confirm/:token', async (req, res) => {
-  const token = req.params.token;
+app.get('/confirm/:loginToken', async (req, res) => {
+  const token = req.params.loginToken;
 
   try {
-
-    // Leer los usuarios del archivo JSON y asignarlos a la variable users
     const users = JSON.parse(fs.readFileSync(usersFilePath));
+    const userIndex = users.findIndex(user => user.token === token);
 
-    // 1. Buscar el usuario en el array de usuarios utilizando el token proporcionado
-    const user = users.find(user => user.token === token);
+    if (userIndex !== -1) {
+      users[userIndex].emailConfirmed = true;
+      users[userIndex].token = ''; // Limpia el loginToken después de confirmar el correo electrónico
+      fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
 
-    // 2. Si se encuentra un usuario con el token proporcionado
-    if (user) {
-      // 3. Actualizar el estado de confirmación del correo electrónico y eliminar el token
-      user.emailConfirmed = true;
-      user.token = '';
-      await fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2)); // Guardar el usuario actualizado en el archivo JSON
-
-      return res.status(200).json({ message: 'Token confirmado correctamente.' });
+      // Devuelve una respuesta indicando que el correo electrónico se confirmó correctamente
+      return res.status(200).json({ message: 'Email confirmed successfully' });
     } else {
-      // 5. Si el token es inválido, devolver un error
-      res.status(400).json({ error: 'Invalid token' });
+      res.status(400).json({ error: 'Invalid loginToken' });
     }
   } catch (error) {
-    // 6. Manejar cualquier error que ocurra durante el proceso
     console.error('Error:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
@@ -169,6 +174,35 @@ app.get('/confirmEmail/:userId', async (req, res) => {
   }
 });
 
+// Endpoint para verificar si el correo electrónico está confirmado
+app.get('/checkEmailConfirmed', (req, res) => {
+  try {
+    // Obtener el token JWT del encabezado de autorización
+    const token = req.headers.authorization.split(' ')[1];
+
+    const users = JSON.parse(fs.readFileSync(usersFilePath));
+    const existingUser = users.find(user => user.loginToken === token);
+
+    console.log(token)
+    console.log(existingUser)
+    // Verificar si el token está presente
+    if (!token) {
+      return res.status(401).json({ error: 'Unauthorized: Token missing' });
+    }
+
+    // Verificar si la propiedad emailConfirmed está presente en el usuario existente
+    const emailConfirmed = existingUser ? existingUser.emailConfirmed : false;
+
+    // Devolver el estado de confirmación del correo electrónico
+    res.status(200).json({ emailConfirmed });
+  } catch (error) {
+    console.error('Error checking email confirmation:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+
 // Ruta para verificar si un correo electrónico ya está registrado
 app.get('/checkEmail/:email', (req, res) => {
   const { email } = req.params;
@@ -182,24 +216,7 @@ app.get('/checkEmail/:email', (req, res) => {
   }
 });
 
-// Método para verificar si un usuario está autenticado
-function isLoggedIn(email, password) {
-  try {
-    const users = JSON.parse(fs.readFileSync(usersFilePath));
-    const user = users.find(user => user.email === email);
-    if (user && bcrypt.compareSync(password, user.password)) {
-      console.log('User found:', user);
-      return user;
-    }
-    console.log('User not found or password incorrect');
-    return null;
-  } catch (err) {
-    console.error('Error al verificar la autenticación del usuario:', err);
-    return null;
-  }
-}
-
-
+// Endpoint para iniciar sesión
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
   
@@ -217,13 +234,12 @@ app.post('/login', (req, res) => {
     fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
 
     // Devolver el token y cualquier otra información relevante
-    res.status(200).json({ token, emailConfirmed: user.emailConfirmed });
+    res.status(200).json({ token, emailConfirmed: user.emailConfirmed }); // Agrega la información sobre la confirmación del correo electrónico
   } else {
     // Si las credenciales son inválidas, devolver un mensaje de error
     res.status(401).json({ message: 'Invalid credentials. Please try again.' });
   }
 });
-
 
 // Endpoint para actualizar el correo electrónico del usuario
 app.put('/users/email', (req, res) => {
@@ -301,53 +317,103 @@ function authenticateUser(email, password) {
 }
 
 
-// Método para verificar si un usuario está autenticado y devolver el usuario con su token
-function loginToken(email, password) {
+// Endpoint to get all sensor data
+app.get('/sensor-data', (req, res) => {
   try {
-    const users = JSON.parse(fs.readFileSync(usersFilePath));
-    const user = users.find(user => user.email === email);
-    if (user && bcrypt.compareSync(password, user.password)) {
-      let token = user.loginToken;
-      if (token) {
-        // Borrar el token existente si lo tiene
-        user.loginToken = '';
-      }
-      // Generar un nuevo token
-      token = jwt.sign({ email, fullName: user.fullName }, 'k=F##7dEKxWN:[1]+_"1L7q(5:o!6[XKdU2S[3gTr-1nu9_"zW', { expiresIn: '24h' });
-      user.loginToken = token;
-      fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
-      return { user, token };
-    }
-    console.log('User not found or password incorrect');
-    return null;
-  } catch (err) {
-    console.error('Error al verificar la autenticación del usuario:', err);
-    return null;
-  }
-}
+    // Read sensor data from file
+    const sensorData = JSON.parse(fs.readFileSync(sensorDataFilePath));
 
-
-
-app.post('/loginToken', (req, res) => {
-  const { email, password } = req.body;
-
-  const userWithToken = loginToken(email, password);
-
-  if (userWithToken) {
-    res.status(200).json(userWithToken);
-  } else {
-    res.status(401).json({ message: 'Invalid credentials. Please try again.' });
+    // Send the sensor data as response
+    res.status(200).json(sensorData);
+  } catch (error) {
+    console.error('Error reading sensor data:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
 app.post('/sensor-data', (req, res) => {
-  const sensorData = req.body; // Obtener los datos del cuerpo de la solicitud
-  console.log('Datos de los sensores recibidos:', sensorData);
+  try {
+    const sensorData = req.body; // Get the sensor data from the request body
+    console.log('Sensor data received:', sensorData);
 
-  // Aquí puedes realizar cualquier procesamiento adicional con los datos recibidos
+    // Perform additional processing if needed
 
-  // Enviar una respuesta al ESP32 para confirmar que los datos se recibieron correctamente
-  res.status(200).json({ message: 'Datos de los sensores recibidos correctamente' });
+    // Write the sensor data to the sensor-data.json file
+    fs.readFile(sensorDataFilePath, 'utf8', (err, data) => {
+      if (err) {
+        console.error('Error reading sensor data file:', err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
+
+      let sensorDataArray = [];
+      try {
+        sensorDataArray = JSON.parse(data);
+      } catch (parseError) {
+        console.error('Error parsing sensor data JSON:', parseError);
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
+
+      sensorDataArray.push(sensorData);
+
+      fs.writeFile(sensorDataFilePath, JSON.stringify(sensorDataArray, null, 2), (writeErr) => {
+        if (writeErr) {
+          console.error('Error writing sensor data to file:', writeErr);
+          return res.status(500).json({ error: 'Internal Server Error' });
+        }
+        console.log('Sensor data written to file successfully');
+        res.status(200).json({ message: 'Sensor data received and written to file' });
+      });
+    });
+  } catch (error) {
+    console.error('Error processing sensor data:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Endpoint to update the first sensor data object
+app.put('/sensor-data', (req, res) => {
+  try {
+    const updatedSensorData = req.body; // Get the updated sensor data from the request body
+    console.log('Updated sensor data:', updatedSensorData);
+
+    // Read the sensor data file
+    fs.readFile(sensorDataFilePath, 'utf8', (err, data) => {
+      if (err) {
+        console.error('Error reading sensor data file:', err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
+
+      let sensorDataArray = [];
+      try {
+        sensorDataArray = JSON.parse(data);
+      } catch (parseError) {
+        console.error('Error parsing sensor data JSON:', parseError);
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
+
+      // Check if the sensor data array is not empty
+      if (sensorDataArray.length > 0) {
+        // Update the first sensor data object
+        sensorDataArray[0] = updatedSensorData;
+
+        // Write the updated sensor data back to the file
+        fs.writeFile(sensorDataFilePath, JSON.stringify(sensorDataArray, null, 2), (writeErr) => {
+          if (writeErr) {
+            console.error('Error writing sensor data to file:', writeErr);
+            return res.status(500).json({ error: 'Internal Server Error' });
+          }
+          console.log('Sensor data updated successfully');
+          res.status(200).json({ message: 'Sensor data updated successfully' });
+        });
+      } else {
+        // If the sensor data array is empty, return an error response
+        return res.status(404).json({ error: 'No sensor data found' });
+      }
+    });
+  } catch (error) {
+    console.error('Error updating sensor data:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
 app.listen(PORT, () => {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable , throwError  } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 @Injectable({
@@ -10,7 +10,7 @@ export class AuthService {
   private baseUrl = 'http://34.175.187.252:3000';
   private tokenKey = 'auth_token';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   login(email: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/login`, { email, password })
@@ -22,11 +22,11 @@ export class AuthService {
         })
       );
   }
-  
+
   register(user: any) {
     return this.http.post<any>(`${this.baseUrl}/users`, user);
   }
-  
+
   logout(): void {
     // Eliminar el token JWT del almacenamiento local del navegador al cerrar sesión
     localStorage.removeItem('token');
@@ -41,7 +41,7 @@ export class AuthService {
 
   getCurrentUser(): any {
     // Obtener el token JWT del almacenamiento local del navegador
-    const token = localStorage.getItem('token');
+    const token = this.getToken() // Usar la misma clave aquí
     if (!token) {
       // No hay token JWT, el usuario no está autenticado
       return null;
@@ -52,41 +52,68 @@ export class AuthService {
       console.error('Token JWT no válido: No se encontraron las tres partes.');
       return null;
     }
-    
+
     // Decodificar el payload del token (la segunda parte)
     const payload = JSON.parse(atob(tokenParts[1]));
+
+    // Verificar si la propiedad emailConfirmed está presente en el payload
+    const emailConfirmed = payload.emailConfirmed || false;
+
+    // Devolver el objeto de usuario con emailConfirmed si está presente en el payload
     return {
       fullName: payload.fullName,
-      email: payload.email
+      email: payload.email,
+      emailConfirmed: emailConfirmed,
+      loginToken: token
     };
   }
 
+  
+  checkEmailConfirmed(): Observable<any> {
+    // Obtener el token JWT del almacenamiento local del navegador
+    const token = this.getToken();
+  
+    // Verificar si el token existe
+    if (!token) {
+      // Si no hay token, devolver un error
+      return throwError('No token available');
+    }
+  
+    // Hacer una solicitud HTTP para verificar si el correo electrónico está confirmado
+    return this.http.get<any>(`${this.baseUrl}/checkEmailConfirmed`, {
+      headers: {
+        Authorization: `Bearer ${token}` // Adjuntar el token JWT en el encabezado Authorization
+      }
+    });
+  }
+  
+
   resendConfirmationEmail(token: string): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/resendConfirmationEmail`, { loginToken: token });
-}
+  }
 
   // Almacena el token en el almacenamiento local del navegador
   storeToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
   }
 
- // Obtiene el token de la respuesta del servidor y lo almacena
- getAuthTokenFromResponse(email: string, password: string): void {
-  // Hacer una solicitud HTTP para obtener el token
-  this.http.post<any>(`${this.baseUrl}/login`, { email, password }).subscribe(
-    response => {
-      if (response && response.token) {
-        // Almacena el token en el almacenamiento local
-        this.storeToken(response.token);
-      } else {
-        console.error('No se recibió ningún token en la respuesta del servidor');
+  // Obtiene el token de la respuesta del servidor y lo almacena
+  getAuthTokenFromResponse(email: string, password: string): void {
+    // Hacer una solicitud HTTP para obtener el token
+    this.http.post<any>(`${this.baseUrl}/login`, { email, password }).subscribe(
+      response => {
+        if (response && response.token) {
+          // Almacena el token en el almacenamiento local
+          this.storeToken(response.token);
+        } else {
+          console.error('No se recibió ningún token en la respuesta del servidor');
+        }
+      },
+      error => {
+        console.error('Error al intentar obtener el token del servidor:', error);
       }
-    },
-    error => {
-      console.error('Error al intentar obtener el token del servidor:', error);
-    }
-  );
-}
+    );
+  }
 
   // Obtiene el token almacenado
   getToken(): string | null {
@@ -97,5 +124,5 @@ export class AuthService {
   storeLoginToken(token: string): void {
     localStorage.setItem('loginToken', token);
   }
-  
+
 }

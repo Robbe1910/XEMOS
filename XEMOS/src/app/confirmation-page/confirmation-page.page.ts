@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../services/api-service.service';
+import { ConfirmationResponse } from '../model';
 
 @Component({
   selector: 'app-confirmation-page',
@@ -18,14 +19,21 @@ export class ConfirmationPagePage implements OnInit {
   confirmEmail() {
     const token = this.route.snapshot.params["token"];
     this.apiService.confirmEmail(token).subscribe(
-      () => {
+      (response: ConfirmationResponse) => {
         console.log('Email confirmed successfully');
-        this.router.navigateByUrl('/login');
+        if (response.message === 'Token confirmado correctamente.') {
+          this.router.navigateByUrl('/confirmation-page');
+        } else {
+          this.router.navigateByUrl('/login');
+        }
       },
       (error) => {
         console.error('Error confirming email:', error);
       }
     );
   }
+  
+  
+  
+  }
 
-}
