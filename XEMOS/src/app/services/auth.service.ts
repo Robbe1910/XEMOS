@@ -1,32 +1,32 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable , throwError  } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private baseUrl = 'http://34.175.187.252:3000';
+  private tokenKey = 'auth_token';
 
   constructor(private http: HttpClient) {}
 
-  login(email: string, password: string): Observable<boolean> {
+  login(email: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/login`, { email, password })
       .pipe(
-        map(response => {
-          // Verificar si el inicio de sesión fue exitoso y si se recibió un token JWT
+        tap(response => {
           if (response && response.token) {
-            // Almacenar el token JWT en el almacenamiento local del navegador
             localStorage.setItem('token', response.token);
-            return true;
-          } else {
-            return false;
           }
         })
       );
   }
-
+  
+  register(user: any) {
+    return this.http.post<any>(`${this.baseUrl}/users`, user);
+  }
+  
   logout(): void {
     // Eliminar el token JWT del almacenamiento local del navegador al cerrar sesión
     localStorage.removeItem('token');
@@ -46,12 +46,56 @@ export class AuthService {
       // No hay token JWT, el usuario no está autenticado
       return null;
     }
-
-    // Decodificar el token JWT para obtener la información del usuario
-    const payload = JSON.parse(atob(token.split('.')[1]));
+    // Dividir el token en sus partes (header, payload, signature)
+    const tokenParts = token.split('.');
+    if (tokenParts.length !== 3) {
+      console.error('Token JWT no válido: No se encontraron las tres partes.');
+      return null;
+    }
+    
+    // Decodificar el payload del token (la segunda parte)
+    const payload = JSON.parse(atob(tokenParts[1]));
     return {
       fullName: payload.fullName,
       email: payload.email
     };
   }
+
+  resendConfirmationEmail(token: string): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/resendConfirmationEmail`, { loginToken: token });
+}
+
+  // Almacena el token en el almacenamiento local del navegador
+  storeToken(token: string): void {
+    localStorage.setItem(this.tokenKey, token);
+  }
+
+ // Obtiene el token de la respuesta del servidor y lo almacena
+ getAuthTokenFromResponse(email: string, password: string): void {
+  // Hacer una solicitud HTTP para obtener el token
+  this.http.post<any>(`${this.baseUrl}/login`, { email, password }).subscribe(
+    response => {
+      if (response && response.token) {
+        // Almacena el token en el almacenamiento local
+        this.storeToken(response.token);
+      } else {
+        console.error('No se recibió ningún token en la respuesta del servidor');
+      }
+    },
+    error => {
+      console.error('Error al intentar obtener el token del servidor:', error);
+    }
+  );
+}
+
+  // Obtiene el token almacenado
+  getToken(): string | null {
+    return localStorage.getItem(this.tokenKey);
+  }
+
+  // Almacena el token de inicio de sesión en el almacenamiento local del navegador
+  storeLoginToken(token: string): void {
+    localStorage.setItem('loginToken', token);
+  }
+  
 }

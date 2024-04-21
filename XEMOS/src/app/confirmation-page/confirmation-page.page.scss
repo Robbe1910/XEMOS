@@ -1,0 +1,29 @@
+#container-confirmation {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(213, 226, 231);
+    color: black;
+  }
+  
+  #title-confirmation {
+    font-size: larger;
+  }
+  
+  #confirmation-message {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  #error-message {
+    color: red;
+    margin-top: 5px;
+    font-size: 0.8em;
+  }
+  
+  #login {
+    padding-top: 20px;
+  }

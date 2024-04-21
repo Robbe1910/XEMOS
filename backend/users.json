@@ -2,16 +2,25 @@
   {
     "fullName": "admin",
     "email": "admin@admin.com",
-    "password": "$2a$10$43yNubQtOtdsyoVTHX7C0.DYCUbuNKZJrOpZ3oGc5D0t/6gaGGjsq"
+    "password": "$2a$10$43yNubQtOtdsyoVTHX7C0.DYCUbuNKZJrOpZ3oGc5D0t/6gaGGjsq",
+    "emailConfirmed": true,
+    "token": "",
+    "loginToken": ""
   },
   {
     "fullName": "Prueba",
     "email": "prueba@prueba.com",
-    "password": "$2b$10$DdSzQyOPFtyFRW4uMobO8up/7z0dnBIctJxqKGUzwKbrcI0R0o2Zy"
+    "password": "$2b$10$DdSzQyOPFtyFRW4uMobO8up/7z0dnBIctJxqKGUzwKbrcI0R0o2Zy",
+    "emailConfirmed": true,
+    "token": "",
+    "loginToken": ""
   },
   {
     "fullName": "prueba 1",
     "email": "prueba1@prueba.com",
-    "password": "$2a$10$iBKmyE3j3NAdd93IL0W62OpfYN2kYket7Z0grZCaU3hafu5eQMW0y"
+    "password": "$2a$10$iBKmyE3j3NAdd93IL0W62OpfYN2kYket7Z0grZCaU3hafu5eQMW0y",
+    "emailConfirmed": true,
+    "token": "",
+    "loginToken": ""
   }
 ]

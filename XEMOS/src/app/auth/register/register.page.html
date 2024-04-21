@@ -35,6 +35,18 @@
             Email already exists
           </div>
         </div>
+        <!-- Confirm Email -->
+<div class="field-container">
+  <label for="confirmEmail">Confirm Email:</label><br>
+  <div class="fields" [ngClass]="{'is-invalid': registroForm.controls['confirmEmail'].touched && (!registroForm.controls['confirmEmail'].valid || registroForm.hasError('notSameEmail')), 'is-valid': registroForm.controls['confirmEmail'].touched && registroForm.controls['confirmEmail'].valid && !registroForm.hasError('notSameEmail')}">
+    <i class="fa-solid fa-envelope" style="color: #424242;"></i>
+    <input formControlName="confirmEmail" type="email" id="confirmEmail">
+  </div>
+  <div *ngIf="registroForm.hasError('notSameEmail') && registroForm.controls['confirmEmail'].touched" class="error-message">
+    Email addresses do not match
+  </div>
+</div>
+            
         <!-- Password -->
         <div class="field-container">
           <label for="passwd">Password:</label><br>
@@ -60,7 +72,7 @@
             <i class="fas" [ngClass]="{'fa-eye-slash': hideConfirmPassword, 'fa-eye': !hideConfirmPassword}" (click)="toggleConfirmPasswordVisibility()" style="color: #424242;"></i>
             <input formControlName="confirmPassword" type="{{ hideConfirmPassword ? 'password' : 'text' }}" id="confirmPasswd">
           </div>
-          <div *ngIf="registroForm.hasError('notSame') && registroForm.controls['confirmPassword'].touched" class="error-message">
+          <div *ngIf="registroForm.hasError('notSamePassword') && registroForm.controls['confirmPassword'].touched" class="error-message">
             Passwords do not match
           </div>
         </div>

@@ -1,88 +1,94 @@
 #container-register {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: rgb(213, 226, 231);
-    color: black;
-  }
-  
-  #title-register {
-    font-size: larger;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-  
-  #btn-register {
-    width: 100%;
-    margin-top: 20px;
-    text-align: center;
-  }
-  
-  input {
-    background-color: whitesmoke;
-    border: 0px;
-    height: 30px;
-  }
-  
-  #btn-register button {
-    width: 80px;
-    height: 30px;
-    border-radius: 8px;
-    background-color: rgb(58, 58, 58);
-  }
-  
-  #btn-register button:active {
-    background-color: rgb(177, 177, 177);
-    color: black;
-    border: 1px solid rgb(31, 65, 94);
-  }
-  
-  .fields {
-    display: flex;
-    border-bottom: 1px solid black;
-  }
-  
-  .fields i {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: lightgray;
-    width: 15%;
-  }
-  
-  .fields input {
-    width: 85%;
-  }
-  
-  #login {
-    padding-top: 20px;
-  }
-  
-  /* Estilo para input válido */
-  .fields.is-valid {
-    border-color: #28a745; /* Color verde */
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  }
-  
-  /* Estilo para input inválido */
-  .fields.is-invalid {
-    border-color: #dc3545; /* Color rojo */
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  }
-  
-  .error-message {
-    color: red;
-    margin-top: 5px; /* Ajusta el margen superior del mensaje de error */
-    font-size: 0.8em; /* Ajusta el tamaño de fuente del mensaje de error */
-  }
-  
-  .field-container {
-    margin-bottom: 15px; /* Añade un espacio entre cada campo de entrada */
-  }
+  width: 100%;
+  min-height: 100vh;
+  /* Establecer una altura mínima igual a la altura de la ventana del navegador */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(213, 226, 231);
+  color: black;
+}
 
-  .register_form{
-    max-width: 250px;
-  }
-  
+
+#title-register {
+  font-size: larger;
+}
+
+#btn-register {
+  width: 100%;
+  margin-top: 20px;
+  text-align: center;
+}
+
+input {
+  background-color: whitesmoke;
+  border: 0px;
+  height: 30px;
+}
+
+#btn-register button {
+  width: 80px;
+  height: 30px;
+  border-radius: 8px;
+  background-color: rgb(58, 58, 58);
+  color: white;
+}
+
+#btn-register button:active {
+  background-color: rgb(177, 177, 177);
+  color: black;
+  border: 1px solid rgb(31, 65, 94);
+}
+
+.fields {
+  display: flex;
+  border-bottom: 1px solid black;
+}
+
+.fields i {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: lightgray;
+  width: 15%;
+}
+
+.fields input {
+  width: 85%;
+}
+
+#login {
+  padding-top: 20px;
+}
+
+/* Estilo para input válido */
+.fields.is-valid {
+  border-color: #28a745;
+  /* Color verde */
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+/* Estilo para input inválido */
+.fields.is-invalid {
+  border-color: #dc3545;
+  /* Color rojo */
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.error-message {
+  color: red;
+  margin-top: 5px;
+  /* Ajusta el margen superior del mensaje de error */
+  font-size: 0.8em;
+  /* Ajusta el tamaño de fuente del mensaje de error */
+}
+
+.field-container {
+  margin-bottom: 15px;
+  /* Añade un espacio entre cada campo de entrada */
+}
+
+.register_form {
+  max-width: 250px;
+}

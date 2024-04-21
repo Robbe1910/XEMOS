@@ -4,6 +4,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { MainContainerComponent } from './main-container/main-container.component';
 
 
+
 const routes: Routes = [
   {
     path: '', // Path vacío para redirección
@@ -35,7 +36,8 @@ const routes: Routes = [
   { path: 'loading', loadChildren: () => import('./loading-screen/loading-screen.module').then(m => m.LoadingScreenPageModule) },
   { path: 'loading-login', loadChildren: () => import('./loading-screen-login/loading-screen.module').then(m => m.LoadingScreenPageModule) },
   { path: 'loading-delete-account', loadChildren: () => import('./loading-screen delete-account/loading-screen.module').then(m => m.LoadingScreenPageModule) },
-  
+  { path: 'confirmation-page', loadChildren: () => import('./confirmation-page/confirmation-page.module').then(m => m.ConfirmationPagePageModule) },
+  { path: 'confirm-email', loadChildren: () => import('./confirm-email/confirm-email.module').then(m => m.ConfirmEmailPageModule) },
 ];
 
 

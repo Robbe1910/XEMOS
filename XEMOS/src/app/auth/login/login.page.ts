@@ -30,24 +30,28 @@ export class LoginPage{
         password: this.loginForm.value.password
       };
 
-        this.authService.login(credentials.email, credentials.password).subscribe(
-          success => {
-              this.router.navigateByUrl('/loading-login'); // Redirige al usuario a la página de inicio
-          },
-          error => {
-            if (error.status === 401) {
-              // 401 Unauthorized indica credenciales incorrectas
-              this.errorMessage = 'Incorrect email or password.';
-            } else {
-              // Otros errores, mostrar mensaje genérico
-              this.errorMessage = 'Server error. Please try again later.';
-            }
+      this.authService.login(credentials.email, credentials.password).subscribe(
+        success => {
+          if (!success.emailConfirmed) {
+            this.router.navigateByUrl('/confirm-email');
+          } else {
+            this.router.navigateByUrl('/loading-login');
           }
-        );
+        },
+        error => {
+          if (error.status === 401) {
+            this.errorMessage = 'Incorrect email or password.';
+          } else {
+            this.errorMessage = 'Server error. Please try again later.';
+          }
+        }
+      );
+      
     } else {
-      this.errorMessage = 'Por favor, completa todos los campos correctamente.';
+      this.errorMessage = 'Please fill in all fields correctly.';
     }
   }
+  
   
 
   togglePasswordVisibility() {

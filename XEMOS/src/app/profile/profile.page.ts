@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -31,7 +31,7 @@ export class ProfilePage implements OnInit {
     });
 
     this.passwordForm = this.formBuilder.group({
-      newPassword: ['', [Validators.required, Validators.minLength(8)]],
+      newPassword: ['', [Validators.required, Validators.minLength(8), this.passwordValidator()]],
     });
   }
 
@@ -78,6 +78,21 @@ export class ProfilePage implements OnInit {
     );
   }
   
+  // Función de validación personalizada para verificar la complejidad de la contraseña
+  passwordValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const value: string = control.value;
+      const hasUppercase = /[A-Z]/.test(value); // Verifica si hay al menos una mayúscula
+      const hasLowercase = /[a-z]/.test(value); // Verifica si hay al menos una minúscula
+      const hasNumber = /\d/.test(value); // Verifica si hay al menos un número
+      const hasSpecial = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(value); // Verifica si hay al menos un símbolo especial
+
+      const valid = hasUppercase && hasLowercase && hasNumber && hasSpecial;
+
+      return valid ? null : { 'passwordRequirements': true };
+    };
+  }
+
   updatePassword() {
     const newPassword = this.passwordForm?.get('newPassword')?.value;
     if (!newPassword) return; // Verificar si newPassword es null o undefined
