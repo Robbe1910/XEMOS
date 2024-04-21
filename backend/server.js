@@ -132,8 +132,7 @@ app.get('/confirm/:token', async (req, res) => {
       user.token = '';
       await fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2)); // Guardar el usuario actualizado en el archivo JSON
 
-      // 4. Redirigir al usuario a una página de confirmación en la aplicación
-      res.redirect('http://localhost:8100/confirmation-page');
+      return res.status(200).json({ message: 'Token confirmado correctamente.' });
     } else {
       // 5. Si el token es inválido, devolver un error
       res.status(400).json({ error: 'Invalid token' });
@@ -163,7 +162,7 @@ app.get('/confirmEmail/:userId', async (req, res) => {
     user.emailConfirmed = true;
     await user.save();
 
-    return res.redirect('http://localhost:8100/login'); // Redirigir a la página de inicio de sesión
+    return res.status(200).json({ message: 'Cuenta confirmada correctamente.' });
   } catch (error) {
     console.error('Error al confirmar correo electrónico:', error);
     return res.status(500).json({ message: 'Error interno del servidor.' });
