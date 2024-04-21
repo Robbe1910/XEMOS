@@ -62,6 +62,8 @@ app.post('/users', async (req, res) => {
     newUser.token = token;
     newUser.emailConfirmed = false; // Agregar una propiedad para indicar si el correo está confirmado o no
     newUser.createdAt = new Date(); // Agregar una propiedad para la fecha de creación
+    const hashedPassword = bcrypt.hashSync(newUser.password, 10);
+    newUser.password = hashedPassword;
     // Define el payload del loginToken con la información que deseas incluir
     const payload = {
       email: newUser.email,
@@ -74,7 +76,7 @@ app.post('/users', async (req, res) => {
     const secretKey = 'k=F##7dEKxWN:[1]+_"1L7q(5:o!6[XKdU2S[3gTr-1nu9_"zW';
 
     // Genera el loginToken jwt con el payload, la clave secreta y opcionalmente un tiempo de expiración
-    const loginTokenJWT = jwt.sign(payload, secretKey, { expiresIn: '24h' });
+    const loginTokenJWT = jwt.sign(payload, secretKey, { expiresIn: '1h' });
     newUser.loginToken = loginTokenJWT;
 
     // Leer los usuarios del archivo JSON
@@ -98,31 +100,26 @@ app.post('/users', async (req, res) => {
 
 
 
-app.post('/resendConfirmationEmail', async (req, res) => {
-  const { loginToken: token } = req.body;
-  console.log("Received loginToken:", token);
+// Endpoint para reenviar correo de confirmación
+app.post('/resendConfirmationEmail', (req, res) => {
+  const { token } = req.body;
 
   try {
     const users = JSON.parse(fs.readFileSync(usersFilePath));
-    console.log("Users:", users);
+    const user = users.find(u => u.token === token);
 
-    const existingUser = users.find(user => user.loginToken === token);
-
-    console.log("Existing user:", existingUser);
-
-    if (existingUser) {
-      // Envía el correo electrónico de confirmación con el nuevo token único almacenado en el usuario
-      sendConfirmationEmail(existingUser.email, existingUser.token); // Usar el nuevo token único
-
-      res.status(200).json({ message: 'Confirmation email resent successfully' });
+    if (user) {
+      sendConfirmationEmail(user.email, user.token);
+      res.status(200).json({ message: 'Correo de confirmación reenviado exitosamente' });
     } else {
-      res.status(400).json({ error: 'Invalid loginToken' });
+      res.status(400).json({ error: 'Token de inicio de sesión inválido' });
     }
   } catch (error) {
-    console.error('Error resending confirmation email:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error('Error al reenviar correo de confirmación:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 });
+
 
 
 
@@ -219,27 +216,19 @@ app.get('/checkEmail/:email', (req, res) => {
 // Endpoint para iniciar sesión
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
-  
   const users = JSON.parse(fs.readFileSync(usersFilePath));
-
-  // Autenticar al usuario
   const user = authenticateUser(email, password);
-
   if (user) {
-    // Generar un nuevo token para el usuario autenticado
-    const token = jwt.sign({ email, fullName: user.fullName }, 'k=F##7dEKxWN:[1]+_"1L7q(5:o!6[XKdU2S[3gTr-1nu9_"zW', { expiresIn: '24h' });
-    
-    // Guardar el token en el usuario
+    const token = jwt.sign({ email, fullName: user.fullName }, 'k=F##7dEKxWN:[1]+_"1L7q(5:o!6[XKdU2S[3gTr-1nu9_"zW', { expiresIn: '1h' });
     user.loginToken = token;
     fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
-
-    // Devolver el token y cualquier otra información relevante
-    res.status(200).json({ token, emailConfirmed: user.emailConfirmed }); // Agrega la información sobre la confirmación del correo electrónico
+    res.status(200).json({ token, emailConfirmed: user.emailConfirmed });
   } else {
-    // Si las credenciales son inválidas, devolver un mensaje de error
-    res.status(401).json({ message: 'Invalid credentials. Please try again.' });
+    res.status(401
+).json({ message: 'Invalid credentials. Please try again.' });
   }
 });
+
 
 // Endpoint para actualizar el correo electrónico del usuario
 app.put('/users/email', (req, res) => {

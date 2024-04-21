@@ -21,10 +21,10 @@ export class ConfirmEmailPage implements OnInit {
   }
 
   resendConfirmationEmail(): void {
-    const currentUser = this.authService.getCurrentUser();
+    const currentUser = this.authService.getCurrentUserRegistered();
     console.log(currentUser)
     if (currentUser && currentUser.loginToken) {
-      this.authService.resendConfirmationEmail(currentUser.loginToken).subscribe(
+      this.authService.resendConfirmationEmail(currentUser.token).subscribe(
         (response) => {
           console.log('Confirmation email resent successfully');
           // Verificar si el correo electrónico ya está confirmado

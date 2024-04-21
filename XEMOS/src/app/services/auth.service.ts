@@ -23,7 +23,7 @@ export class AuthService {
         })
       );
   }
-
+  
   register(user: any) {
     return this.http.post<any>(`${this.baseUrl}/users`, user);
   }
@@ -54,9 +54,40 @@ export class AuthService {
     return !!token;
   }
 
-  getCurrentUser(): any {
+  getCurrentUserRegistered(): any {
     // Obtener el token JWT del almacenamiento local del navegador
     const token = this.getLoginToken() // Usar la misma clave aquí
+    console.log(token )
+    if (!token) {
+      // No hay token JWT, el usuario no está autenticado
+      return null;
+    }
+    // Dividir el token en sus partes (header, payload, signature)
+    const tokenParts = token.split('.');
+    if (tokenParts.length !== 3) {
+      console.error('Token JWT no válido: No se encontraron las tres partes.');
+      return null;
+    }
+
+    // Decodificar el payload del token (la segunda parte)
+    const payload = JSON.parse(atob(tokenParts[1]));
+
+    // Verificar si la propiedad emailConfirmed está presente en el payload
+    const emailConfirmed = payload.emailConfirmed || false;
+
+    // Devolver el objeto de usuario con emailConfirmed si está presente en el payload
+    return {
+      fullName: payload.fullName,
+      email: payload.email,
+      emailConfirmed: emailConfirmed,
+      loginToken: token,
+      token: payload.token
+    };
+  }
+
+  getCurrentUser(): any {
+    // Obtener el token JWT del almacenamiento local del navegador
+    const token = this.getToken() // Usar la misma clave aquí
     console.log(token )
     if (!token) {
       // No hay token JWT, el usuario no está autenticado
@@ -106,7 +137,7 @@ export class AuthService {
   
 
   resendConfirmationEmail(token: string): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/resendConfirmationEmail`, { token: localStorage.getItem('token') });
+    return this.http.post<any>(`${this.baseUrl}/resendConfirmationEmail`, { token });
   }
 
   storeToken(token: string): void {
