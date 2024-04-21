@@ -45,31 +45,18 @@ export class RegisterPage implements OnInit {
 
   onSubmit() {
     if (this.registroForm.valid) {
-      const token = uuidv4();
       const newUser = {
         fullName: this.registroForm.value.fullName,
         email: this.registroForm.value.email,
-        password: bcrypt.hashSync(this.registroForm.value.password, 10),
-        token: token
+        password: this.registroForm.value.password
       };
-
-      this.http.post<any>('http://34.175.187.252:3000/users', newUser)
-        .subscribe((response) => {
-          this.authService.getAuthTokenFromResponse(newUser.email, this.registroForm.value.password);
-          this.router.navigateByUrl('/confirm-email');
-          this.authService.storeLoginToken(response.loginToken);
-        }, (error: HttpErrorResponse) => {
-          if (error.status === 400) {
-            this.errorMessage = error.error.message || 'Unexpected error 400. Please try again later.';
-          } else {
-            this.errorMessage = error.error.message || 'Unexpected error. Please try again later.';
-          }
-          this.errorMessage = error.error.message || 'Server error';
-        });
+  
+      this.authService.registerUser(newUser);
+      this.router.navigateByUrl('/confirm-email');
     } else {
       this.errorMessage = "Invalid email or password";
     }
-  }
+  }  
 
 
   checkEmail() {

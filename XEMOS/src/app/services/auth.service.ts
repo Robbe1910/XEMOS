@@ -8,7 +8,8 @@ import { map, tap } from 'rxjs/operators';
 })
 export class AuthService {
   private baseUrl = 'http://34.175.187.252:3000';
-  private tokenKey = 'auth_token';
+  private loginTokenKey = 'loginToken';
+  private tokenKey = "token"
 
   constructor(private http: HttpClient) { }
 
@@ -27,6 +28,20 @@ export class AuthService {
     return this.http.post<any>(`${this.baseUrl}/users`, user);
   }
 
+  registerUser(user: any): void {
+    // Lógica para registrar un nuevo usuario en el servidor
+    this.register(user).subscribe(
+      (response: any) => {
+        console.log('User registered successfully');
+        const loginToken = response.loginToken; // Obtener el loginToken de la respuesta del servidor
+        this.storeLoginToken(loginToken);
+      },
+      (error: any) => {
+        console.error('Error registering user:', error);
+      }
+    );
+  }
+
   logout(): void {
     // Eliminar el token JWT del almacenamiento local del navegador al cerrar sesión
     localStorage.removeItem('token');
@@ -41,7 +56,8 @@ export class AuthService {
 
   getCurrentUser(): any {
     // Obtener el token JWT del almacenamiento local del navegador
-    const token = this.getToken() // Usar la misma clave aquí
+    const token = this.getLoginToken() // Usar la misma clave aquí
+    console.log(token )
     if (!token) {
       // No hay token JWT, el usuario no está autenticado
       return null;
@@ -64,14 +80,15 @@ export class AuthService {
       fullName: payload.fullName,
       email: payload.email,
       emailConfirmed: emailConfirmed,
-      loginToken: token
+      loginToken: token,
+      token: payload.token
     };
   }
 
   
   checkEmailConfirmed(): Observable<any> {
     // Obtener el token JWT del almacenamiento local del navegador
-    const token = this.getToken();
+    const token = this.getLoginToken();
   
     // Verificar si el token existe
     if (!token) {
@@ -89,13 +106,13 @@ export class AuthService {
   
 
   resendConfirmationEmail(token: string): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/resendConfirmationEmail`, { loginToken: token });
+    return this.http.post<any>(`${this.baseUrl}/resendConfirmationEmail`, { token: localStorage.getItem('token') });
   }
 
-  // Almacena el token en el almacenamiento local del navegador
   storeToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
   }
+  
 
   // Obtiene el token de la respuesta del servidor y lo almacena
   getAuthTokenFromResponse(email: string, password: string): void {
@@ -103,7 +120,7 @@ export class AuthService {
     this.http.post<any>(`${this.baseUrl}/login`, { email, password }).subscribe(
       response => {
         if (response && response.token) {
-          // Almacena el token en el almacenamiento local
+          // Almacena el token único en el almacenamiento local
           this.storeToken(response.token);
         } else {
           console.error('No se recibió ningún token en la respuesta del servidor');
@@ -113,12 +130,16 @@ export class AuthService {
         console.error('Error al intentar obtener el token del servidor:', error);
       }
     );
-  }
+  }  
 
   // Obtiene el token almacenado
+  getLoginToken(): string | null {
+    return localStorage.getItem(this.loginTokenKey);
+  }
+
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
-  }
+  }  
 
   // Almacena el token de inicio de sesión en el almacenamiento local del navegador
   storeLoginToken(token: string): void {

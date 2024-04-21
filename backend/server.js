@@ -37,12 +37,12 @@ app.get('/users', (req, res) => {
 });
 
 // Función para enviar correo electrónico de confirmación
-function sendConfirmationEmail(email, loginToken) {
+function sendConfirmationEmail(email, token) {
   const mailOptions = {
     from: 'rberrendoe01@informatica.iesvalledeljerteplasencia.es',
     to: email,
     subject: 'Confirm your email address',
-    text: `Click the following link to confirm your email address: http://34.175.187.252:3000/confirm/${loginToken}`
+    text: `Click the following link to confirm your email address: http://34.175.187.252:3000/confirm/${token}` // Usar el nuevo token único
   };
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
@@ -52,6 +52,7 @@ function sendConfirmationEmail(email, loginToken) {
     }
   });
 }
+
 
 // Endpoint para registrar un nuevo usuario
 app.post('/users', async (req, res) => {
@@ -65,7 +66,8 @@ app.post('/users', async (req, res) => {
     const payload = {
       email: newUser.email,
       fullName: newUser.fullName,
-      emailConfirmed: newUser.emailConfirmed // Incluir emailConfirmed en el payload del loginToken
+      emailConfirmed: newUser.emailConfirmed,
+      token: newUser.token
     };
 
     // Define la clave secreta para firmar el loginToken (debería ser una cadena segura y secreta)
@@ -87,7 +89,7 @@ app.post('/users', async (req, res) => {
     // Enviar correo electrónico de confirmación con el loginToken
     sendConfirmationEmail(newUser.email, token);
 
-    res.status(201).json({ message: 'User registered successfully. Check your email for confirmation.', loginToken: token });
+    res.status(201).json({ message: 'User registered successfully. Check your email for confirmation.', loginToken: newUser.loginToken });
   } catch (error) {
     console.error('Error registering user:', error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -97,32 +99,31 @@ app.post('/users', async (req, res) => {
 
 
 app.post('/resendConfirmationEmail', async (req, res) => {
-  const { loginToken: token } = req.body; // Renombrar loginToken a token
-  console.log("Received loginToken:", token); // Verificar el token recibido
+  const { loginToken: token } = req.body;
+  console.log("Received loginToken:", token);
 
   try {
     const users = JSON.parse(fs.readFileSync(usersFilePath));
-    console.log("Users:", users); // Imprimir el contenido de users para depuración
+    console.log("Users:", users);
 
-    const existingUser = users.find(user => user.loginToken === token); // Utilizar token en lugar de loginToken
+    const existingUser = users.find(user => user.loginToken === token);
 
-    console.log("Existing user:", existingUser); // Imprimir el usuario encontrado
+    console.log("Existing user:", existingUser);
 
-    // Verificar si se encontró un usuario con el token proporcionado
     if (existingUser) {
-      // Envía el correo electrónico de confirmación con el loginToken almacenado en el usuario
-      sendConfirmationEmail(existingUser.email, existingUser.loginToken);
+      // Envía el correo electrónico de confirmación con el nuevo token único almacenado en el usuario
+      sendConfirmationEmail(existingUser.email, existingUser.token); // Usar el nuevo token único
 
       res.status(200).json({ message: 'Confirmation email resent successfully' });
     } else {
-      // Si no se encontró ningún usuario con el token proporcionado, devuelve un error
-      res.status(400).json({ error: 'Invalid loginToken' }); // Corregir el mensaje de error
+      res.status(400).json({ error: 'Invalid loginToken' });
     }
   } catch (error) {
     console.error('Error resending confirmation email:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 
 app.get('/confirm/:loginToken', async (req, res) => {
