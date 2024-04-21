@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, EMPTY } from 'rxjs';
+import { Observable, EMPTY, timer, switchMap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '../redux/reducers/reducers';
 import { loadSensorData } from '../redux/actions/sensor.actions';
@@ -9,16 +9,17 @@ import { loadSensorData } from '../redux/actions/sensor.actions';
   providedIn: 'root'
 })
 export class DataService {
-  private apiUrl = 'http://34.175.187.252:3000/sensor-data'; // URL de tu servidor
+  private apiUrl = 'http://34.175.187.252:3000/sensor-data'; // Replace with your JSON server URL
 
-  constructor(private http: HttpClient, private store: Store<AppState>) {}
+  constructor(private http: HttpClient) {}
 
-  // Método para hacer una solicitud GET al servidor y obtener los datos
+  // Function to fetch sensor data every second
   getData(): Observable<any> {
-    // Dispara una acción para cargar los datos del sensor
-    this.store.dispatch(loadSensorData());
-    // No es necesario hacer una solicitud HTTP directamente aquí
-    // La carga de datos se manejará a través de Redux y Effects
-    return EMPTY; // No devuelve nada aquí, ya que los datos se manejan a través de Redux
+    // Use timer to emit a value every second
+    return timer(0, 1000).pipe(
+      switchMap(() => this.http.get<any>(this.apiUrl)) // Make GET request to JSON server
+    );
   }
 }
+
+
