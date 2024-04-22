@@ -52,20 +52,8 @@ export class HomePage implements OnInit, OnDestroy {
     this.initializeAirQualityChart();
     this.initializeHumidityTemperatureChart();
 
-    // Obtener datos aleatorios cada 5 segundos
-    this.dataSubscription = interval(1000).subscribe(() => {
-      const heartRateData = this.generateHeartRateData();
-      const airQualityData = this.generateAirQualityData();
-      const humidityTemperatureData = this.generateHumidityTemperatureData();
-
-      this.updateCharts({
-        heartRateData,
-        airQualityData,
-        humidityTemperatureData
-      });
-    });
-
-    this.getSensorData();
+    // Obtener datos aleatorios cada 1 segundo
+    this.dataSubscription = this.dataService.getSensorData();
   }
 
   ngOnDestroy() {
@@ -74,19 +62,6 @@ export class HomePage implements OnInit, OnDestroy {
       this.dataSubscription.unsubscribe();
     }
   }
-
-  getSensorData(){
-    this.dataService.getData().subscribe(
-      (data) => {
-        this.sensorData = data;
-        console.log('New sensor data received:', this.sensorData);
-        this.formatSensorData(this.sensorData);
-      },
-      (error) => {
-        console.error('Error fetching sensor data:', error);
-      }
-    );
-  };
 
   formatSensorData(data: any){
     const dataArray = data[0].data.split('//');
