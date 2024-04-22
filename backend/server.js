@@ -180,8 +180,6 @@ app.get('/checkEmailConfirmed', (req, res) => {
     const users = JSON.parse(fs.readFileSync(usersFilePath));
     const existingUser = users.find(user => user.loginToken === token);
 
-    console.log(token)
-    console.log(existingUser)
     // Verificar si el token está presente
     if (!token) {
       return res.status(401).json({ error: 'Unauthorized: Token missing' });
@@ -192,6 +190,23 @@ app.get('/checkEmailConfirmed', (req, res) => {
 
     // Devolver el estado de confirmación del correo electrónico
     res.status(200).json({ emailConfirmed });
+  } catch (error) {
+    console.error('Error checking email confirmation:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.get('/checkEmailPasswordConfirmed', (req, res) => {
+  try {
+    // Obtener el correo electrónico de los parámetros de consulta
+    const email = req.query.email;
+
+    const users = JSON.parse(fs.readFileSync(usersFilePath));
+    const existingUser = users.find(user => user.email === email);
+    // Verificar si la propiedad emailConfirmed está presente en el usuario existente
+    const passwordChangeRequested = existingUser ? existingUser.passwordChangeRequested : false;
+    // Devolver el estado de confirmación del correo electrónico
+    res.status(200).json({ passwordChangeRequested });
   } catch (error) {
     console.error('Error checking email confirmation:', error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -268,6 +283,92 @@ app.put('/users/password', (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+// Endpoint para cambiar la contraseña si ha solicitado el cambio de contraseña
+app.put('/users/passwordChange', (req, res) => {
+  const { email, newPassword } = req.body;
+  try {
+    const users = JSON.parse(fs.readFileSync(usersFilePath));
+    const userIndex = users.findIndex(user => user.email === email);
+    if (userIndex !== -1) {
+      // Verificar si se ha solicitado un cambio de contraseña
+      if (users[userIndex].passwordChangeRequested) {
+        const hashedPassword = bcrypt.hashSync(newPassword, 10);
+        users[userIndex].password = hashedPassword;
+        // Establecer passwordChangeRequested a false después de cambiar la contraseña
+        users[userIndex].passwordChangeRequested = false;
+        fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
+        res.status(200).json({ message: 'Password updated successfully' });
+      } else {
+        res.status(403).json({ error: 'Password change not requested. Please request a password change first.' });
+      }
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (err) {
+    console.error('Error updating password:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Endpoint para solicitar cambio de contraseña
+app.put('/requestPasswordChange', (req, res) => {
+  const { email } = req.body;
+  try {
+    const users = JSON.parse(fs.readFileSync(usersFilePath));
+    const userIndex = users.findIndex(user => user.email === email);
+    if (userIndex !== -1) {
+      // Establecer la propiedad passwordChangeRequested en true
+      users[userIndex].passwordChangeRequested = true;
+      fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
+      // Enviar correo electrónico al usuario con un enlace para confirmar el cambio de contraseña
+      sendPasswordChangeEmail(email);
+      res.status(200).json({ message: 'Password change request sent successfully. Check your email for confirmation.' });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (err) {
+    console.error('Error requesting password change:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Función para enviar correo electrónico de solicitud de cambio de contraseña
+function sendPasswordChangeEmail(email) {
+  const mailOptions = {
+    from: 'rberrendoe01@informatica.iesvalledeljerteplasencia.es',
+    to: email,
+    subject: 'Request to change password',
+    text: `Click the following link to confirm your password change request: http://34.175.187.252:3000/confirmPasswordChange/${email}`
+  };
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error('Error sending password change email:', error);
+    } else {
+      console.log('Password change email sent:', info.response);
+    }
+  });
+}
+
+// Endpoint para confirmar el cambio de contraseña
+app.get('/confirmPasswordChange/:email', (req, res) => {
+  const { email } = req.params;
+  try {
+    const users = JSON.parse(fs.readFileSync(usersFilePath));
+    const userIndex = users.findIndex(user => user.email === email);
+    if (userIndex !== -1) {
+      users[userIndex].passwordChangeRequested = false;
+        fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
+        res.status(200).json({ message: 'Change password confirmed successfully' });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (err) {
+    console.error('Error updating password:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 // Agregar una nueva ruta DELETE para eliminar un usuario
 app.delete('/users/:email', (req, res) => {

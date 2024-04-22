@@ -26,10 +26,7 @@
             Email is required
           </div>
           <div *ngIf="registroForm.controls['email'].touched && registroForm.controls['email'].errors?.['email']" class="error-message">
-            Please enter a valid
-          </div>
-          <div *ngIf="registroForm.controls['email'].touched && registroForm.controls['email'].errors?.['email']" class="error-message">
-            email address
+            Please enter a valid email address
           </div>
           <div *ngIf="emailExists" class="error-message">
             Email already exists

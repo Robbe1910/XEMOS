@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import * as bcrypt from 'bcryptjs';
-import { v4 as uuidv4 } from 'uuid';
 import { AuthService } from '../../services/auth.service';
 
 @Component({

@@ -38,6 +38,16 @@ const routes: Routes = [
   { path: 'loading-delete-account', loadChildren: () => import('./loading-screen delete-account/loading-screen.module').then(m => m.LoadingScreenPageModule) },
   { path: 'confirmation-page', loadChildren: () => import('./confirmation-page/confirmation-page.module').then(m => m.ConfirmationPagePageModule) },
   { path: 'confirm-email', loadChildren: () => import('./confirm-email/confirm-email.module').then(m => m.ConfirmEmailPageModule) },
+  {
+    path: 'change-password',
+    loadChildren: () => import('./change-password/change-password.module').then( m => m.ChangePasswordPageModule)
+  },
+  {
+    path: 'email-confirmation',
+    loadChildren: () => import('./email-confirmation/email-confirmation.module').then( m => m.EmailConfirmationPageModule)
+  },
+
+
 ];
 
 

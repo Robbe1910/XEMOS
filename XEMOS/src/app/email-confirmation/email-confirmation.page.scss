@@ -1,0 +1,72 @@
+.container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(213, 226, 231);
+    color: black;
+  }
+  
+  #title-register {
+    font-size: 24px; /* Cambiado el tamaño del título */
+    margin-bottom: 20px; /* Añadido margen inferior al título */
+  }
+  
+  .form-group {
+    width: 80%; /* Ajustado el ancho del formulario */
+    max-width: 400px; /* Limitado el ancho máximo del formulario */
+    padding: 20px; /* Añadido relleno al formulario */
+    border-radius: 8px; /* Añadido borde redondeado al formulario */
+    background-color: white; /* Añadido color de fondo al formulario */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Añadida sombra al formulario */
+  }
+
+  .fields {
+    display: flex;
+    border-bottom: 1px solid black;
+  }
+  
+  .fields i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightgray;
+    width: 15%;
+  }
+  
+  .fields input {
+    width: 85%;
+  }
+  
+  
+  #btn-register {
+    display: flex; /* Cambiado a flexbox para alinear los botones */
+    justify-content: space-between; /* Espaciado uniforme entre los botones */
+  }
+  
+  #btn-register button {
+    width: 45%; /* Ajustado el ancho de los botones */
+    height: 40px; /* Ajustado el alto de los botones */
+    border: none; /* Eliminado el borde de los botones */
+    border-radius: 8px; /* Añadido borde redondeado a los botones */
+    background-color: rgb(58, 58, 58);
+    color: white;
+    cursor: pointer; /* Cambiado el cursor al pasar por encima de los botones */
+  }
+  
+  #btn-register button:hover {
+    background-color: rgb(38, 38, 38); /* Cambiado el color de fondo al pasar el ratón por encima de los botones */
+  }
+  
+  .error-message {
+    color: red;
+    margin-top: 5px;
+    font-size: 0.8em;
+  }
+  
+  .field-container {
+    margin-bottom: 15px;
+  }
+  

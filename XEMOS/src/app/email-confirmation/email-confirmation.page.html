@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="register_form">
+    <h2 id="title-register">Change Password Confirmation</h2>
+    <p>Enter your email address below to receive the password change confirmation email:</p>
+    <form [formGroup]="confirmationForm" (ngSubmit)="sendConfirmationEmail()">
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <div class="fields" [ngClass]="{'is-invalid': confirmationForm.get('email')?.invalid && confirmationForm.get('email')?.touched}">
+          <i class="fa-solid fa-envelope" style="color: #424242;"></i>
+          <input type="email" id="email" class="form-control" formControlName="email" required>
+        </div>
+        <div *ngIf="confirmationForm.get('email')?.touched && confirmationForm.get('email')?.errors?.['required']" class="error-message">
+          Email is required
+        </div>
+        <div *ngIf="confirmationForm.get('email')?.touched && confirmationForm.get('email')?.errors?.['email']" class="error-message">
+          Please enter a valid email address
+        </div>
+        <div *ngIf="!emailExists" class="error-message">
+          Email don't exist
+        </div>
+      </div>
+      <div id="btn-register">
+        <button type="submit" (click)="sendConfirmationEmail()">Send Confirmation Email</button>
+        <button (click)="confirmEmail()">I have confirmed my email</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -134,11 +134,24 @@ export class AuthService {
       }
     });
   }
-  
+
+  checkEmailPasswordConfirmed(email: string): Observable<any> {
+    // Hacer una solicitud HTTP para verificar si el correo electrónico está confirmado
+    return this.http.get<any>(`${this.baseUrl}/checkEmailPasswordConfirmed?email=${email}`);
+  }
 
   resendConfirmationEmail(token: string): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/resendConfirmationEmail`, { token });
   }
+
+  changePassword(email: string, newPassword: string): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/users/passwordChange`, { email, newPassword });
+  }
+
+  requestChangePassword(email: string): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/requestPasswordChange`, { email });
+  }
+  
 
   storeToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
