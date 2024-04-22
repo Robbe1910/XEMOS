@@ -64,7 +64,7 @@ Para construir la aplicación, sigue estos pasos:
 
 1. Desde la carpeta XEMOS del proyecto, ejecuta el siguiente comando para construir la aplicación de Android:
    ionic cordova build android --prod --release
-2. Ejecuta los siguientes comandos desde la carpeta raíz para crear el archivo de paquete (APK):
+2. Ejecuta los siguientes comandos desde la carpeta raíz del proyecto para crear el archivo de paquete (APK):
     java -jar bundletool-all-1.15.6.jar build-apks \
     --bundle=XEMOS/platforms/android/app/build/outputs/bundle/release/app-release.aab \
     --output=XEMOS/platforms/android/app/build/outputs/bundle/release/apk/xemos.apks \
