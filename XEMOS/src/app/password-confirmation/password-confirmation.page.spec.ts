@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EmailCOnfirmationPage } from './email-confirmation.page';
+import { EmailCOnfirmationPage } from './password-confirmation.page';
 
 describe('EmailCOnfirmationPage', () => {
   let component: EmailCOnfirmationPage;

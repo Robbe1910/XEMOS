@@ -44,14 +44,14 @@ export class HomePage implements OnInit, OnDestroy {
 
   constructor(private dataService: DataService) {
     for (let i = 0; i < 24; i++) {
-      this.heartRateData.push(0); // You can initialize it with any default value you want
+      this.heartRateData.push(0); 
     }
 
     this.tyhData.temperature = Array(12).fill(0);
     this.tyhData.humidity = Array(12).fill(0);
 
     for (let i = 0; i < 24; i++) {
-      this.airQualityData.push(0); // You can initialize it with any default value you want
+      this.airQualityData.push(0);
     }
     this.dataSubscription = new Subscription();
   }
@@ -116,7 +116,7 @@ export class HomePage implements OnInit, OnDestroy {
       date: data[0].date
     };
 
-    // Initialize a counter variable to keep track of consecutive occurrences
+    // Inicializar una variable de contador para llevar el registro de ocurrencias consecutivas
     if (!this.counter) {
       this.counter = 0;
     }
@@ -160,20 +160,20 @@ export class HomePage implements OnInit, OnDestroy {
 
   generateHeartRateData(): any {
 
-    // Shift existing values to the right
+    // Desplazar los valores existentes hacia la derecha
     for (let i = this.heartRateData.length - 1; i >= 0; i--) {
       if (i === 0) {
-        // Overwrite the first element with the new air quality value
+        // Sobrescribir el primer elemento con el nuevo valor de calidad del aire
         this.heartRateData[i] = this.actualData.heart;
       } else {
-        // Move the value from the previous index to the current index
+        // Mover el valor del índice anterior al índice actual
         this.heartRateData[i] = this.heartRateData[i - 1];
       }
     }
 
-    // Remove the last item if the array length exceeds the desired number of items
+    // Eliminar el último elemento si la longitud del array excede el número deseado de elementos
     if (this.heartRateData.length > 12) {
-      this.heartRateData.pop(); // Remove the last item
+      this.heartRateData.pop(); // elimina el último item
     }
 
     return this.heartRateData;
@@ -181,20 +181,20 @@ export class HomePage implements OnInit, OnDestroy {
 
   generateAirQualityData(): any {
 
-    // Shift existing values to the right
+    // Desplazar los valores existentes hacia la derecha
     for (let i = this.airQualityData.length - 1; i >= 0; i--) {
       if (i === 0) {
-        // Overwrite the first element with the new air quality value
+        // Sobrescribir el primer elemento con el nuevo valor de calidad del aire
         this.airQualityData[i] = this.actualData.airquality;
       } else {
-        // Move the value from the previous index to the current index
+        // Mover el valor del índice anterior al índice actual
         this.airQualityData[i] = this.airQualityData[i - 1];
       }
     }
 
-    // Remove the last item if the array length exceeds the desired number of items
+    // Eliminar el último elemento si la longitud del array excede el número deseado de elementos
     if (this.airQualityData.length > 12) {
-      this.airQualityData.pop(); // Remove the last item
+      this.airQualityData.pop(); // elimina el último item
     }
 
     return this.airQualityData;

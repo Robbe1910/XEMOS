@@ -43,8 +43,8 @@ const routes: Routes = [
     loadChildren: () => import('./change-password/change-password.module').then( m => m.ChangePasswordPageModule)
   },
   {
-    path: 'email-confirmation',
-    loadChildren: () => import('./email-confirmation/email-confirmation.module').then( m => m.EmailConfirmationPageModule)
+    path: 'password-confirmation',
+    loadChildren: () => import('./password-confirmation/password-confirmation.module').then( m => m.PasswordConfirmationPageModule)
   },
 
 
