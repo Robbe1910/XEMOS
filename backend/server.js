@@ -203,7 +203,7 @@ app.get('/checkEmailPasswordConfirmed', (req, res) => {
 
     const users = JSON.parse(fs.readFileSync(usersFilePath));
     const existingUser = users.find(user => user.email === email);
-    // Verificar si la propiedad emailConfirmed está presente en el usuario existente
+    // Verificar si la propiedad passwordChangeRequested está presente en el usuario existente
     const passwordChangeRequested = existingUser ? existingUser.passwordChangeRequested : false;
     // Devolver el estado de confirmación del correo electrónico
     res.status(200).json({ passwordChangeRequested });
@@ -318,9 +318,6 @@ app.put('/requestPasswordChange', (req, res) => {
     const users = JSON.parse(fs.readFileSync(usersFilePath));
     const userIndex = users.findIndex(user => user.email === email);
     if (userIndex !== -1) {
-      // Establecer la propiedad passwordChangeRequested en true
-      users[userIndex].passwordChangeRequested = true;
-      fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
       // Enviar correo electrónico al usuario con un enlace para confirmar el cambio de contraseña
       sendPasswordChangeEmail(email);
       res.status(200).json({ message: 'Password change request sent successfully. Check your email for confirmation.' });
@@ -357,7 +354,7 @@ app.get('/confirmPasswordChange/:email', (req, res) => {
     const users = JSON.parse(fs.readFileSync(usersFilePath));
     const userIndex = users.findIndex(user => user.email === email);
     if (userIndex !== -1) {
-      users[userIndex].passwordChangeRequested = false;
+      users[userIndex].passwordChangeRequested = true;
         fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
         res.status(200).json({ message: 'Change password confirmed successfully' });
     } else {

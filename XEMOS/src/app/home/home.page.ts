@@ -22,6 +22,7 @@ export class HomePage implements OnInit, OnDestroy {
   heartRateChart: any;
   airQualityChart: any;
   humidityChart: any;
+  isStabilizing: boolean = false;
 
   sensorData: any;
   tyhData: any = {
@@ -44,7 +45,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   constructor(private dataService: DataService) {
     for (let i = 0; i < 24; i++) {
-      this.heartRateData.push(0); 
+      this.heartRateData.push(0);
     }
 
     this.tyhData.temperature = Array(12).fill(0);
@@ -123,19 +124,29 @@ export class HomePage implements OnInit, OnDestroy {
 
     if (this.actualData.date == this.currentDate || this.currentDate == undefined) {
 
-        this.actualData = {
-          temperatura: 0,
-          humedad: 0,
-          airquality: 0,
-          heart: 0,
-          date: this.actualData.date
-        };
-        console.log("❌ Not receiving data");
-        this.currentDate = this.actualData.date;
+      this.actualData = {
+        temperatura: 0,
+        humedad: 0,
+        airquality: 0,
+        heart: 0,
+        date: this.actualData.date
+      };
+      console.log("❌ Not receiving data");
+      this.currentDate = this.actualData.date;
     } else {
       console.log("➡️ Receiving data");
       this.currentDate = this.actualData.date;
     }
+
+    // Calcular la diferencia entre el valor actual y el último valor de heartRateData
+    const difference = Math.abs(this.actualData.heart - this.heartRateData[this.heartRateData.length - 1]);
+
+    if (difference <= 10) {
+      this.isStabilizing = true;
+    } else {
+      this.isStabilizing = false;
+    }
+
 
     console.log("⬛ TEMP: ", this.actualData.temperatura)
     console.log("⬛ HUMY: ", this.actualData.humedad)
@@ -144,7 +155,7 @@ export class HomePage implements OnInit, OnDestroy {
     console.log("⬛ DATE: ", this.actualData.date)
 
     this.setSensorChartData(this.actualData);
-};
+  };
 
   setSensorChartData(actualData: any) {
     const heartRateData = this.generateHeartRateData();
@@ -159,13 +170,17 @@ export class HomePage implements OnInit, OnDestroy {
   };
 
   generateHeartRateData(): any {
-
+    console.log("heart rate data", this.heartRateData)
+    console.log("heart rate data actual", this.actualData.heart)
     // Desplazar los valores existentes hacia la derecha
     for (let i = this.heartRateData.length - 1; i >= 0; i--) {
       if (i === 0) {
         // Sobrescribir el primer elemento con el nuevo valor de calidad del aire
         this.heartRateData[i] = this.actualData.heart;
-      } else {
+      } else if (this.actualData.heart > 160) {
+        this.heartRateData[i] = 160;
+      }
+      else {
         // Mover el valor del índice anterior al índice actual
         this.heartRateData[i] = this.heartRateData[i - 1];
       }
@@ -178,6 +193,8 @@ export class HomePage implements OnInit, OnDestroy {
 
     return this.heartRateData;
   }
+
+
 
   generateAirQualityData(): any {
 
