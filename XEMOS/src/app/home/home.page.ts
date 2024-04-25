@@ -128,7 +128,7 @@ export class HomePage implements OnInit, OnDestroy {
         temperatura: 0,
         humedad: 0,
         airquality: 0,
-        heart: Math.floor(Math.random() * 10 + 1),
+        heart: 0,
         date: this.actualData.date
       };
       console.log("❌ Not receiving data");
