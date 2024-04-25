@@ -128,7 +128,7 @@ export class HomePage implements OnInit, OnDestroy {
         temperatura: 0,
         humedad: 0,
         airquality: 0,
-        heart: 0,
+        heart: Math.floor(Math.random() * 10 + 1),
         date: this.actualData.date
       };
       console.log("❌ Not receiving data");
@@ -141,7 +141,7 @@ export class HomePage implements OnInit, OnDestroy {
     // Calcular la diferencia entre el valor actual y el último valor de heartRateData
     const difference = Math.abs(this.actualData.heart - this.heartRateData[this.heartRateData.length - 1]);
 
-    if (difference <= 10) {
+    if ( difference >=10) {
       this.isStabilizing = true;
     } else {
       this.isStabilizing = false;

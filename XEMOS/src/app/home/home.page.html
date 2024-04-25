@@ -7,9 +7,8 @@
         <i class="fas fa-heart" style="color: red;"></i>
         <span> {{ heartRate }} bpm</span>
       </div>
-      <span class="status-text">{{ isStabilizing ? 'Stabilizing...' : getHeartRateStatus(heartRate) }}</span>
       <div class="bpm-bar">
-        <span class="status-text">{{ getHeartRateStatus(heartRate) }}</span>
+        <span class="status-text">{{ isStabilizing ? 'Stabilizing...' : getHeartRateStatus(heartRate) }}</span>
         <div class="bpm-barRate">
           <div class="bpm-progress" [style.background]="bpmGradient"></div>
           <div class="bpm-indicator" [style.left]="indicatorPosition"></div>
