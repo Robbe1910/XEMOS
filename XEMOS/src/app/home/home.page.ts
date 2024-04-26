@@ -450,7 +450,7 @@ export class HomePage implements OnInit, OnDestroy {
               display: true,
               text: '°C'
             },
-            min: 0,
+            min: -5,
             max: 45
           },
           y1: {
