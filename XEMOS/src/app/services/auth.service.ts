@@ -57,7 +57,6 @@ export class AuthService {
   getCurrentUserRegistered(): any {
     // Obtener el token JWT del almacenamiento local del navegador
     const token = this.getLoginToken() // Usar la misma clave aquí
-    console.log(token )
     if (!token) {
       // No hay token JWT, el usuario no está autenticado
       return null;
@@ -88,7 +87,6 @@ export class AuthService {
   getCurrentUser(): any {
     // Obtener el token JWT del almacenamiento local del navegador
     const token = this.getToken() // Usar la misma clave aquí
-    console.log(token )
     if (!token) {
       // No hay token JWT, el usuario no está autenticado
       return null;

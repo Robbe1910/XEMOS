@@ -14,9 +14,20 @@
   }
   
   #btn-register {
+    display: flex;
     width: 100%;
     margin-top: 20px;
     text-align: center;
+    justify-content: center;
+    gap: 30px;
+  }
+
+  .btn-resend{
+    padding: 5px;
+  }
+
+  .btn-confirm{
+    padding: 5px;
   }
   
   input {
@@ -26,11 +37,10 @@
   }
   
   #btn-register button {
-    width: 80px;
-    height: 30px;
     border-radius: 8px;
     background-color: rgb(58, 58, 58);
     color: white;
+
   }
   
   #btn-register button:active {

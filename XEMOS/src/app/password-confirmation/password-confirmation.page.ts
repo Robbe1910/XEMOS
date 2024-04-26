@@ -7,11 +7,11 @@ import { debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operato
 import { AuthService } from '../services/auth.service';
 
 @Component({
-  selector: 'app-email-confirmation',
-  templateUrl: './email-confirmation.page.html',
-  styleUrls: ['./email-confirmation.page.scss'],
+  selector: 'app-password-confirmation',
+  templateUrl: './password-confirmation.page.html',
+  styleUrls: ['./password-confirmation.page.scss'],
 })
-export class EmailConfirmationPage implements OnInit {
+export class PasswordConfirmationPage implements OnInit {
   confirmationForm!: FormGroup;
   emailExists: boolean = false;
 
@@ -42,16 +42,13 @@ export class EmailConfirmationPage implements OnInit {
       const email = this.confirmationForm.value.email;
       this.authService.requestChangePassword(email).subscribe(
         (response) => {
-          console.log(response);
-          // Mostrar mensaje de éxito o redirigir si es necesario
+          console.log('Email sent succesfull');
         },
         (error) => {
-          console.error('Error sending confirmation email:', error);
-          // Manejar el error según sea necesario
+          console.error(error);
         }
       );
     } else {
-      console.error('Invalid form or email already exists');
       // Mostrar un mensaje de error o manejar la situación de falta de correo electrónico válido
     }
   }

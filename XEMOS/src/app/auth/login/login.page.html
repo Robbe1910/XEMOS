@@ -20,11 +20,13 @@
       </div>
       <div id="btn-login"><button type="submit">Login</button></div>
     </form><br>
-    <div id="register">
-      <p>Doesn't have an account yet? <a [routerLink]="['/register']">Register</a></p>
-    </div>
-    <div id="changePassword">
-      <p>Forgot your password? Change it here <a [routerLink]="['/email-confirmation']">Change Password</a></p>
+    <div class="register-changePassword">
+      <div id="register">
+        <p>Doesn't have an account yet? <a [routerLink]="['/register']">Register</a></p>
+      </div>
+      <div id="changePassword">
+        <p>Forgot your password? Change it here <a [routerLink]="['/password-confirmation']">Change Password</a></p>
+      </div>
     </div>
   </div>
 </ion-content>
