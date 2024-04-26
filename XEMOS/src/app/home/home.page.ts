@@ -132,7 +132,7 @@ export class HomePage implements OnInit, OnDestroy {
       this.counter = 0;
     }
 
-    if (this.actualData.date == this.currentDate || this.currentDate == undefined) {
+    /*if (this.actualData.date == this.currentDate || this.currentDate == undefined) {
 
         this.actualData = {
           temperatura: 0,
@@ -146,10 +146,10 @@ export class HomePage implements OnInit, OnDestroy {
         };
         console.log("❌ Not receiving data");
         this.currentDate = this.actualData.date;
-    } else {
+    } else {*/
       console.log("➡️ Receiving data");
       this.currentDate = this.actualData.date;
-    }
+    /*}*/
 
     // Calcular la diferencia entre el valor actual y el último valor de heartRateData
     const difference = Math.abs(this.actualData.heart - this.heartRateData[this.heartRateData.length - 1]);
