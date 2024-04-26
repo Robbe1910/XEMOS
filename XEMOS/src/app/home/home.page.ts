@@ -384,7 +384,7 @@ export class HomePage implements OnInit, OnDestroy {
                         text: 'ppm'
                     },
                     min: 0,
-                    max: 1000
+                    max: 100
                 },
                 x: {
                     title: {
@@ -449,7 +449,9 @@ export class HomePage implements OnInit, OnDestroy {
             title: {
               display: true,
               text: '°C'
-            }
+            },
+            min: 0,
+            max: 45
           },
           y1: {
             type: 'linear',
@@ -461,7 +463,9 @@ export class HomePage implements OnInit, OnDestroy {
             title: {
               display: true,
               text: '%'
-            }
+            },
+            min: 0,
+            max: 100
           },
           x: {
             title: {
