@@ -384,7 +384,7 @@ export class HomePage implements OnInit, OnDestroy {
                         text: 'ppm'
                     },
                     min: 0,
-                    max: 100
+                    max: 1000
                 },
                 x: {
                     title: {
