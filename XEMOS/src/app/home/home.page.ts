@@ -28,13 +28,19 @@ export class HomePage implements OnInit, OnDestroy {
     temperature: [],
     humidity: []
   };
-  airQualityData: number[] = [];
+  airQualityData: any = {
+    TVOC: [],
+    eCO2: []
+  };
   heartRateData: number[] = [];
 
   actualData = {
     temperatura: 0,
     humedad: 0,
-    airquality: 0,
+    airquality: {
+      TVOC: 0,
+      eCO2: 0
+    },
     heart: 0,
     date: "0"
   };
@@ -51,7 +57,8 @@ export class HomePage implements OnInit, OnDestroy {
     this.tyhData.humidity = Array(12).fill(0);
 
     for (let i = 0; i < 24; i++) {
-      this.airQualityData.push(0); // You can initialize it with any default value you want
+      this.airQualityData.TVOC.push(0); // You can initialize it with any default value you want
+      this.airQualityData.eCO2.push(0); // You can initialize it with any default value you want
     }
     this.dataSubscription = new Subscription();
   }
@@ -111,8 +118,11 @@ export class HomePage implements OnInit, OnDestroy {
     this.actualData = {
       temperatura: parseInt(dataArray[0]),
       humedad: parseInt(dataArray[1]),
-      airquality: parseInt(dataArray[2]),
-      heart: parseInt(dataArray[3]),
+      airquality: {
+        TVOC: parseInt(dataArray[2]),
+        eCO2: parseInt(dataArray[3])
+      },
+      heart: parseInt(dataArray[4]),
       date: data[0].date
     };
 
@@ -126,7 +136,10 @@ export class HomePage implements OnInit, OnDestroy {
         this.actualData = {
           temperatura: 0,
           humedad: 0,
-          airquality: 0,
+          airquality: {
+            TVOC: 0,
+            eCO2: 0
+          },
           heart: 0,
           date: this.actualData.date
         };
@@ -139,7 +152,8 @@ export class HomePage implements OnInit, OnDestroy {
 
     console.log("⬛ TEMP: ", this.actualData.temperatura)
     console.log("⬛ HUMY: ", this.actualData.humedad)
-    console.log("⬛ AIR: ", this.actualData.airquality)
+    console.log("⬛ AIR TVOC: ", this.actualData.airquality.TVOC)
+    console.log("⬛ AIR ECO2: ", this.actualData.airquality.eCO2)
     console.log("⬛ HEART: ", this.actualData.heart)
     console.log("⬛ DATE: ", this.actualData.date)
 
@@ -180,27 +194,69 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   generateAirQualityData(): any {
-
     // Shift existing values to the right
-    for (let i = this.airQualityData.length - 1; i >= 0; i--) {
+    for (let i = this.airQualityData.TVOC.length - 1; i >= 0; i--) {
       if (i === 0) {
         // Overwrite the first element with the new air quality value
-        this.airQualityData[i] = this.actualData.airquality;
+        this.airQualityData.TVOC[i] = this.actualData.airquality.TVOC;
       } else {
         // Move the value from the previous index to the current index
-        this.airQualityData[i] = this.airQualityData[i - 1];
+        this.airQualityData.TVOC[i] = this.airQualityData.TVOC[i - 1];
+      }
+    }
+
+    for (let i = this.airQualityData.eCO2.length - 1; i >= 0; i--) {
+      if (i === 0) {
+        // Overwrite the first element with the new air quality value
+        this.airQualityData.eCO2[i] = this.actualData.airquality.eCO2;
+      } else {
+        // Move the value from the previous index to the current index
+        this.airQualityData.eCO2[i] = this.airQualityData.eCO2[i - 1];
       }
     }
 
     // Remove the last item if the array length exceeds the desired number of items
-    if (this.airQualityData.length > 12) {
-      this.airQualityData.pop(); // Remove the last item
+    if (this.airQualityData.TVOC.length > 24) {
+      this.airQualityData.TVOC.pop(); // Remove the last item
+    }
+    if (this.airQualityData.eCO2.length > 24) {
+      this.airQualityData.eCO2.pop(); // Remove the last item
     }
 
+    console.log(this.airQualityData)
     return this.airQualityData;
   }
 
   generateHumidityTemperatureData(): any {
+    // Shift existing values to the right
+    for (let i = this.tyhData.temperature.length - 1; i >= 0; i--) {
+      if (i === 0) {
+        // Overwrite the first element with the new air quality value
+        this.tyhData.temperature[i] = this.actualData.temperatura;
+      } else {
+        // Move the value from the previous index to the current index
+        this.tyhData.temperature[i] = this.tyhData.temperature[i - 1];
+      }
+    }
+
+    for (let i = this.tyhData.humidity.length - 1; i >= 0; i--) {
+      if (i === 0) {
+        // Overwrite the first element with the new air quality value
+        this.tyhData.humidity[i] = this.actualData.humedad;
+      } else {
+        // Move the value from the previous index to the current index
+        this.tyhData.humidity[i] = this.tyhData.humidity[i - 1];
+      }
+    }
+
+    // Remove the last item if the array length exceeds the desired number of items
+    if (this.tyhData.temperature.length > 24) {
+      this.tyhData.temperature.pop(); // Remove the last item
+    }
+    if (this.tyhData.humidity.length > 24) {
+      this.tyhData.humidity.pop(); // Remove the last item
+    }
+
     return this.tyhData;
   }
 
@@ -249,11 +305,84 @@ export class HomePage implements OnInit, OnDestroy {
 
   initializeAirQualityChart() {
     const DATA_COUNT_AIR_QUALITY = 24;
+    const labelsAirQuality = this.generateLabels(DATA_COUNT_AIR_QUALITY);
     const airQualityData = this.generateAirQualityData();
-    const configAirQuality = this.getAirQualityChartConfig(DATA_COUNT_AIR_QUALITY, airQualityData);
+
+    const dataAirQuality = {
+        labels: labelsAirQuality,
+        datasets: [
+            {
+                label: 'TVOC',
+                data: airQualityData.TVOC,
+                borderColor: 'purple',
+                backgroundColor: 'rgba(166, 0, 166, 0.5)',
+                yAxisID: 'y',
+            },
+            {
+                label: 'eCO2',
+                data: airQualityData.eCO2,
+                borderColor: 'grey',
+                backgroundColor: 'rgba(166, 166, 166, 0.5)',
+                yAxisID: 'y1',
+            }
+        ]
+    };
+
+    const configAirQuality: ChartConfiguration<'line'> = {
+        type: 'line',
+        data: dataAirQuality,
+        options: {
+            responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            plugins: {
+                title: {
+                    display: false,
+                    text: 'Air Quality'
+                }
+            },
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    title: {
+                        display: true,
+                        text: 'ppb'
+                    },
+                    min: 0,
+                    max: 1000
+                },
+                y1: {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    grid: {
+                        drawOnChartArea: false,
+                    },
+                    title: {
+                        display: true,
+                        text: 'ppm'
+                    },
+                    min: 0,
+                    max: 1000
+                },
+                x: {
+                    title: {
+                        display: false,
+                        text: 'Hours'
+                    }
+                }
+            }
+        }
+    };
 
     this.airQualityChart = new Chart('air-quality', configAirQuality);
-  }
+}
+
+
 
   initializeHumidityTemperatureChart() {
     const DATA_COUNT_HUMIDITY = 24;
@@ -347,10 +476,14 @@ export class HomePage implements OnInit, OnDestroy {
     this.updateBpmIndicatorPosition(this.heartRate);
   }
 
-  updateAirQualityChart(airQualityData: number[]) {
-    const labels = this.generateLabels(airQualityData.length);
-    this.airQualityChart.data.labels = labels; // Actualizar las etiquetas
-    this.airQualityChart.data.datasets[0].data = airQualityData;
+  updateAirQualityChart(airQualityData: any) {
+    const temperatureData = airQualityData.TVOC;
+    const humidityData = airQualityData.eCO2;
+    const labelsHumidity = this.generateLabels(temperatureData.length); // Utilizar la misma longitud que los datos de temperatura
+
+    this.airQualityChart.data.labels = labelsHumidity; // Actualizar las etiquetas
+    this.airQualityChart.data.datasets[0].data = temperatureData;
+    this.airQualityChart.data.datasets[1].data = humidityData;
     this.airQualityChart.update();
   }
 
