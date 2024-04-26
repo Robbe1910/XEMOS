@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="sendButton">Send PUT Request</button>
+    <button id="getAllButton">Get All Sensor Data</button>
+    <!-- New button for getting sensor data -->
+    <script>
+      document
+        .getElementById("sendButton")
+        .addEventListener("click", function () {
+          const updateData = {
+            data: "00//00//000//100",
+            date: "XXXX//XX//XX////XX//XX//XX",
+          };
+
+          fetch("http://34.175.187.252:3000/sensor-data", {
+            // PUT request targeting the first object
+            method: "PUT", // Change method to PUT
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updateData),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              console.log("Success:", data);
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        });
+
+      // Function to send PUT request with random heart rate data
+      function sendPutRequest() {
+        // Generate a random number for the sensor data (heart rate)
+        const heartRate = Math.floor(Math.random() * (140 - 60 + 1)) + 60;
+        // Generate random temperature between 10 and 40 degrees Celsius
+        const temperature = Math.floor(Math.random() * (40 - 10 + 1)) + 10;
+
+        // Generate random humidity between 30 and 70 percent
+        const humidity = Math.floor(Math.random() * (70 - 30 + 1)) + 30;
+        // Generate random TVOC (Total Volatile Organic Compounds) between 0 and 999 ppb
+        const TVOC = Math.floor(Math.random() * 1000); // Generates a value between 0 and 999
+
+        // Generate random eCO2 (equivalent CO2) between 0 and 999 ppm
+        const eCO2 = Math.floor(Math.random() * 1000); // Generates a value between 0 and 999
+
+        // Get the current date and time
+        const currentDate = new Date();
+        const formattedDate = currentDate.toISOString(); // Format date as ISO string
+
+        // Create the updateData object with the random heart rate and current date
+
+        const updateData = {
+          data: temperature+"//"+humidity+"//"+TVOC+"//"+eCO2+"//"+heartRate,
+          date: "formattedDate"
+        };
+
+        fetch("http://34.175.187.252:3000/sensor-data", {
+          method: "PUT", // Change method to PUT
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updateData),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("Success:", data);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+
+      // Call sendPutRequest every second
+      setInterval(sendPutRequest, 1000);
+
+      // Function to handle fetching all sensor data
+      function getAllSensorData() {
+        fetch("http://34.175.187.252:3000/sensor-data")
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("All Sensor Data:", data);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+
+      // Add event listener to the "Get All Sensor Data" button
+      document
+        .getElementById("getAllButton")
+        .addEventListener("click", getAllSensorData);
+    </script>
+  </body>
+</html>
