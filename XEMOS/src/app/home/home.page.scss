@@ -13,7 +13,8 @@
 }
 
 #main-home {
-  width: 90vw;
+  width: 100%;
+  z-index: 1000;
 }
 
 #main-home h1 {
@@ -32,7 +33,6 @@
   align-items: center;
   margin-bottom: 20px;
   margin-top: -20px;
-  width: 100vw;
 }
 
 .heart-rate .bpm-rate i {
@@ -91,10 +91,7 @@
   z-index: 2; /* Asegura que esté por encima de la barra de progreso */
 }
 
-#heart-rate {
-  margin: 0px -15px;
-  margin-right: 10px;
-}
+
 
 #main-home {
   //border: 2px solid red;
@@ -104,6 +101,19 @@
 #main-home .canvas-heart,
 #main-home .canvas-humidity,
 #main-home .canvas-air-quality {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   //border: 2px solid lime;
   width: 100%;
+}
+
+#main-home .canvas-heart
+{
+  width: 90%;
+}
+
+#main-home .canvas-heart #heart-rate
+{
+  padding-right: 36px;
 }

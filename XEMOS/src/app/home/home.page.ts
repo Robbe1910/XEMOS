@@ -305,7 +305,7 @@ export class HomePage implements OnInit, OnDestroy {
             min: 0,
             max: 180,
             title: {
-              display: true,
+              display: false,
               text: 'bpm'
             }
           },
