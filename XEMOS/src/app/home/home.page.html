@@ -1,28 +1,32 @@
-<div class="container">
-  <main id="main-home">
-    <h1>Statistics</h1>
-    <h4>Heart monitor</h4>
-    <div class="heart-rate">
-      <div class="bpm-rate">
-        <i class="fas fa-heart" style="color: red;"></i>
-        <span> {{ heartRate }} bpm</span>
-      </div>
-      <div class="bpm-bar">
-        <span class="status-text">{{ isStabilizing ? 'Stabilizing...' : getHeartRateStatus(heartRate) }}</span>
-        <div class="bpm-barRate">
-          <div class="bpm-progress" [style.background]="bpmGradient"></div>
-          <div class="bpm-indicator" [style.left]="indicatorPosition"></div>
+<div class="home-body">
+  <div class="container">
+    <main id="main-home">
+      <h1>Statistics</h1>
+      <div class="canvas-heart">
+        <h4>Heart monitor</h4>
+      <div class="heart-rate">
+        <div class="bpm-rate">
+          <i class="fas fa-heart" style="color: red;"></i>
+          <span> {{ heartRate }} bpm</span>
+        </div>
+        <div class="bpm-bar">
+          <span class="status-text">{{ isStabilizing ? 'Stabilizing...' : getHeartRateStatus(heartRate) }}</span>
+          <div class="bpm-barRate">
+            <div class="bpm-progress" [style.background]="bpmGradient"></div>
+            <div class="bpm-indicator" [style.left]="indicatorPosition"></div>
+          </div>
         </div>
       </div>
-    </div>
-    <canvas id="heart-rate" width="400" height="250"></canvas>
-    <div class="humidity">
-      <h4>Humidity & temperature</h4>
-      <canvas id="humidity" width="360" height="250"></canvas>
-    </div>
-    <div class="air-quality">
-      <h4>Air quality</h4>
-      <canvas id="air-quality" width="360" height="250"></canvas>
-    </div>
-  </main>
+      <canvas id="heart-rate" width="400" height="250"></canvas>
+      </div>
+      <div class="canvas-humidity">
+        <h4>Humidity & temperature</h4>
+        <canvas id="humidity" width="360" height="250"></canvas>
+      </div>
+      <div class="canvas-air-quality">
+        <h4>Air quality</h4>
+        <canvas id="air-quality" width="360" height="250"></canvas>
+      </div>
+    </main>
+  </div>
 </div>

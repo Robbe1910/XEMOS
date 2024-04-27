@@ -1,87 +1,108 @@
-.container{
-  overflow-y: scroll;
-  padding-top: 40px;
+.home-body
+{
+  width: 100vw;
+  height: 100vh;
+  background-color: #d5e2e7;
 }
 
-#main-home{
+.container {
+  overflow-y: scroll;
+  padding-top: 40px;
+  background-color: #d5e2e7;
+}
+
+#main-home {
   width: 90vw;
 }
 
-#main-home h1{
+#main-home h1 {
   margin: 0px;
   font-weight: bold;
 }
 
-#main-home h4{
+#main-home h4 {
   font-size: 18px;
   margin-top: 20px;
 }
 
 .heart-rate {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin-bottom: 20px;
-    margin-top: -20px;
-    width: 100vw;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 20px;
+  margin-top: -20px;
+  width: 100vw;
 }
 
 .heart-rate .bpm-rate i {
-    margin-right: 4px;
-    display: flex;
-    justify-content: space-between;
+  margin-right: 4px;
+  display: flex;
+  justify-content: space-between;
 }
 
-.bpm-rate{
+.bpm-rate {
   display: flex;
   align-items: center;
   padding-top: 35px;
 }
 
-  .bpm-bar {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    position: relative;
-    width: 100px;
-    height: 30px; /* Altura de la barra */
-    margin-top: 10px;
-    background: transparent; /* Color de fondo de la barra */
-    border-radius: 10px; /* Borde redondeado */
-  }
+.bpm-bar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  position: relative;
+  width: 100px;
+  height: 30px; /* Altura de la barra */
+  margin-top: 10px;
+  background: transparent; /* Color de fondo de la barra */
+  border-radius: 10px; /* Borde redondeado */
+}
 
-  .bpm-barRate{
-    position: relative;
-  }
-  
-  .bpm-progress {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 10px;
-    background: linear-gradient(to right, green, yellow, orange, red, blue); /* Gradiente de colores */
-    border-radius: 10px; /* Borde redondeado */
-  }
-  
-  .bpm-indicator {
-    position: absolute;
-    width: 10px; /* Diámetro del círculo */
-    height: 10px; /* Diámetro del círculo */
-    background-color: transparent; /* Color de fondo transparente */
-    border: 2px solid white; /* Borde blanco */
-    border-radius: 50%; /* Círculo */
-    z-index: 2; /* Asegura que esté por encima de la barra de progreso */
-  }
+.bpm-barRate {
+  position: relative;
+}
 
-  #heart-rate{
-    margin: 0px -15px;
-    margin-right: 10px;
-  }
+.bpm-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 10px;
+  background: linear-gradient(
+    to right,
+    green,
+    yellow,
+    orange,
+    red,
+    blue
+  ); /* Gradiente de colores */
+  border-radius: 10px; /* Borde redondeado */
+}
 
-  
-  
-  
-  
-  
+.bpm-indicator {
+  position: absolute;
+  width: 10px; /* Diámetro del círculo */
+  height: 10px; /* Diámetro del círculo */
+  background-color: transparent; /* Color de fondo transparente */
+  border: 2px solid white; /* Borde blanco */
+  border-radius: 50%; /* Círculo */
+  z-index: 2; /* Asegura que esté por encima de la barra de progreso */
+}
+
+#heart-rate {
+  margin: 0px -15px;
+  margin-right: 10px;
+}
+
+#main-home {
+  border: 2px solid red;
+  display: flex;
+}
+
+#main-home .canvas-heart,
+#main-home .canvas-humidity,
+#main-home .canvas-air-quality {
+  border: 2px solid lime;
+  width: 100%;
+}

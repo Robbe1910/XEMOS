@@ -1,5 +1,8 @@
 .fondo {
   background-color: #d5e2e7;
+  z-index: 1000 !important;
+  position: fixed;
+  bottom: 0;
 }
 
 #footer{
