@@ -83,3 +83,8 @@ Para construir la aplicación, sigue estos pasos:
 
 1. En la carpeta resources pones el icon.png de 1024x1024
 2. Ejecutas ionic cordova resources --icon para que se actualicen todos los iconos
+
+
+## Ejecutar presentación
+En la ruta Presentacion/fctapp ejecutar el siguiente comando
+http-server .\dist\fctapp\
