@@ -1,0 +1,61 @@
+*
+{
+  color: white;
+
+}
+
+h1
+{
+  font-weight: bolder;
+}
+
+.container
+{
+  //border: 2px solid red;
+  width: 90vw;
+  height: 90vh;
+  display: grid;
+  grid-template-rows: 20% 20% 60%;
+  justify-content: center;
+  align-items: center;
+}
+
+p
+{
+  font-size: 1.6vw;
+  font-weight: lighter;
+}
+
+.backIMG
+{
+  background-image: url("../../../assets/images/xemos-assets/assets/schemalIcons/xemos-conecction-6.png");
+  background-size: 60%;
+  background-repeat: no-repeat;
+  opacity: 0.1;
+  background-position: center;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+span
+{
+  font-weight: bold;
+}
+
+img:nth-of-type(1)
+{
+  width: 40%;
+  height: auto;
+  max-height: 600px;
+}
+
+img:nth-of-type(2)
+{
+  width: 30%;
+  height: auto;
+  max-height: 600px;
+}

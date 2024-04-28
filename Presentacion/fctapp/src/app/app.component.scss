@@ -1,0 +1,221 @@
+
+.container-fluid
+{
+  height: 100%;
+}
+
+.logo
+{
+  z-index: 1001;
+  margin: 2vw;
+  width: 3vw;
+  min-width: 30px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  float: right;
+}
+
+
+i{
+  font-size: 4vw;
+  color: white;
+}
+
+
+.actionButton
+{
+  z-index: 1000;
+  transition: 400ms;
+  transform: scale(90%);
+  border: 0;
+  background-color: transparent;
+
+  height: 40px;
+  width: 10px;
+  border-radius: 10px;
+
+  opacity: 0.6;
+}
+
+.actionButton:hover
+{
+  transition: 400ms;
+  transform: scale(100%);
+  opacity: 1;
+}
+
+.actionButton:active
+{
+  transition: 200ms;
+  transform: scale(90%);
+}
+
+.actionButton-left
+{
+  left: 0;
+}
+
+.actionButton-right
+{
+  right: 0;
+}
+
+.content
+{
+  transition: 1000ms;
+  opacity: 1;
+}
+
+.fade0
+{transition: 1000ms;opacity: 0;pointer-events: none}
+
+.fade100
+{transition: 1000ms;opacity: 1;}
+
+.unssuported
+{
+  display: none;
+
+  align-items: end;
+  padding: 2vw;
+
+
+  position: absolute;
+  top: 0;
+  z-index: 10000;
+  width: 100vw;
+  height: 100vh;
+  background-color: #111111;
+  background-image: url("../assets/images/xemos-assets/unssuported.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50% !important;
+  color: white;
+  font-family: Monaco, "Lucida Console", monospace;
+}
+
+.unssuported table
+{
+  font-size: 2vw;
+  border: 2px dashed white ;
+}
+
+.unssuported table td
+{
+  padding: 1.5vw;
+}
+
+.unssuported table td:nth-of-type(2)
+{
+  padding-left: 10vw;
+}
+
+.pagCounter p{margin: 0}
+
+.pagCounter
+{
+  transition: 400ms;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 2vw;
+  color: white;
+  font-weight: bold;
+}
+
+@media (min-width: 768px) and (max-width: 924px) {
+
+  /* CSS */
+  .unssuported {
+    display: flex;
+    background-size: 30%;
+    z-index: 100000;
+  }
+
+  .actionButton
+  {
+    display: none !important;
+  }
+}
+
+/*
+  ##Device = Tablets, Ipads (landscape)
+  ##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 924px) and (orientation: landscape) {
+
+  /* CSS */
+  .unssuported {
+    display: flex;
+    background-size: 30%;
+  }
+
+  .actionButton
+  {
+    display: none !important;
+  }
+}
+
+/*
+  ##Device = Low Resolution Tablets, Mobiles (Landscape)
+  ##Screen = B/w 481px to 767px
+*/
+
+@media (min-width: 481px) and (max-width: 767px) {
+
+  .actionButton
+  {
+    display: none !important;
+  }
+
+  /* CSS */
+  .unssuported {
+    display: flex;
+    background-size: 30%;
+  }
+}
+
+/*
+  ##Device = Most of the Smartphones Mobiles (Portrait)
+  ##Screen = B/w 320px to 479px
+*/
+
+@media (min-width: 320px) and (max-width: 480px) {
+
+  /* CSS */
+
+  .actionButton
+  {
+    display: none !important;
+  }
+
+  body
+  {
+    height: 0;
+  }
+  .unssuported {
+    display: flex;
+  }
+
+  .unssuported table
+  {
+    font-size: 4vw;
+  }
+}
+
+@media (max-width: 2481px) and (max-height: 467px) {
+
+  /* CSS */
+  .unssuported {
+    display: flex;
+    background-size: 25%;
+  }
+
+  .actionButton
+  {
+    display: none !important;
+  }
+}
+

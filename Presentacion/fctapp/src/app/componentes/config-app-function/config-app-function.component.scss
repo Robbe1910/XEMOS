@@ -1,0 +1,121 @@
+*
+{
+  color: white;
+
+}
+
+h1
+{
+  font-weight: bolder;
+}
+
+.container
+{
+  //border: 2px solid red;
+  width: 90vw;
+  height: 90vh;
+  display: grid;
+  grid-template-rows: 10% 50% 40%;
+  justify-content: center;
+  align-items: center;
+}
+
+p
+{
+  font-size: 1.8rem;
+  font-weight: lighter;
+}
+
+span
+{
+  font-weight: bold;
+}
+
+.showFunction
+{
+  transition: 400ms;
+  background-image: url("../../../assets/images/xemos-assets/assets/schemalIcons/xemos-conecction-1.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.function1
+{
+  transition: 400ms;
+  background-image: url("../../../assets/images/xemos-assets/assets/schemalIcons/xemos-conecction-1.png");
+  position: absolute;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0;
+  transform: scale(90%)
+}
+
+.function1
+{
+  transition: 400ms;
+  background-image: url("../../../assets/images/xemos-assets/assets/schemalIcons/xemos-conecction-1.png");
+  position: absolute;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0;
+  transform: scale(90%)
+}
+.function2
+{
+  transition: 400ms;
+  background-image: url("../../../assets/images/xemos-assets/assets/schemalIcons/xemos-conecction-2.png");
+  position: absolute;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0;
+  transform: scale(90%)
+}
+.function3
+{
+  transition: 400ms;
+  background-image: url("../../../assets/images/xemos-assets/assets/schemalIcons/xemos-conecction-3.png");
+  position: absolute;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0;
+  transform: scale(90%)
+}
+.function4
+{
+  transition: 400ms;
+  background-image: url("../../../assets/images/xemos-assets/assets/schemalIcons/xemos-conecction-4.png");
+  position: absolute;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0;
+  transform: scale(90%)
+}
+.function5
+{
+  transition: 400ms;
+  background-image: url("../../../assets/images/xemos-assets/assets/schemalIcons/xemos-conecction-5.png");
+  position: absolute;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0;
+  transform: scale(90%)
+}
+
+.fadeIn
+{
+  transition: 400ms;
+  opacity: 1 !important;
+}
+
+.showFunction div
+{
+  height: 40%;
+  width: 90vw;
+}

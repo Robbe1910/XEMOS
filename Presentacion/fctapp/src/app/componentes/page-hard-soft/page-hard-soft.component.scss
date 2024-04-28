@@ -1,0 +1,53 @@
+*
+{
+  color: white;
+
+}
+
+h1
+{
+  font-weight: bolder;
+  z-index: 1000;
+}
+
+.container
+{
+  //border: 2px solid red;
+  width: 90vw;
+  height: 90vh;
+  display: grid;
+  grid-template-rows: 15% auto;
+  justify-content: center;
+  align-items: center;
+}
+
+p
+{
+  font-size: 1.6vw;
+  font-weight: lighter;
+}
+
+.backIMG
+{
+  background-image: url("../../../assets/images/xemos-assets/assets/xemos-app-mockup-2.png");
+  background-size: 32vw;
+  background-repeat: no-repeat;
+  opacity: 1;
+  background-position: center;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+img
+{
+  height: 68vh;
+}
+
+span
+{
+  font-weight: bold;
+}

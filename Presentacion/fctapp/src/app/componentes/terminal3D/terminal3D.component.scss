@@ -1,0 +1,80 @@
+div
+{
+  height: 100%;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+.container
+{
+  //border: 2px solid red;
+  width: 90vw;
+  height: 90vh;
+  display: grid;
+  grid-template-rows: 10% 40% auto;
+  justify-content: center;
+  align-items: center;
+}
+
+canvas
+{
+  z-index: 100;
+
+  width: 100vw;
+  height: 100vw;
+
+  //border: 2px solid #c100ff;
+
+  box-sizing: border-box !important;
+  resize: both;
+  overflow: hidden;
+
+  position: fixed;
+  //border: 2px solid red;
+}
+
+canvas{
+  background-image: url("../../../assets/images/xemos-assets/assets/xemos.svg");
+  background-size: 22%;
+  background-repeat: no-repeat;
+  opacity: 0.8;
+  background-position: center;
+}
+
+*
+{
+  margin: 0;
+  overflow: hidden !important;
+  color: white;
+}
+
+
+canvas:before, #content:after, #content>:first-child:before, #content>:first-child:after {
+  position:absolute; content:' ';
+  width:80px; height: 80px;
+  //border-color:red; /* or whatever colour */
+  border-style:solid; /* or whatever style */
+}
+canvas:before {top:0;left:0;border-width: 1px 0 0 1px}
+canvas:after {top:0;right:0;border-width: 1px 1px 0 0}
+canvas>:first-child:before {bottom:0;right:0;border-width: 0 1px 1px 0}
+canvas>:first-child:after {bottom:0;left:0;border-width: 0 0 1px 1px}
+
+
+p
+{
+  font-size: 1.6vw;
+  font-weight: lighter;
+}
+
+h1
+{
+  font-weight: bolder;
+}
+
+span
+{
+  font-weight: bold;
+}
+

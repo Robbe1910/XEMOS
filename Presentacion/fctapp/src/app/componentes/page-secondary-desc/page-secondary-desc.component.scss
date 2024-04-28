@@ -1,0 +1,97 @@
+*
+{
+  color: white;
+
+}
+
+h1
+{
+  font-weight: bolder;
+}
+
+.container
+{
+  //border: 2px solid red;
+  width: 90vw;
+  height: 90vh;
+  display: grid;
+  grid-template-rows: 20% 60% 20%;
+  justify-content: center;
+  align-items: center;
+}
+
+p
+{
+  font-size: 1.6vw;
+  font-weight: lighter;
+}
+
+.backIMG
+{
+  background-image: url("../../../assets/images/xemos-assets/assets/xemos.svg");
+  background-size: 60%;
+  background-repeat: no-repeat;
+  opacity: 0.1;
+  background-position: center;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+span
+{
+  font-weight: bold;
+}
+
+.schema
+{
+  height: 100%;
+  width: 100%;
+}
+
+.schema div
+{
+  width: 8vw;
+  height: 100%;
+  opacity: 0.6;
+  transform: scale(80%);
+}
+
+.tyh
+{
+  transition: 400ms;
+  background-image: url("../../../assets/images/xemos-assets/assets/schemalIcons/tyh.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.air
+{
+  transition: 400ms;
+  background-image: url("../../../assets/images/xemos-assets/assets/schemalIcons/airq.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.heart
+{
+  transition: 400ms;
+  background-image: url("../../../assets/images/xemos-assets/assets/schemalIcons/heart.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+//-----------//
+
+.fadeIn
+{
+  transition: 400ms;
+  opacity: 1 !important;
+  transform: scale(100%) !important;
+}

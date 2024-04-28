@@ -1,0 +1,55 @@
+
+<div class="unssuported">
+
+  <table>
+    <td>
+      <tr>device</tr>
+      <tr>os</tr>
+      <tr>browser</tr>
+      <tr>orientation</tr>
+    </td>
+    <td>
+      <tr>{{deviceInfo.device}}</tr>
+      <tr>{{deviceInfo.os}}</tr>
+      <tr>{{deviceInfo.browser}}</tr>
+      <tr>{{deviceInfo.orientation}}</tr>
+    </td>
+  </table>
+</div>
+<div class="container-fluid w-100 d-flex justify-content-center align-items-center" id="containerPrincipal">
+  <img class="logo" src="assets/images/xemos-assets/assets/xemos.svg">
+  <div class="row w-100 h-100">
+    <div class="col-1 d-flex justify-content-center align-items-center p-0">
+      <button [ngClass]="actualPage == 0 ? 'fade0' : ''" class="actionButton actionButton-left w-100 h-auto d-flex justify-content-start" (click)="changePageBackward()">
+        <i class="fa-regular fa-square-caret-left"></i>
+      </button>
+    </div>
+    <div id="content" class="col-10 d-grid justify-content-center align-items-center fadein" [ngSwitch]="actualPage">
+      <app-portada *ngSwitchCase="0"></app-portada>
+      <app-subportada *ngSwitchCase="1"></app-subportada>
+      <app-page-secondary-desc *ngSwitchCase="2"></app-page-secondary-desc>
+      <app-page-function-desc *ngSwitchCase="3"></app-page-function-desc>
+      <app-page-main-desc *ngSwitchCase="4"></app-page-main-desc>
+      <app-map *ngSwitchCase="5"></app-map>
+      <app-page-hard-soft *ngSwitchCase="6"></app-page-hard-soft>
+      <app-page-hard-soft1 *ngSwitchCase="7"></app-page-hard-soft1>
+      <app-terminal3D *ngSwitchCase="8"></app-terminal3D>
+      <app-config-app-function *ngSwitchCase="9"></app-config-app-function>
+      <app-terminal3-dprotos *ngSwitchCase="10"></app-terminal3-dprotos>
+      <app-esp32 *ngSwitchCase="11"></app-esp32>
+      <app-terminal-ucr3-d-advanced *ngSwitchCase="12"></app-terminal-ucr3-d-advanced>
+      <app-terminal-ucr3-d-schema *ngSwitchCase="15"></app-terminal-ucr3-d-schema>
+      <app-terminal-ucr3-d-deep-sleep  *ngSwitchCase="14"></app-terminal-ucr3-d-deep-sleep>
+      <app-sensors-ampliations *ngSwitchCase="13"></app-sensors-ampliations>
+      <app-presupuesto *ngSwitchCase="16"></app-presupuesto>
+      <app-ods *ngSwitchCase="17"></app-ods>
+    </div>
+    <div class="col-1 d-flex justify-content-center align-items-center p-0">
+      <button [ngClass]="actualPage == (pages.length - 1) ? 'fade0' : ''" class="actionButton actionButton-right w-100 h-auto d-flex justify-content-end" (click)="changePageForward()">
+        <i class="fa-regular fa-square-caret-right"></i>
+      </button>
+    </div>
+  </div>
+  <div class="pagCounter"><p>Pag. {{this.actualPage + 1}} / {{this.pages.length}}</p></div>
+</div>
+
