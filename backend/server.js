@@ -533,6 +533,20 @@ app.get('/users/emergencyNumber/:email', (req, res) => {
   }
 });
 
+// Endpoint para verificar si un número de emergencia ya está registrado
+app.get('/checkEmergencyNumber/:emergencyNumber', (req, res) => {
+  const { emergencyNumber } = req.params;
+  try {
+    const users = JSON.parse(fs.readFileSync(usersFilePath));
+    const existingUser = users.find(user => user.emergencyNumber === emergencyNumber);
+    res.json({ exists: !!existingUser });
+  } catch (err) {
+    console.error('Error checking emergency number:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
 // Endpoint para establecer o actualizar el número de emergencia de un usuario
 app.post('/users/emergencyNumber', (req, res) => {
   const { email, emergencyNumber } = req.body;

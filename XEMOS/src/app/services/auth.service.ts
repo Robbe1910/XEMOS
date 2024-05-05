@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +9,7 @@ import { map, tap } from 'rxjs/operators';
 export class AuthService {
   private baseUrl = 'http://34.175.187.252:3000';
   //private urlLocalhost= 'http://localhost:3000';
+  private emergencyNumberEndpoint = '/users/emergencyNumber';
   private loginTokenKey = 'loginToken';
   private tokenKey = "token"
 
@@ -81,7 +82,7 @@ export class AuthService {
       email: payload.email,
       emailConfirmed: emailConfirmed,
       loginToken: token,
-      token: payload.token
+      token: payload.token,
     };
   }
 
@@ -111,9 +112,26 @@ export class AuthService {
       email: payload.email,
       emailConfirmed: emailConfirmed,
       loginToken: token,
-      token: payload.token
+      token: payload.token,
+      emergencyNumber: payload.emergencyNumber
     };
   }
+
+  // Método para obtener el número de emergencia de un usuario
+getEmergencyNumber(email: string): Observable<string> {
+  const url = `${this.baseUrl}${this.emergencyNumberEndpoint}/${email}`;
+  return this.http.get<{ emergencyNumber: string }>(url).pipe(
+    map(response => {
+      console.log('Emergency number response:', response.emergencyNumber);
+      return response.emergencyNumber;
+    }),
+    catchError(error => {
+      console.error('Error getting emergency number:', error);
+      return throwError('Internal Server Error');
+    })
+  );
+}
+
 
   
   checkEmailConfirmed(): Observable<any> {

@@ -40,9 +40,17 @@ export class ProfilePage implements OnInit {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.user = this.authService.getCurrentUser();
+    try {
+      const emergencyNumber = await this.authService.getEmergencyNumber(this.user.email).toPromise();
+      this.user.emergencyNumber = emergencyNumber;
+      console.log('Emergency number:', emergencyNumber);
+    } catch (error) {
+      console.error('Error obtaining emergency number:', error);
+    }
   }
+  
 
   logout() {
     this.authService.logout();
@@ -113,20 +121,47 @@ export class ProfilePage implements OnInit {
     );
   }
 
-  setNumberEmergency() {
+  async setNumberEmergency() {
     if (this.emergencyForm.valid) {
       const newEmergencyNumber = this.emergencyForm.value.emergencyNumber;
-
-      this.userService.setEmergencyNumber(this.user.email, newEmergencyNumber).subscribe(
-        (response: any) => {
-          // Manejar la respuesta del servidor según corresponda
-        },
-        (error: any) => {
-          // Manejar cualquier error
-        }
-      );
+  
+      // Verificar si el número de emergencia nuevo es diferente del actual
+      if (newEmergencyNumber !== this.user.emergencyNumber) {
+        // Realizar la verificación en el backend antes de enviar la solicitud
+        this.userService.checkEmergencyNumberExists(newEmergencyNumber).subscribe(
+          async (response: any) => {
+            if (response.exists) {
+              // Si el número de emergencia ya existe, establecer una bandera para mostrar un mensaje de error
+              this.errorMessage = "El número de emergencia ya está registrado.";
+            } else {
+              // Si el número de emergencia no existe, realizar la actualización
+              this.userService.setEmergencyNumber(this.user.email, newEmergencyNumber).subscribe(
+                async (res: any) => {
+                  // Actualizar la información del usuario después de la actualización
+                  this.user.emergencyNumber = newEmergencyNumber;
+                  // Limpiar el formulario
+                  this.emergencyForm.reset();
+                  // Reiniciar el mensaje de error
+                  this.errorMessage = '';
+                },
+                (err: any) => {
+                  this.errorMessage = "Error al actualizar el número de emergencia"; // Mensaje de error genérico
+                }
+              );
+            }
+          },
+          (error: any) => {
+            this.errorMessage = "Error al verificar el número de emergencia"; // Mensaje de error genérico
+          }
+        );
+      } else {
+        // Si el número de emergencia es el mismo que el actual, no se realiza ninguna acción
+        this.errorMessage = "El número de emergencia no ha cambiado.";
+      }
     }
   }
+  
+  
 
   deleteAccount() {
     this.confirmDelete = true;
