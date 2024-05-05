@@ -79,6 +79,12 @@ app.post('/users', async (req, res) => {
     const loginTokenJWT = jwt.sign(payload, secretKey, { expiresIn: '1h' });
     newUser.loginToken = loginTokenJWT;
 
+     // Generar un token único para el dispositivo móvil
+     const deviceToken = generateDeviceToken(); // Función para generar un token único
+    
+     // Asignar el token del dispositivo móvil al nuevo usuario
+     newUser.deviceToken = deviceToken;
+
     // Leer los usuarios del archivo JSON
     const users = JSON.parse(fs.readFileSync(usersFilePath));
 
@@ -97,6 +103,13 @@ app.post('/users', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+// Función para generar un token único para el dispositivo móvil
+function generateDeviceToken() {
+  // Implementa la lógica para generar un token único, por ejemplo, utilizando la biblioteca 'uuid'
+  const deviceToken = uuid.v4();
+  return deviceToken;
+}
 
 
 
