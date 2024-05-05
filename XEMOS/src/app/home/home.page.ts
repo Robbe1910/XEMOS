@@ -1,11 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import Chart, { ChartConfiguration } from 'chart.js/auto';
-import { Store } from '@ngrx/store';
-import { BehaviorSubject, interval, Subscription } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import { DataService } from '../services/data.service';
-
-const currentTime = new Date();
+import { PushNotificationService } from '../services/push-notification-service.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -14,6 +12,7 @@ const currentTime = new Date();
 })
 export class HomePage implements OnInit, OnDestroy {
 
+  user: any;
   chart: any;
   heartRate: number = 0; // Variable para almacenar el último valor de ritmo cardíaco
   bpmGradient: string = ''; // Gradiente de colores de la barra de BPM
@@ -49,7 +48,7 @@ export class HomePage implements OnInit, OnDestroy {
   currentDate: any;
   counter: any;
 
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService, private pushNotificationService: PushNotificationService, private authService: AuthService,) {
     for (let i = 0; i < 24; i++) {
       this.heartRateData.push(0);
     }
@@ -65,11 +64,11 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.user = this.authService.getCurrentUser();
+
     this.initializeHeartRateChart();
     this.initializeAirQualityChart();
     this.initializeHumidityTemperatureChart();
-
-    // Obtener datos aleatorios cada 5 segundos
 
     const heartRateData = this.generateHeartRateData();
     const airQualityData = this.generateAirQualityData();
@@ -81,8 +80,16 @@ export class HomePage implements OnInit, OnDestroy {
       humidityTemperatureData
     });
 
-    // Obtener datos aleatorios cada 1 segundo
     this.dataSubscription = this.getSensorData()
+
+    this.requestNotificationPermission();
+  }
+
+
+  requestNotificationPermission() {
+    if ('Notification' in window && Notification.permission !== 'granted') {
+      Notification.requestPermission();
+    }
   }
 
   ngOnDestroy() {
@@ -147,14 +154,14 @@ export class HomePage implements OnInit, OnDestroy {
         console.log("❌ Not receiving data");
         this.currentDate = this.actualData.date;
     } else {*/
-      console.log("➡️ Receiving data");
-      this.currentDate = this.actualData.date;
+    console.log("➡️ Receiving data");
+    this.currentDate = this.actualData.date;
     /*}*/
 
     // Calcular la diferencia entre el valor actual y el último valor de heartRateData
     const difference = Math.abs(this.actualData.heart - this.heartRateData[this.heartRateData.length - 1]);
 
-    if ( difference >=10) {
+    if (difference >= 10) {
       this.isStabilizing = true;
     } else {
       this.isStabilizing = false;
@@ -169,6 +176,12 @@ export class HomePage implements OnInit, OnDestroy {
     console.log("⬛ DATE: ", this.actualData.date)
 
     this.setSensorChartData(this.actualData);
+
+    // Aquí obtienes el token del dispositivo móvil (puedes obtenerlo de donde lo almacenes en tu aplicación)
+    const deviceToken = this.user.deviceToken;
+
+    // Llamar al servicio de notificación push para enviar la notificación
+    this.pushNotificationService.sendNotificationToDevice(deviceToken, this.actualData);
   };
 
   setSensorChartData(actualData: any) {
@@ -326,78 +339,78 @@ export class HomePage implements OnInit, OnDestroy {
     const airQualityData = this.generateAirQualityData();
 
     const dataAirQuality = {
-        labels: labelsAirQuality,
-        datasets: [
-            {
-                label: 'TVOC',
-                data: airQualityData.TVOC,
-                borderColor: 'purple',
-                backgroundColor: 'rgba(166, 0, 166, 0.5)',
-                yAxisID: 'y',
-            },
-            {
-                label: 'eCO2',
-                data: airQualityData.eCO2,
-                borderColor: 'grey',
-                backgroundColor: 'rgba(166, 166, 166, 0.5)',
-                yAxisID: 'y1',
-            }
-        ]
+      labels: labelsAirQuality,
+      datasets: [
+        {
+          label: 'TVOC',
+          data: airQualityData.TVOC,
+          borderColor: 'purple',
+          backgroundColor: 'rgba(166, 0, 166, 0.5)',
+          yAxisID: 'y',
+        },
+        {
+          label: 'eCO2',
+          data: airQualityData.eCO2,
+          borderColor: 'grey',
+          backgroundColor: 'rgba(166, 166, 166, 0.5)',
+          yAxisID: 'y1',
+        }
+      ]
     };
 
     const configAirQuality: ChartConfiguration<'line'> = {
-        type: 'line',
-        data: dataAirQuality,
-        options: {
-            responsive: true,
-            interaction: {
-                mode: 'index',
-                intersect: false,
+      type: 'line',
+      data: dataAirQuality,
+      options: {
+        responsive: true,
+        interaction: {
+          mode: 'index',
+          intersect: false,
+        },
+        plugins: {
+          title: {
+            display: false,
+            text: 'Air Quality'
+          }
+        },
+        scales: {
+          y: {
+            type: 'linear',
+            display: true,
+            position: 'left',
+            title: {
+              display: true,
+              text: 'ppb'
             },
-            plugins: {
-                title: {
-                    display: false,
-                    text: 'Air Quality'
-                }
+            min: 0,
+            max: 600 //--Sometimes it goes to 400
+          },
+          y1: {
+            type: 'linear',
+            display: true,
+            position: 'right',
+            grid: {
+              drawOnChartArea: false,
             },
-            scales: {
-                y: {
-                    type: 'linear',
-                    display: true,
-                    position: 'left',
-                    title: {
-                        display: true,
-                        text: 'ppb'
-                    },
-                    min: 0,
-                    max: 600 //--Sometimes it goes to 400
-                },
-                y1: {
-                    type: 'linear',
-                    display: true,
-                    position: 'right',
-                    grid: {
-                        drawOnChartArea: false,
-                    },
-                    title: {
-                        display: true,
-                        text: 'ppm'
-                    },
-                    min: 0,
-                    max: 1000
-                },
-                x: {
-                    title: {
-                        display: false,
-                        text: 'Hours'
-                    }
-                }
+            title: {
+              display: true,
+              text: 'ppm'
+            },
+            min: 0,
+            max: 1000
+          },
+          x: {
+            title: {
+              display: false,
+              text: 'Hours'
             }
+          }
         }
+      }
     };
 
     this.airQualityChart = new Chart('air-quality', configAirQuality);
-}
+  }
 
 
 
