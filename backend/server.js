@@ -64,12 +64,19 @@ app.post('/users', async (req, res) => {
     newUser.createdAt = new Date(); // Agregar una propiedad para la fecha de creación
     const hashedPassword = bcrypt.hashSync(newUser.password, 10);
     newUser.password = hashedPassword;
+    // Generar un token único para el dispositivo móvil
+    const deviceToken = generateDeviceToken(); // Función para generar un token único
+    
+    // Asignar el token del dispositivo móvil al nuevo usuario
+    newUser.deviceToken = deviceToken;
+
     // Define el payload del loginToken con la información que deseas incluir
     const payload = {
       email: newUser.email,
       fullName: newUser.fullName,
       emailConfirmed: newUser.emailConfirmed,
-      token: newUser.token
+      token: newUser.token,
+      emergencyNumber: newUser.emergencyNumber
     };
 
     // Define la clave secreta para firmar el loginToken (debería ser una cadena segura y secreta)
@@ -78,12 +85,6 @@ app.post('/users', async (req, res) => {
     // Genera el loginToken jwt con el payload, la clave secreta y opcionalmente un tiempo de expiración
     const loginTokenJWT = jwt.sign(payload, secretKey, { expiresIn: '1h' });
     newUser.loginToken = loginTokenJWT;
-
-     // Generar un token único para el dispositivo móvil
-     const deviceToken = generateDeviceToken(); // Función para generar un token único
-    
-     // Asignar el token del dispositivo móvil al nuevo usuario
-     newUser.deviceToken = deviceToken;
 
     // Leer los usuarios del archivo JSON
     const users = JSON.parse(fs.readFileSync(usersFilePath));
