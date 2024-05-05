@@ -34,9 +34,11 @@ export class UserService {
     );
   }
 
-  checkEmergencyNumberExists(emergencyNumber: string): Observable<{ exists: boolean }> {
-    return this.http.get<{ exists: boolean }>(`${this.baseUrl}/checkEmergencyNumber/${emergencyNumber}`);
+  checkEmergencyNumberExists(email: string, emergencyNumber: string): Observable<{ exists: boolean }> {
+    return this.http.get<{ exists: boolean }>(`${this.baseUrl}/checkEmergencyNumber/${email}/${emergencyNumber}`);
   }
+  
+  
   
 
   getEmergencyNumber(email: string): Observable<any> {

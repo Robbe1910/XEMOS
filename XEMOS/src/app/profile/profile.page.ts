@@ -128,7 +128,7 @@ export class ProfilePage implements OnInit {
       // Verificar si el número de emergencia nuevo es diferente del actual
       if (newEmergencyNumber !== this.user.emergencyNumber) {
         // Realizar la verificación en el backend antes de enviar la solicitud
-        this.userService.checkEmergencyNumberExists(newEmergencyNumber).subscribe(
+        this.userService.checkEmergencyNumberExists(this.user.email, newEmergencyNumber).subscribe(
           async (response: any) => {
             if (response.exists) {
               // Si el número de emergencia ya existe, establecer una bandera para mostrar un mensaje de error
