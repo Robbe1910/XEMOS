@@ -10,6 +10,12 @@ const nodemailer = require('nodemailer');
 const app = express();
 const PORT = 3000;
 
+// Configurar la codificación UTF-8 para todas las respuestas
+app.use((req, res, next) => {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  next();
+});
+
 app.use(bodyParser.json());
 app.use(cors());
 

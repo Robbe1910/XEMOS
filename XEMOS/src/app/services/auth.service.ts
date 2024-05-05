@@ -105,7 +105,6 @@ export class AuthService {
 
     // Verificar si la propiedad emailConfirmed está presente en el payload
     const emailConfirmed = payload.emailConfirmed || false;
-
     // Devolver el objeto de usuario con emailConfirmed si está presente en el payload
     return {
       fullName: payload.fullName,

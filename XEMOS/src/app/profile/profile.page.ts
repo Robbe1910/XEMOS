@@ -36,7 +36,7 @@ export class ProfilePage implements OnInit {
     });
 
     this.emergencyForm = this.formBuilder.group({
-      emergencyNumber: ['', [Validators.required, Validators.pattern(/^\d{9}$/)]]
+      emergencyNumber: ['', [Validators.required, Validators.pattern(/^\d{3,9}$/)]]
     });
   }
 
