@@ -383,7 +383,7 @@ export class HomePage implements OnInit, OnDestroy {
               text: 'ppb'
             },
             min: 0,
-            max: 600 //--Sometimes it goes to 400
+            max: 100
           },
           y1: {
             type: 'linear',
