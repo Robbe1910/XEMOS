@@ -503,6 +503,62 @@ app.put('/sensor-data', (req, res) => {
   }
 });
 
+// Endpoint para obtener el número de emergencia de un usuario
+app.get('/users/emergencyNumber/:email', (req, res) => {
+  const { email } = req.params;
+  try {
+    const users = JSON.parse(fs.readFileSync(usersFilePath));
+    const user = users.find(user => user.email === email);
+    if (user) {
+      res.status(200).json({ emergencyNumber: user.emergencyNumber });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (err) {
+    console.error('Error getting emergency number:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Endpoint para establecer o actualizar el número de emergencia de un usuario
+app.post('/users/emergencyNumber', (req, res) => {
+  const { email, emergencyNumber } = req.body;
+  try {
+    const users = JSON.parse(fs.readFileSync(usersFilePath));
+    const userIndex = users.findIndex(user => user.email === email);
+    if (userIndex !== -1) {
+      users[userIndex].emergencyNumber = emergencyNumber;
+      fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
+      res.status(200).json({ message: 'Emergency number set successfully' });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (err) {
+    console.error('Error setting emergency number:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Endpoint para actualizar el número de emergencia de un usuario existente
+app.put('/users/emergencyNumber', (req, res) => {
+  const { email, emergencyNumber } = req.body;
+  try {
+    const users = JSON.parse(fs.readFileSync(usersFilePath));
+    const userIndex = users.findIndex(user => user.email === email);
+    if (userIndex !== -1) {
+      users[userIndex].emergencyNumber = emergencyNumber;
+      fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
+      res.status(200).json({ message: 'Emergency number updated successfully' });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (err) {
+    console.error('Error updating emergency number:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

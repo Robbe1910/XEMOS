@@ -14,6 +14,7 @@ export class ProfilePage implements OnInit {
   user: any;
   emailForm: FormGroup;
   passwordForm: FormGroup;
+  emergencyForm: FormGroup;
   errorMessage: String = '';
   emailExists: boolean = false;
   confirmDelete: boolean = false;
@@ -33,6 +34,10 @@ export class ProfilePage implements OnInit {
     this.passwordForm = this.formBuilder.group({
       newPassword: ['', [Validators.required, Validators.minLength(8), this.passwordValidator()]],
     });
+
+    this.emergencyForm = this.formBuilder.group({
+      emergencyNumber: ['', [Validators.required, Validators.pattern(/^\d{9}$/)]]
+    });
   }
 
   ngOnInit() {
@@ -48,7 +53,7 @@ export class ProfilePage implements OnInit {
   updateEmail() {
     const newEmail = this.emailForm.get('newEmail')?.value;
     const email = this.user.email;
-    
+
     // Verificar si el correo electrónico ya existe en el backend antes de enviar la solicitud
     this.userService.checkEmailExists(newEmail).subscribe(
       (response: any) => {
@@ -77,7 +82,7 @@ export class ProfilePage implements OnInit {
       }
     );
   }
-  
+
   // Función de validación personalizada para verificar la complejidad de la contraseña
   passwordValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -108,6 +113,21 @@ export class ProfilePage implements OnInit {
     );
   }
 
+  setNumberEmergency() {
+    if (this.emergencyForm.valid) {
+      const newEmergencyNumber = this.emergencyForm.value.emergencyNumber;
+
+      this.userService.setEmergencyNumber(this.user.email, newEmergencyNumber).subscribe(
+        (response: any) => {
+          // Manejar la respuesta del servidor según corresponda
+        },
+        (error: any) => {
+          // Manejar cualquier error
+        }
+      );
+    }
+  }
+
   deleteAccount() {
     this.confirmDelete = true;
   }
@@ -116,7 +136,7 @@ export class ProfilePage implements OnInit {
     const email = this.user.email;
     this.userService.deleteUser(email).subscribe(
       () => {
-        
+
         this.authService.logout(); // También cerramos sesión si eliminamos la cuenta
         this.router.navigateByUrl('/loading-delete-account'); // Redirigimos a la página de inicio de sesión
       },
@@ -125,7 +145,7 @@ export class ProfilePage implements OnInit {
       }
     );
   }
-  
+
   cancelDelete() {
     this.confirmDelete = false; // Oculta el mensaje de confirmación
   }

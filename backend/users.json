@@ -6,7 +6,8 @@
     "emailConfirmed": true,
     "token": "",
     "loginToken": "",
-    "passwordChangeRequested": false
+    "passwordChangeRequested": false,
+    "emergencyNumber": "634984021"
   },
   {
     "fullName": "Prueba",
@@ -15,7 +16,8 @@
     "emailConfirmed": true,
     "token": "",
     "loginToken": "",
-    "passwordChangeRequested": false
+    "passwordChangeRequested": false,
+    "emergencyNumber": "634984021"
   },
   {
     "fullName": "prueba 1",

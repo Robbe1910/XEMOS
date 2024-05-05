@@ -19,7 +19,8 @@
       <div class="form-group">
         <label for="newEmail">New Email</label>
         <input formControlName="newEmail" type="email" id="newEmail" placeholder="New Email">
-        <div *ngIf="emailForm.controls['newEmail'].invalid && emailForm.controls['newEmail'].touched" class="error-message">
+        <div *ngIf="emailForm.controls['newEmail'].invalid && emailForm.controls['newEmail'].touched"
+          class="error-message">
           Please enter a valid email address<br>
         </div>
         <!-- Mostrar mensaje de error si el correo electrónico ya existe -->
@@ -30,23 +31,41 @@
       </div>
       <button type="submit" class="btn btn-primary" [disabled]="emailForm.invalid">Update Email</button>
     </form>
-    
+
 
     <!-- Formulario para actualizar la contraseña -->
     <form [formGroup]="passwordForm" class="profile-form" (ngSubmit)="updatePassword()">
       <div class="form-group">
         <label for="newPassword">New Password</label>
         <div class="eye-password">
-          <i class="fas" [ngClass]="{'fa-eye-slash': hidePassword, 'fa-eye': !hidePassword}" (click)="togglePasswordVisibility()"></i>
-          <input formControlName="newPassword" type="{{ hidePassword ? 'password' : 'text' }}" id="newPassword" placeholder="New Password">
+          <i class="fas" [ngClass]="{'fa-eye-slash': hidePassword, 'fa-eye': !hidePassword}"
+            (click)="togglePasswordVisibility()"></i>
+          <input formControlName="newPassword" type="{{ hidePassword ? 'password' : 'text' }}" id="newPassword"
+            placeholder="New Password">
         </div>
-        <div *ngIf="passwordForm.controls['newPassword'].invalid && passwordForm.controls['newPassword'].touched" class="error-message">
+        <div *ngIf="passwordForm.controls['newPassword'].invalid && passwordForm.controls['newPassword'].touched"
+          class="error-message">
           Password must be at least 8 characters long <br>
         </div>
       </div>
       <button type="submit" class="btn btn-primary" [disabled]="passwordForm.invalid">Update Password</button>
     </form>
-    
+
+    <!-- Formulario para establecer y cambiar el número de emergencia -->
+    <form [formGroup]="emergencyForm" class="profile-form" (ngSubmit)="setNumberEmergency()">
+      <div class="form-group">
+        <label for="emergencyNumber">Emergency Number</label>
+        <input formControlName="emergencyNumber" type="text" id="emergencyNumber" placeholder="Emergency Number">
+        <div
+          *ngIf="emergencyForm.controls['emergencyNumber'].invalid && emergencyForm.controls['emergencyNumber'].touched"
+          class="error-message">
+          Please enter a valid emergency number<br>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="emergencyForm.invalid">Update Emergency Number</button>
+    </form>
+
+
 
     <div class="buttons-profile">
       <div>

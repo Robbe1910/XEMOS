@@ -28,6 +28,10 @@ const routes: Routes = [
         path: 'profile',
         loadChildren: () => import('./profile/profile.module').then(m => m.ProfilePageModule)
       },
+      {
+        path: 'emergency',
+        loadChildren: () => import('./emergency/emergency.module').then(m => m.EmergencyPageModule)
+      },
       { path: '', redirectTo: 'home', pathMatch: 'full' }
     ]
   },

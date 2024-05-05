@@ -8,6 +8,7 @@ import { map, tap } from 'rxjs/operators';
 })
 export class AuthService {
   private baseUrl = 'http://34.175.187.252:3000';
+  //private urlLocalhost= 'http://localhost:3000';
   private loginTokenKey = 'loginToken';
   private tokenKey = "token"
 
