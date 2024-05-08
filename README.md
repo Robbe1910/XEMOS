@@ -86,5 +86,8 @@ Para construir la aplicación, sigue estos pasos:
 
 
 ## Ejecutar presentación
-En la ruta Presentacion/fctapp ejecutar el siguiente comando
+Instalar htttp-server con npm install http-server
+En la ruta Presentacion/fctapp ejecutar los siguientes comandos
+npm install
+npm run build
 http-server .\dist\fctapp\
