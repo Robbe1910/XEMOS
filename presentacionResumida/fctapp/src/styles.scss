@@ -1,0 +1,77 @@
+/* You can add global styles to this file, and also import other style files */
+body, html {
+  box-sizing: border-box;
+
+  width: 100vw;
+  min-height: 100vh;
+
+  display: grid;
+  align-items: center;
+
+  background-color: #1c1c1c;
+}
+
+@font-face {
+  font-family: 'SF PRO';
+  src: url('assets/SFPRODISPLAYREGULAR.ttf') format('truetype'); /* Adjust the path and format as per your font file */
+  /* You can specify multiple src declarations for different file formats */
+}
+
+@font-face {
+  font-family: 'AKIRA';
+  src: url('assets/Akira-Expanded-Demo.ttf') format('truetype'); /* Adjust the path and format as per your font file */
+  /* You can specify multiple src declarations for different file formats */
+}
+
+@font-face {
+  font-family: 'SF PRO BOLD';
+  src: url('assets/SFPRODISPLAYBOLD.ttf') format('truetype'); /* Adjust the path and format as per your font file */
+  /* You can specify multiple src declarations for different file formats */
+}
+
+
+p, span, h1, h2, h3, h4, h5, td, tr {
+  font-family: 'SF PRO', sans-serif !important;
+  color: #bac3d6 !important; 
+}
+
+span {
+  font-family: 'SF PRO BOLD', sans-serif !important;
+}
+
+h1
+{
+  font-family: 'AKIRA', sans-serif !important;
+  color: #bac3d6 !important; 
+  letter-spacing: 4px;
+}
+
+i
+{
+  transform: scale(75%);
+}
+
+p
+{
+  text-align: justify;
+}
+
+@-webkit-keyframes backAnimation {
+  0%{background-position:7% 0%}
+  50%{background-position:94% 100%}
+  100%{background-position:7% 0%}
+}
+@-moz-keyframes backAnimation {
+  0%{background-position:7% 0%}
+  50%{background-position:94% 100%}
+  100%{background-position:7% 0%}
+}
+@keyframes backAnimation {
+  0%{background-position:7% 0%}
+  50%{background-position:94% 100%}
+  100%{background-position:7% 0%}
+}
+
+img[alt~="www.000webhost.com"] {
+  display: none !important;
+}

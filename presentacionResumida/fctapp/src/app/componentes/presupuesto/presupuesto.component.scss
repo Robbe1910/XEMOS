@@ -1,0 +1,70 @@
+*
+{
+  color: white;
+
+}
+
+h1
+{
+  font-weight: bolder;
+}
+
+.container
+{
+  //border: 2px solid red;
+  width: 90vw;
+  height: 90vh;
+  display: grid;
+  grid-template-rows: 20% 60% 20%;
+  justify-content: center;
+  align-items: center;
+}
+
+p
+{
+  font-size: 1.6vw;
+  font-weight: lighter;
+}
+
+.microLog
+{
+  background-image: url("../../../assets/images/microlog.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100%;
+}
+
+table
+{
+  width: 100%;
+  border-collapse: collapse;
+}
+table
+{
+  border-spacing: 1vw;
+  border-collapse:separate;
+}
+
+table tr td, table tr th
+{
+  padding: 0.4vw;
+}
+
+table tr th
+{
+  border-bottom: 2px solid lightgrey;
+  border-radius: 2px;
+
+}
+
+span
+{
+  font-weight: bold;
+}
+
+.total
+{
+  font-size: 2vw;
+  border-left: 2px solid lightgrey;
+}

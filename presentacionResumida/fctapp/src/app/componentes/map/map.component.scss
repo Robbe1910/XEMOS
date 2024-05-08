@@ -1,0 +1,48 @@
+*
+{
+  color: white;
+  //border: 2px solid red;
+}
+
+h1
+{
+  font-weight: bolder;
+}
+
+.container
+{
+  //border: 2px solid red;
+  width: 90vw;
+  height: 90vh;
+  display: grid;
+  grid-template-rows: 15% 30% auto;
+  justify-content: center;
+  align-items: center;
+}
+
+p
+{
+  font-size: 1.6vw;
+  font-weight: lighter;
+}
+
+
+span
+{
+  font-weight: bold;
+}
+
+.spainSchema
+{
+  height: 100%;
+  width: 100%;
+  transition: 400ms;
+  background-image: url("../../../assets/images/xemos-assets/assets/schemalIcons/hospital-house.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+//--CANARIAS, GALICIA, ASTURIAS Y EXTREMADURA
+
+

@@ -1,0 +1,50 @@
+*
+{
+  color: white;
+
+}
+
+h1
+{
+  font-weight: bolder;
+}
+
+.container
+{
+  //border: 2px solid red;
+  width: 90vw;
+  height: 90vh;
+  display: grid;
+  grid-template-rows: 20% 50% 30%;
+  justify-content: center;
+  align-items: center;
+}
+
+p
+{
+  font-size: 1.6vw;
+  font-weight: lighter;
+}
+
+span
+{
+  font-weight: bold;
+}
+
+img
+{
+  transition: 400ms;
+  height: 85%;
+}
+
+img:nth-of-type(1)
+{
+  transform: scale(60%);
+}
+
+img:hover
+{
+  transition: 400ms;
+  height: 90%;
+}
+
