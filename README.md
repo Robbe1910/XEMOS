@@ -9,6 +9,7 @@
   - [Guía de instalación](#guía-de-instalación)
   - [Comandos de construcción](#comandos-de-construcción)
   - [Cambiar icono de la app](#cambiar-icono-de-la-app)
+  - [Ejecutar presentación](#ejecutar-presentación)
 
 ## Descripción del proyecto y objetivos
 
@@ -86,6 +87,7 @@ Para construir la aplicación, sigue estos pasos:
 
 
 ## Ejecutar presentación
+
 Instalar htttp-server con npm install http-server
 En la ruta Presentacion/fctapp ejecutar los siguientes comandos
 npm install

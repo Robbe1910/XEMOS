@@ -16,6 +16,11 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { sensorReducer } from './redux/reducers/sensor.reducer';
 import { SensorEffects } from './redux/effects/sensor.effects';
 
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+
+
 
 
 
@@ -31,7 +36,7 @@ import { SensorEffects } from './redux/effects/sensor.effects';
     StoreModule.forRoot({ sensor: sensorReducer }),
     EffectsModule.forRoot([SensorEffects]),
     StoreDevtoolsModule.instrument()],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [LocalNotifications, AndroidPermissions, InAppBrowser, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

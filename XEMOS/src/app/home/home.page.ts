@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import Chart, { ChartConfiguration } from 'chart.js/auto';
 import { Subscription } from 'rxjs';
 import { DataService } from '../services/data.service';
-import { PushNotificationService } from '../services/push-notification-service.service';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -48,7 +47,7 @@ export class HomePage implements OnInit, OnDestroy {
   currentDate: any;
   counter: any;
 
-  constructor(private dataService: DataService, private pushNotificationService: PushNotificationService, private authService: AuthService,) {
+  constructor(private dataService: DataService, private authService: AuthService) {
     for (let i = 0; i < 24; i++) {
       this.heartRateData.push(0);
     }
@@ -80,16 +79,7 @@ export class HomePage implements OnInit, OnDestroy {
       humidityTemperatureData
     });
 
-    this.dataSubscription = this.getSensorData()
-
-    this.requestNotificationPermission();
-  }
-
-
-  requestNotificationPermission() {
-    if ('Notification' in window && Notification.permission !== 'granted') {
-      Notification.requestPermission();
-    }
+    this.dataSubscription = this.getSensorData();
   }
 
   ngOnDestroy() {
@@ -98,6 +88,7 @@ export class HomePage implements OnInit, OnDestroy {
       this.dataSubscription.unsubscribe();
     }
   }
+
 
   // Método para obtener datos del sensor y suscribirse a ellos
   getSensorData(): Subscription {
@@ -177,12 +168,27 @@ export class HomePage implements OnInit, OnDestroy {
 
     this.setSensorChartData(this.actualData);
 
-    // Aquí obtienes el token del dispositivo móvil (puedes obtenerlo de donde lo almacenes en tu aplicación)
-    const deviceToken = this.user.deviceToken;
-
-    // Llamar al servicio de notificación push para enviar la notificación
-    this.pushNotificationService.sendNotificationToDevice(deviceToken, this.actualData);
+    // Enviar la notificación local
+    this.sendLocalNotification();
   };
+
+  sendLocalNotification() {
+    // Construye el mensaje de la notificación con los datos del sensor
+    const notificationMessage = `
+      Temperatura: ${this.actualData.temperatura}°C
+      Humedad: ${this.actualData.humedad}%
+      Calidad del aire (TVOC): ${this.actualData.airquality.TVOC}
+      Calidad del aire (eCO2): ${this.actualData.airquality.eCO2}
+      Ritmo cardíaco: ${this.actualData.heart} BPM
+    `;
+
+    // Define la notificación local
+    this.localNotifications.schedule({
+      id: 1,
+      text: notificationMessage,
+      data: { mydata: 'Datos del sensor' } // Datos adicionales opcionalmente
+    });
+  }
 
   setSensorChartData(actualData: any) {
     const heartRateData = this.generateHeartRateData();
@@ -383,7 +389,7 @@ export class HomePage implements OnInit, OnDestroy {
               text: 'ppb'
             },
             min: 0,
-            max: 100
+            max: 1000
           },
           y1: {
             type: 'linear',
@@ -397,7 +403,7 @@ export class HomePage implements OnInit, OnDestroy {
               text: 'ppm'
             },
             min: 0,
-            max: 1000
+            max: 1400
           },
           x: {
             title: {

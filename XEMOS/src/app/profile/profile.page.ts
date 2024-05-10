@@ -16,6 +16,7 @@ export class ProfilePage implements OnInit {
   passwordForm: FormGroup;
   emergencyForm: FormGroup;
   errorMessage: String = '';
+  errorMessageEmergency: String = '';
   emailExists: boolean = false;
   confirmDelete: boolean = false;
   hidePassword: boolean = true;
@@ -130,36 +131,43 @@ export class ProfilePage implements OnInit {
         // Realizar la verificación en el backend antes de enviar la solicitud
         this.userService.checkEmergencyNumberExists(this.user.email, newEmergencyNumber).subscribe(
           async (response: any) => {
+            console.log("Emergency number verification response:", response);
             if (response.exists) {
-              // Si el número de emergencia ya existe, establecer una bandera para mostrar un mensaje de error
-              this.errorMessage = "El número de emergencia ya está registrado.";
+              // If the emergency number already exists, set a flag to show an error message
+              console.log("The emergency number is already registered.");
+              this.errorMessage = "The emergency number is already registered.";
             } else {
-              // Si el número de emergencia no existe, realizar la actualización
+              // If the emergency number doesn't exist, perform the update
               this.userService.setEmergencyNumber(this.user.email, newEmergencyNumber).subscribe(
                 async (res: any) => {
-                  // Actualizar la información del usuario después de la actualización
+                  console.log("Emergency number update response:", res);
+                  // Update the user information after the update
                   this.user.emergencyNumber = newEmergencyNumber;
-                  // Limpiar el formulario
+                  // Reset the form
                   this.emergencyForm.reset();
-                  // Reiniciar el mensaje de error
+                  // Reset the error message
                   this.errorMessage = '';
                 },
                 (err: any) => {
-                  this.errorMessage = "Error al actualizar el número de emergencia"; // Mensaje de error genérico
+                  console.error("Error updating emergency number:", err);
+                  this.errorMessage = "Error updating emergency number"; // Generic error message
                 }
               );
             }
           },
           (error: any) => {
-            this.errorMessage = "Error al verificar el número de emergencia"; // Mensaje de error genérico
+            console.error("Error verifying emergency number:", error);
+            this.errorMessage = "Error verifying emergency number"; // Generic error message
           }
         );
       } else {
-        // Si el número de emergencia es el mismo que el actual, no se realiza ninguna acción
-        this.errorMessage = "El número de emergencia no ha cambiado.";
+        // If the emergency number is the same as the current one, no action is taken
+        console.log("The emergency number has not changed.");
+        this.errorMessage = "The emergency number has not changed.";
       }
     }
   }
+  
   
   
 

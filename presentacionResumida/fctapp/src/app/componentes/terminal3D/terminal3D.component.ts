@@ -65,12 +65,12 @@ export class Terminal3DComponent implements OnInit, OnDestroy
       'assets/models/proto.obj',
       // called when resource is loaded
       function ( object ) {
-        object.scale.setScalar(0.01);
+        object.scale.setScalar(0.012);
         object.rotation.x = 0.2;
-        object.rotation.z = -0.2;
+        object.rotation.z = 1.4;
         object.rotation.y = -0;
-        object.position.x = 1.84;
-        object.position.y = 0.5;
+        object.position.x = 0;
+        object.position.y = 0.2;
         object.position.z = -0.4;
 
         scene.add( object );

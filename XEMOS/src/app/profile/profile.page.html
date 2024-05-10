@@ -65,6 +65,7 @@
           class="error-message">
           Please enter a valid emergency number<br>
         </div>
+        <div *ngIf="errorMessageEmergency" class="error-message">{{ errorMessageEmergency }}</div>
       </div>
       <button type="submit" class="btn btn-primary" [disabled]="emergencyForm.invalid">Update Emergency Number</button>
     </form>
