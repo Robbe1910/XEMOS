@@ -64,7 +64,7 @@ export class Esp32Component {
       'assets/models/esp.obj',
       // called when resource is loaded
       function ( object ) {
-        object.scale.setScalar(0.01);
+        object.scale.setScalar(0.015);
         object.rotation.x = -0.2;
         object.rotation.z = 0;
         object.rotation.y = 0;
