@@ -1,0 +1,5 @@
+
+- Protocolo I2C ESP32
+- Multiplexor I2C
+- Pines Analogicos y Digitales ESP32
+- Como funciona el codigo del ESP32 - VOID SETUP y el VOID LOOP
