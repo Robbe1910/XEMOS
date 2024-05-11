@@ -29,6 +29,8 @@ Detalle:
 Pines analógicos: El ESP32 tiene una serie de pines que pueden leer voltajes analógicos mediante el uso de un conversor analógico-digital (ADC). Estos pines se utilizan para conectar sensores analógicos como potenciómetros, sensores de luz, sensores de temperatura, etc.
 Pines digitales: El ESP32 también tiene pines que pueden funcionar como entradas o salidas digitales. Estos pines pueden leer señales digitales (alto/bajo) o escribir señales digitales para controlar dispositivos como LEDs, relés, actuadores, etc.
 Funciones especiales: Algunos pines del ESP32 tienen funciones especiales, como UART, SPI, I2C, PWM, etc., lo que les permite realizar tareas específicas de comunicación o generación de señales.
+Se leen los datos en 12 bits para leer valores de 0 - 4095 y de forma mátematica ajustas el muestreo de datos, que lo hace la librería del propio sensor y por eso vemos valores reales que sabemos interpretar.
+Se hace uso del pin ADC0.
 
 Cómo funciona el código del ESP32 - void setup() y el void loop():
 Resumen:
@@ -36,6 +38,6 @@ El código para el ESP32, al igual que para otros microcontroladores basados en 
 
 Detalle:
 
-void setup(): La función void setup() se ejecuta una vez al inicio del programa. Se utiliza para realizar la configuración inicial del microcontrolador y sus periféricos, como configurar los modos de los pines, iniciar la comunicación serial, inicializar variables, etc.
-void loop(): La función void loop() se ejecuta continuamente después de que void setup() ha terminado de ejecutarse. Contiene el código principal del programa, que se ejecuta en un bucle infinito. Aquí es donde se manejan las entradas y salidas, se toman decisiones basadas en las lecturas de sensores, se envían datos por la comunicación serial, etc.
+void setup(): La función void setup() se ejecuta una vez al inicio del programa. Se utiliza para realizar la configuración inicial del microcontrolador y sus periféricos, como configurar los modos de los pines, iniciar la comunicación serial, inicializar variables, etc. Sería con el ejmplo de un restaurante abrir el restaurante, encendear las luces, prepara los fuegos, etc.
+void loop(): La función void loop() se ejecuta continuamente después de que void setup() ha terminado de ejecutarse. Contiene el código principal del programa, que se ejecuta en un bucle infinito. Aquí es donde se manejan las entradas y salidas, se toman decisiones basadas en las lecturas de sensores, se envían datos por la comunicación serial, etc. Siguiendo con el ejemplo sería dar la bienvenida al cliente, tomar nota de lo que van a comer, servirles, cobrarles, etc.
 Estructura repetitiva: El código dentro de void loop() se ejecuta repetidamente en un bucle infinito, a menos que se detenga explícitamente o se reinicie el microcontrolador. Esto permite que el microcontrolador realice tareas de manera continua y responda a eventos en tiempo real.
