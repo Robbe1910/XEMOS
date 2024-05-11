@@ -1,5 +1,41 @@
 
-- Protocolo I2C ESP32
-- Multiplexor I2C
-- Pines Analogicos y Digitales ESP32
-- Como funciona el codigo del ESP32 - VOID SETUP y el VOID LOOP
+Protocolo I2C ESP32:
+Resumen:
+El protocolo I2C (Inter-Integrated Circuit) es un protocolo de comunicación serial síncrona utilizado para la comunicación entre microcontroladores, sensores, actuadores y otros dispositivos electrónicos. En el contexto del ESP32, que es un microcontrolador de bajo consumo de energía y alto rendimiento, el I2C se utiliza para la comunicación con dispositivos periféricos, como sensores de temperatura, acelerómetros, giroscopios, pantallas LCD, EEPROM, etc.
+
+Detalle:
+
+Master/Slave: En el protocolo I2C, puede haber un dispositivo maestro (generalmente el microcontrolador) que inicia y controla la comunicación, y uno o varios dispositivos esclavos que responden a las solicitudes del maestro.
+SCL y SDA: Son las líneas de reloj (SCL) y datos (SDA) que se utilizan para la comunicación entre los dispositivos. SCL es una línea de reloj controlada por el maestro, mientras que SDA es la línea de datos bidireccional.
+Dirección del dispositivo: Cada dispositivo I2C tiene una dirección única de 7 bits que lo identifica en el bus. Esto permite que múltiples dispositivos compartan el mismo bus sin conflictos de dirección.
+
+Multiplexor I2C:
+Resumen:
+Un multiplexor I2C, también conocido como multiplexor de bus I2C o I2C switch, es un dispositivo que permite a un solo maestro (microcontrolador) controlar múltiples dispositivos esclavos (sensores, actuadores, etc.) en un bus I2C. El multiplexor tiene varios canales de entrada y salida, y selecciona dinámicamente uno de los dispositivos esclavos conectados al bus I2C para la comunicación con el maestro.
+
+Detalle:
+
+Selección de canal: El multiplexor I2C tiene un mecanismo para seleccionar qué dispositivo esclavo está conectado al bus I2C en un momento dado. Esto se puede lograr a través de señales de control o comandos enviados desde el microcontrolador al multiplexor.
+Direccionamiento: Algunos multiplexores I2C tienen su propia dirección en el bus I2C para que el microcontrolador pueda enviar comandos directamente al multiplexor para seleccionar el canal adecuado.
+Ampliación de la capacidad: El uso de un multiplexor I2C permite aumentar la capacidad de un bus I2C limitado, lo que permite conectar más dispositivos al microcontrolador de lo que permitiría el número de pines de E/S disponibles en el microcontrolador.
+Se usan el GPIO 21 para enviar datos por el sda(serial data) y el GPIO 22 para el scl(serial clock)
+
+Pines Analógicos y Digitales ESP32:
+Resumen:
+El ESP32 es un microcontrolador que tiene una combinación de pines analógicos y digitales para entrada/salida de propósito general (E/S). Los pines analógicos pueden leer voltajes analógicos, mientras que los pines digitales pueden leer y escribir señales digitales (alto/bajo).
+
+Detalle:
+
+Pines analógicos: El ESP32 tiene una serie de pines que pueden leer voltajes analógicos mediante el uso de un conversor analógico-digital (ADC). Estos pines se utilizan para conectar sensores analógicos como potenciómetros, sensores de luz, sensores de temperatura, etc.
+Pines digitales: El ESP32 también tiene pines que pueden funcionar como entradas o salidas digitales. Estos pines pueden leer señales digitales (alto/bajo) o escribir señales digitales para controlar dispositivos como LEDs, relés, actuadores, etc.
+Funciones especiales: Algunos pines del ESP32 tienen funciones especiales, como UART, SPI, I2C, PWM, etc., lo que les permite realizar tareas específicas de comunicación o generación de señales.
+
+Cómo funciona el código del ESP32 - void setup() y el void loop():
+Resumen:
+El código para el ESP32, al igual que para otros microcontroladores basados en Arduino, sigue una estructura básica que incluye las funciones void setup() y void loop(). Estas funciones son fundamentales para la inicialización del microcontrolador y la ejecución del programa principal.
+
+Detalle:
+
+void setup(): La función void setup() se ejecuta una vez al inicio del programa. Se utiliza para realizar la configuración inicial del microcontrolador y sus periféricos, como configurar los modos de los pines, iniciar la comunicación serial, inicializar variables, etc.
+void loop(): La función void loop() se ejecuta continuamente después de que void setup() ha terminado de ejecutarse. Contiene el código principal del programa, que se ejecuta en un bucle infinito. Aquí es donde se manejan las entradas y salidas, se toman decisiones basadas en las lecturas de sensores, se envían datos por la comunicación serial, etc.
+Estructura repetitiva: El código dentro de void loop() se ejecuta repetidamente en un bucle infinito, a menos que se detenga explícitamente o se reinicie el microcontrolador. Esto permite que el microcontrolador realice tareas de manera continua y responda a eventos en tiempo real.
