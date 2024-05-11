@@ -42,7 +42,7 @@ img
 {
   width: 50%;
   height: 100%;
-  transform: scale(90%);
+  transform: scale(70%) translateY(100px);
   background-image: url("../../../assets/images/xemos-assets/assets/schemalIcons/new-sensors.png");
   background-size: contain;
   background-position: bottom;
@@ -53,6 +53,7 @@ img
 {
   width: 50%;
   height: 100%;
+  transform: scale(90%) translateY(100px);
   background-image: url("../../../assets/images/xemos-assets/assets/schemalIcons/esp32touch.png");
   background-size: contain;
   background-position: bottom;
