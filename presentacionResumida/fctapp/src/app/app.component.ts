@@ -10,8 +10,8 @@ import { HttpClient  } from '@angular/common/http';
 })
 export class AppComponent implements OnInit{
 
-  pages: number [] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14];
-  actualPage: number = 11;
+  pages: number [] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17];
+  actualPage: number = 0;
   deviceInfo: any;
 
   constructor(private deviceService: DeviceDetectorService) {

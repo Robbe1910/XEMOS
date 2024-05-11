@@ -22,7 +22,7 @@ h1
 
 p
 {
-  font-size: 1.6vw;
+  font-size: 1.7vw;
   font-weight: lighter;
 }
 
@@ -33,14 +33,16 @@ span
 
 img
 {
+  transition: 400ms;
+  height: 85%;
   width: 50%;
 }
-
 
 .activeMode
 {
   width: 50%;
   height: 100%;
+  transform: scale(90%);
   background-image: url("../../../assets/images/xemos-assets/assets/schemalIcons/new-sensors.png");
   background-size: contain;
   background-position: bottom;
