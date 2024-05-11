@@ -18,7 +18,8 @@ Detalle:
 Selección de canal: El multiplexor I2C tiene un mecanismo para seleccionar qué dispositivo esclavo está conectado al bus I2C en un momento dado. Esto se puede lograr a través de señales de control o comandos enviados desde el microcontrolador al multiplexor.
 Direccionamiento: Algunos multiplexores I2C tienen su propia dirección en el bus I2C para que el microcontrolador pueda enviar comandos directamente al multiplexor para seleccionar el canal adecuado.
 Ampliación de la capacidad: El uso de un multiplexor I2C permite aumentar la capacidad de un bus I2C limitado, lo que permite conectar más dispositivos al microcontrolador de lo que permitiría el número de pines de E/S disponibles en el microcontrolador.
-Se usan el GPIO 21 para enviar datos por el sda(serial data) y el GPIO 22 para el scl(serial clock)
+Se usan el GPIO 21 para enviar datos por el sda(serial data) y el GPIO 22 para el scl(serial clock).
+Usamos el multiplexor para poder mostrar diferentes datos que sin este solo podriamos mostrar un dato en todas las pantallas por ejemplo.
 
 Pines Analógicos y Digitales ESP32:
 Resumen:
