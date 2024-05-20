@@ -167,28 +167,7 @@ export class HomePage implements OnInit, OnDestroy {
     console.log("⬛ DATE: ", this.actualData.date)
 
     this.setSensorChartData(this.actualData);
-
-    // Enviar la notificación local
-    this.sendLocalNotification();
   };
-
-  sendLocalNotification() {
-    // Construye el mensaje de la notificación con los datos del sensor
-    const notificationMessage = `
-      Temperatura: ${this.actualData.temperatura}°C
-      Humedad: ${this.actualData.humedad}%
-      Calidad del aire (TVOC): ${this.actualData.airquality.TVOC}
-      Calidad del aire (eCO2): ${this.actualData.airquality.eCO2}
-      Ritmo cardíaco: ${this.actualData.heart} BPM
-    `;
-
-    // Define la notificación local
-    this.localNotifications.schedule({
-      id: 1,
-      text: notificationMessage,
-      data: { mydata: 'Datos del sensor' } // Datos adicionales opcionalmente
-    });
-  }
 
   setSensorChartData(actualData: any) {
     const heartRateData = this.generateHeartRateData();

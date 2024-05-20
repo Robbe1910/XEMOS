@@ -42,3 +42,127 @@ Detalle:
 void setup(): La función void setup() se ejecuta una vez al inicio del programa. Se utiliza para realizar la configuración inicial del microcontrolador y sus periféricos, como configurar los modos de los pines, iniciar la comunicación serial, inicializar variables, etc. Sería con el ejmplo de un restaurante abrir el restaurante, encendear las luces, prepara los fuegos, etc.
 void loop(): La función void loop() se ejecuta continuamente después de que void setup() ha terminado de ejecutarse. Contiene el código principal del programa, que se ejecuta en un bucle infinito. Aquí es donde se manejan las entradas y salidas, se toman decisiones basadas en las lecturas de sensores, se envían datos por la comunicación serial, etc. Siguiendo con el ejemplo sería dar la bienvenida al cliente, tomar nota de lo que van a comer, servirles, cobrarles, etc.
 Estructura repetitiva: El código dentro de void loop() se ejecuta repetidamente en un bucle infinito, a menos que se detenga explícitamente o se reinicie el microcontrolador. Esto permite que el microcontrolador realice tareas de manera continua y responda a eventos en tiempo real.
+
+Protocolo I2C ESP32:
+¿Cuál es una característica importante del protocolo I2C?
+a) Controlar la sincronización de datos entre dispositivos en el bus I2C.
+b) Configurar los pines de E/S del microcontrolador.
+c) Reproducir música en un altavoz mediante I2C.
+d) Hacer malabares con pingüinos en el Polo Norte.
+
+Multiplexor I2C:
+¿Qué permite hacer un multiplexor I2C?
+a) Permite a un solo maestro controlar múltiples dispositivos esclavos en un bus I2C.
+b) Activa el modo turbo en el microcontrolador.
+c) Hace que el microcontrolador ESP32 vuele.
+d) Traduce señales cósmicas en recetas de cocina intergalácticas.
+
+Pines Analógicos y Digitales ESP32:
+¿Qué función cumplen los pines analógicos y digitales en el ESP32?
+a) Los pines analógicos pueden leer voltajes analógicos, mientras que los pines digitales pueden leer y escribir señales digitales.
+b) Los pines analógicos pueden hacer café, mientras que los pines digitales pueden bailar salsa.
+c) Los pines analógicos son en realidad portales dimensionales, mientras que los pines digitales son magos disfrazados.
+d) Los pines analógicos sirven café con leche cósmico y los pines digitales bailan tango con los electrones.
+
+Cómo funciona el código del ESP32 - void setup() y el void loop():
+¿Cuál es la función de la función void loop() en un programa para microcontroladores?
+a) Realizar la configuración inicial del microcontrolador y sus periféricos.
+b) Preparar una fiesta para las ranas del jardín.
+c) Hacer malabares con hamburguesas en el aire.
+d) Convertir números en sus equivalentes en idioma de delfines.
+
+¿Cuál es la característica clave del protocolo I2C para la comunicación entre dispositivos?
+a) Controlar la sincronización de datos entre dispositivos.
+b) Configurar los pines de E/S del microcontrolador.
+c) Establecer una conexión inalámbrica con otros dispositivos.
+d) Transformar pensamientos en señales de humo.
+
+¿Qué permite hacer un multiplexor I2C en un sistema con varios dispositivos esclavos?
+a) Permite a un solo maestro controlar múltiples dispositivos esclavos en un bus I2C.
+b) Controla el flujo de energía hacia los dispositivos conectados.
+c) Activa el modo invisibilidad en el microcontrolador.
+d) Lee la mente de los microcontroladores y predice el futuro de los sensores.
+
+¿Cuál es la función de los pines analógicos en el ESP32?
+a) Leer voltajes analógicos de sensores.
+b) Emitir rayos láser.
+c) Producir helado de chocolate.
+d) Teletransportar señales de radio a Marte.
+
+¿Qué hace la función void setup() en el código del ESP32?
+a) Realiza la configuración inicial del microcontrolador y sus periféricos.
+b) Da una fiesta para las ardillas del parque.
+c) Canta una serenata a los girasoles.
+d) Teletransporta el código a una dimensión paralela.
+
+¿Cuál es la característica principal de los pines digitales en el ESP32?
+a) Pueden leer y escribir señales digitales.
+b) Preparan café expreso.
+c) Teletransportan galletas de chocolate.
+d) Transforman pulsos en lluvias de confeti.
+
+¿Qué hace la función void loop() en el código del ESP32?
+a) Se ejecuta continuamente después de la inicialización para el bucle principal del programa.
+b) Baila salsa con los pines digitales.
+c) Organiza una fiesta en el microcontrolador.
+d) Calcula la velocidad del viento en la Luna.
+
+¿Qué es SCL en el protocolo I2C?
+a) La línea de reloj controlada por el maestro.
+b) Una señal de ruido cósmico.
+c) Una canción popular de los años 80.
+d) Un acrónimo para "Super Cool Language".
+
+¿Cuál es la función de la dirección del dispositivo en el protocolo I2C?
+a) Identifica de manera única a cada dispositivo en el bus.
+b) Controla la temperatura ambiente del microcontrolador.
+c) Activa el modo fiesta en el sensor de temperatura.
+d) Despierta a los elfos del sueño eterno.
+
+¿Por qué se usa un multiplexor I2C en un sistema con varios dispositivos?
+a) Para aumentar la capacidad de un bus I2C.
+b) Para enviar señales de humo a los dispositivos.
+c) Para hacer malabares con los datos.
+d) Para encontrar el tesoro enterrado de los chips antiguos.
+
+¿Cuál es la función principal de los pines analógicos en el ESP32?
+a) Leer voltajes analógicos de sensores.
+b) Tocar música de jazz.
+c) Convertir señales en flores.
+d) Hacer café para los robots.
+
+¿Qué función cumple la función void setup() en el código del ESP32?
+a) Realizar la configuración inicial del microcontrolador y sus periféricos.
+b) Organizar una carrera de caracoles.
+c) Lanzar cohetes al espacio.
+d) Descifrar jeroglíficos alienígenas.
+
+¿Cuál es la capacidad de lectura de los pines analógicos en el ESP32?
+a) 12 bits.
+b) 42 galaxias.
+c) Infinito.
+d) El número de estrellas en el universo.
+
+¿Qué es SDA en el protocolo I2C?
+a) La línea de datos bidireccional.
+b) Un código secreto para abrir puertas dimensionales.
+c) Una receta de pastel de manzana.
+d) El nombre de una famosa estrella de cine.
+
+¿Qué hace la función void loop() en el código del ESP32?
+a) Se ejecuta continuamente después de la inicialización para el bucle principal del programa.
+b) Juega al escondite con los bits.
+c) Organiza una fiesta en el microcontrolador.
+d) Calcula la edad del universo en picosegundos.
+
+¿Por qué es importante la dirección del dispositivo en el protocolo I2C?
+a) Identifica de manera única a cada dispositivo en el bus.
+b) Ordena pizza para los robots.
+c) Envía mensajes secretos a través del espacio-tiempo.
+d) Protege el universo de los gatos extraterrestres.
+
+¿Cuál es el propósito del bucle void loop() en un programa para microcontroladores?
+a) Ejecutar el código principal del programa en un bucle infinito.
+b) Tocar música de salsa con los pines digitales.
+c) Hacer malabares con los datos de los sensores.
+d) Resolver ecuaciones diferenciales en una dimensión paralela.
