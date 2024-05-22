@@ -31,8 +31,8 @@ const int PULSE_FADE = 5;
 const int THRESHOLD = 685;   
 
 /*  Replace with your network credentials  */
-const char* ssid = "moi";
-const char* password = "MOI21052000";
+const char* ssid = "XEMOS";
+const char* password = "XEMOS1234";
 
 void TCA9548A(uint8_t bus) {
   Wire.beginTransmission(0x70);  // TCA9548A address
